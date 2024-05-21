@@ -1,0 +1,29 @@
+{
+  "author": "diconium",
+  "license": "ISC",
+  "name": "ethereal-pulse",
+  "version": "1.0.0",
+  "description": "Ethereal Pulse is a Node.js server application utilizing Nodemailer for email delivery and providing SDKs for integration",
+  "main": "dist/index.js",
+  "scripts": {
+    "watch": "rimraf dist tsc -w",
+    "multi": "nodemon dist/multipleJobs.js",
+    "dev": "rimraf dist && tsc && nodemon dist/index.js",
+    "clean-install": "rimraf node_modules && npm install",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:prod": "rimraf dist && tsc && NODE_ENV=production node dist/index.js"
+  },
+  "dependencies": {
+    "bullmq": "^5.7.10",
+    "ioredis": "^5.4.1",
+    "nodemailer": "^6.9.13"
+  },
+  "devDependencies": {
+    "@types/nodemailer": "^6.4.15",
+    "dotenv": "^16.4.5",
+    "nodemon": "^3.1.0",
+    "rimraf": "^5.0.7",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
+  }
+}
