@@ -1,0 +1,22 @@
+{
+  "name": "etheral_pulse_sdk",
+  "version": "1.0.0",
+  "description": "Sdk for taking advantage of etheral pulse capabilities",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "diconium",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "@azure/communication-email": "^1.0.0",
+    "@types/aws-sdk": "^2.7.0",
+    "@types/mongodb": "^4.0.7",
+    "@types/node": "^20.12.12",
+    "aws-sdk": "^2.1627.0",
+    "mongodb": "^6.6.2",
+    "nodemailer": "^6.9.13",
+    "typescript": "^5.4.5"
+  }
+}
