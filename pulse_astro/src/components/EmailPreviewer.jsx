@@ -3,7 +3,6 @@ import { render } from "@react-email/render";
 import WelcomeEmail from "../components/emails/WelcomeEmail.jsx";
 import "../styles/previwer.css";
 import GoodByeEmail from "./emails/GoodBye.jsx";
-import EtheralPulse from "etheral_pulse_sdk"
 
 const WelcomeEmailHtml = render(<WelcomeEmail />);
 const WelcomeEmailCode = `
@@ -27,7 +26,6 @@ export default WelcomeEmail;
 const EmailPreviewer = () => {
   const [view, setView] = useState("content");
 
-  EtheralPulse.pulseEmail();
   function renderView() {
     console.log("Rendering view:", view);
     switch (view) {

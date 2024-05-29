@@ -131,3 +131,4 @@ dist
 
 # macOS files
 .DS_Store
+pulse_astro/pnpm-lock.yaml
