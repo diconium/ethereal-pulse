@@ -12,7 +12,8 @@
     "url": "git+https://github.com/diconium/ethereal-pulse.git"
   },
   "scripts": {
-    "preinstall": "npx only-allow pnpm"
+    "preinstall": "npx only-allow pnpm",
+    "dev:client": "pnpm --filter @ethereal-pulse/client dev"
   },
   "packageManager": "pnpm@9.1.0"
 }
