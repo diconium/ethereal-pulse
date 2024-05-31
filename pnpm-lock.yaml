@@ -104,6 +104,12 @@ importers:
 
   sdks/node: {}
 
+  sdks/typescript:
+    devDependencies:
+      typescript:
+        specifier: ^5.4.5
+        version: 5.4.5
+
 packages:
 
   '@ampproject/remapping@2.3.0':

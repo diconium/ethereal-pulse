@@ -1,0 +1,19 @@
+{
+  "name": "@ethereal-pulse/typescript-sdk",
+  "version": "0.0.1",
+  "type": "module",
+  "license": "",
+  "author": "diconium",
+  "description": "Ethereal Pulse Typescript SDK",
+  "homepage": "https://github.com/diconium/ethereal-pulse#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/diconium/ethereal-pulse.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5"
+  }
+}
