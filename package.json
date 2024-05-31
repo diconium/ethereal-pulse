@@ -14,7 +14,8 @@
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "build": "pnpm -r run build",
-    "start": "pnpm -r --parallel --filter='./apps/*' run start"
+    "start": "pnpm -r --parallel --filter='./apps/*' run start",
+    "preview": "pnpm -r --parallel --filter='./apps/*' run preview"
   },
   "packageManager": "pnpm@9.1.4"
 }
