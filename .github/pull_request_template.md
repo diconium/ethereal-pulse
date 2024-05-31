@@ -1,6 +1,6 @@
 <!-- > Replace the values with <> -->
 
-### Issue: <_Add the issue number that it resolves_>
+### Resolves <_Add the issue number that it resolves_>
 
 ### Description
 <_Description about what has been done_>
