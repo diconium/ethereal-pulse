@@ -25,6 +25,12 @@ Install dependencies
 pnpm install
 ```
 
+Create `.env` and ask for credentials
+
+```bash
+cp .env.example .env
+```
+
 Start MongoDB container
 
 ```bash
