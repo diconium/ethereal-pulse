@@ -4,7 +4,12 @@
   "type": "module",
   "license": "",
   "author": "diconium",
-  "description": "Ethereal Pulse Client",
+  "description": "Ethereal Pulse Server",
+  "homepage": "https://github.com/diconium/ethereal-pulse#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/diconium/ethereal-pulse.git"
+  },
   "private": true,
   "scripts": {
     "dev": "astro dev",

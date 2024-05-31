@@ -4,6 +4,11 @@
   "license": "",
   "author": "diconium",
   "description": "Ethereal Pulse Client",
+  "homepage": "https://github.com/diconium/ethereal-pulse#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/diconium/ethereal-pulse.git"
+  },
   "private": true,
   "scripts": {
     "build": "nest build",
