@@ -1,0 +1,6 @@
+{
+  "search.exclude": {
+    "pnpm-lock.yaml": true,
+  },
+  "npm.packageManager": "pnpm",
+}
