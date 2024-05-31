@@ -2,7 +2,7 @@
   "name": "@ethereal-pulse/node-sdk",
   "version": "0.0.1",
   "type": "module",
-  "license": "",
+  "license": "Apache-2.0",
   "author": "diconium",
   "description": "Ethereal Pulse NodeJs SDK",
   "homepage": "https://github.com/diconium/ethereal-pulse#readme",

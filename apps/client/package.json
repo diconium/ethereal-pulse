@@ -2,7 +2,6 @@
   "name": "@ethereal-pulse/client",
   "version": "0.0.1",
   "type": "module",
-  "license": "",
   "author": "diconium",
   "description": "Ethereal Pulse Server",
   "homepage": "https://github.com/diconium/ethereal-pulse#readme",
