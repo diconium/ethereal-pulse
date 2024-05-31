@@ -1,7 +1,11 @@
 {
   "name": "@ethereal-pulse/client",
-  "type": "module",
   "version": "0.0.1",
+  "type": "module",
+  "license": "",
+  "author": "diconium",
+  "description": "Ethereal Pulse Client",
+  "private": true,
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
