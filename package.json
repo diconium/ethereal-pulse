@@ -17,5 +17,9 @@
     "start": "pnpm -r --parallel --filter='./apps/*' run start",
     "preview": "pnpm -r --parallel --filter='./apps/*' run preview"
   },
-  "packageManager": "pnpm@9.1.4"
+  "packageManager": "pnpm@9.1.4",
+  "workspaces": [
+    "apps/*",
+    "sdks/*"
+  ]
 }

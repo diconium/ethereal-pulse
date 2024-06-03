@@ -20,7 +20,6 @@ TBD
 > - Docker - for MongoDB connection
 
 Install dependencies
-
 ```bash
 pnpm install
 ```
@@ -28,6 +27,7 @@ pnpm install
 Create `.env` and ask for credentials
 
 ```bash
+cd /server
 cp .env.example .env
 ```
 
@@ -40,6 +40,7 @@ docker compose -f "apps/server/docker-compose.yml" up -d --build
 Spin up the apps
 
 ```bash
+cd ../
 pnpm start
 ```
 
