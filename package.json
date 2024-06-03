@@ -1,0 +1,21 @@
+{
+  "name": "ethereal-pulse",
+  "author": "diconium",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "^18.17.1 || ^20.3.0 || >=21.0.0"
+  },
+  "homepage": "https://github.com/diconium/ethereal-pulse#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/diconium/ethereal-pulse.git"
+  },
+  "scripts": {
+    "preinstall": "npx only-allow pnpm",
+    "build": "pnpm -r run build",
+    "start": "pnpm -r --parallel --filter='./apps/*' run start",
+    "preview": "pnpm -r --parallel --filter='./apps/*' run preview"
+  },
+  "packageManager": "pnpm@9.1.4"
+}
