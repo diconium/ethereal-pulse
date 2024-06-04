@@ -1,0 +1,35 @@
+name: Build Webapp Docker Image
+
+on:
+  push:
+    paths:
+      - 'apps/client/**'
+  pull_request:
+    paths:
+      - 'apps/client/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build Docker image
+        uses: docker/build-push-action@v3
+        with:
+          context: ./apps/client
+          file: ./apps/client/Dockerfile
+          push: false
