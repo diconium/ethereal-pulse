@@ -20,7 +20,6 @@ TBD
 > - Docker - for MongoDB connection
 
 Install dependencies
-
 ```bash
 pnpm install
 ```

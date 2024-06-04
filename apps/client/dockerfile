@@ -16,11 +16,11 @@ COPY . .
 
 # Stage 1: Install production dependencies
 FROM base AS prod-deps
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --no-frozen-lockfile
 
 # Stage 2: Install all dependencies and build the application
 FROM base AS build
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --no-frozen-lockfile
 RUN pnpm run build
 
 # Stage 3: Create the final image with only the necessary files
@@ -36,4 +36,4 @@ ENV PORT=4321
 EXPOSE 4321
 
 # Start the application
-CMD ["pnpm", "start"]
+CMD ["pnpm", "preview"]
