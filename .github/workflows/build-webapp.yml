@@ -2,11 +2,22 @@ name: Build Webapp Docker Image
 
 on:
   push:
+    branches: ["main"]
+    # Publish semver tags as releases.
+    tags: [ 'v*.*.*' ]
     paths:
       - 'apps/client/**'
   pull_request:
+    branches: ["main"]
     paths:
       - 'apps/client/**'
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  # github.repository as <account>/<repo>
+  IMAGE_NAME: ${{ github.repository }}
+  DOCKERFILE: ./apps/client/Dockerfile           
 
 jobs:
   build:
@@ -14,7 +25,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Install Node.js
         uses: actions/setup-node@v2
@@ -27,9 +38,29 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      - name: Build Docker image
-        uses: docker/build-push-action@v3
+      - name: Log into registry ${{ env.REGISTRY }}
+        uses: docker/login-action@3
         with:
-          context: ./apps/client
-          file: ./apps/client/Dockerfile
-          push: false
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+     
+      # Extract metadata (tags, labels) for Docker
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@2
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+      # Build and push Docker image with Buildx 
+      - name: Build and push
+        id: build-and-push
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ${{env.DOCKERFILE}}
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
