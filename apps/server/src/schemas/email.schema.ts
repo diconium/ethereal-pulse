@@ -1,19 +1,24 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
-import { Recipient, RecipientSchema } from './recipient.schema';
 
 export type EmailDocument = HydratedDocument<Email>;
 
 @Schema()
 export class Email {
-  @Prop()
+  @Prop({ required: true })
   subject: string;
 
-  @Prop()
+  @Prop({ required: true })
   content: string;
-  
-  @Prop({ type: [RecipientSchema] })
-  groups: Recipient[];
+
+  @Prop({ required: true })
+  recipients: string[];
+
+  @Prop()
+  cc?: string[];
+
+  @Prop()
+  bcc?: string[];
 }
 
 export const EmailSchema = SchemaFactory.createForClass(Email);

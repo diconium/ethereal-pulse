@@ -1,16 +1,24 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
-import { Recipient, RecipientSchema } from './recipient.schema';
 
 export type ApiKeyDocument = HydratedDocument<ApiKey>;
 
 @Schema()
 export class ApiKey {
-  @Prop()
-  key: string;
+  @Prop({ required: true })
+  name: string;
+
+  @Prop({ enum: ['full_access', 'sending_access'], default: 'sending_access' })
+  permission: string;
+
+  @Prop({ type: Date, default: Date.now })
+  createdAt: Date;
 
   @Prop()
-  name: string;
+  domainId?: string;
+
+  @Prop({ required: true })
+  token: string;
 }
 
 export const ApiKeySchema = SchemaFactory.createForClass(ApiKey);

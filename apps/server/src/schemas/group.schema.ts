@@ -6,11 +6,11 @@ export type GroupDocument = HydratedDocument<Group>;
 
 @Schema()
 export class Group {
-  @Prop()
+  @Prop({ required: true })
   name: string;
-  
-  @Prop({ type: [RecipientSchema], default: [] })
-  groups: Recipient[];
+
+  @Prop({ type: [RecipientSchema], required: true })
+  recipients: Recipient[];
 }
 
 export const GroupSchema = SchemaFactory.createForClass(Group);

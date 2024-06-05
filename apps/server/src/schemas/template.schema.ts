@@ -5,13 +5,13 @@ export type TemplateDocument = HydratedDocument<Template>;
 
 @Schema()
 export class Template {
-  @Prop()
+  @Prop({ required: true })
   name: string;
 
-  @Prop()
+  @Prop({ required: true })
   subject: string;
 
-  @Prop()
+  @Prop({ required: true })
   content: string;
 }
 

@@ -5,7 +5,7 @@ export type RecipientDocument = HydratedDocument<Recipient>;
 
 @Schema()
 export class Recipient {
-  @Prop()
+  @Prop({ required: true })
   email: string;
 }
 
