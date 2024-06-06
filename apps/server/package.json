@@ -9,6 +9,8 @@
     "url": "git+https://github.com/diconium/ethereal-pulse.git"
   },
   "private": true,
+  "packageManager": "pnpm@9.1.4",
+
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
