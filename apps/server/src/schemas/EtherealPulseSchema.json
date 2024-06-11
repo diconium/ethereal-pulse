@@ -1,0 +1,52 @@
+{
+  "users": {
+    "user_id": "ObjectId",
+    "email": "string",
+    "password": "string",
+    "emails": "Email[]",
+    "groups": "Group[]",
+    "templates": "Template[]",
+    "api_keys": "ApiKey[]"
+  },
+  "groups": {
+    "group_id": "ObjectId",
+    "name": "string",
+    "recipients": "Recipient[]"
+  },
+  "api_keys": {
+    "api_key_id": "ObjectId",
+    "permission": "string",
+    "name": "string",
+    "created_at": "Date",
+    "domain_id": "string",
+    "token": "string"
+  },
+  "templates": {
+    "template_id": "ObjectId",
+    "name": "string",
+    "subject": "string",
+    "html": "string"
+  },
+  "integrations": {
+    "integration_id": "ObjectId",
+    "smtp_port": "string",
+    "host": "string",
+    "config_key": "string"
+  },
+  "emails": {
+    "email_id": "ObjectId",
+    "subject": "string",
+    "content": "string",
+    "recipients": "string[]",
+    "cc": "string[]",
+    "bcc": "string[]"
+  },
+  "recipients": {
+    "recipient_id": "ObjectId",
+    "email": "string",
+    "first_name": "string",
+    "last_name": "string",
+    "created_at":"Date",
+    "unsubscribed": "bool"
+  }
+}
