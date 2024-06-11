@@ -11,13 +11,13 @@ export class Email {
   @Prop({ required: true })
   content: string;
 
-  @Prop({ required: true })
+  @Prop({ type: [String], required: true })
   recipients: string[];
 
-  @Prop()
+  @Prop([String])
   cc?: string[];
 
-  @Prop()
+  @Prop([String])
   bcc?: string[];
 }
 
