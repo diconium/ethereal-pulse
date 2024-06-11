@@ -12,7 +12,7 @@ export class Template {
   subject: string;
 
   @Prop({ required: true })
-  content: string;
+  html: string;
 }
 
 export const TemplateSchema = SchemaFactory.createForClass(Template);
