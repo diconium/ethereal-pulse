@@ -1,0 +1,728 @@
+openapi: 3.0.1
+info:
+  title: Ethereal Pulse Microservice API
+  description: >
+    This is the Swagger API documentation for the Ethereal Pulse Microservice API.
+    It allows authenticated users to send emails using Azure Communication Services
+    or AWS Simple Email Service.
+  version: 1.0.0
+servers:
+  - url: https://api.yourdomain.com/v1
+
+paths:
+  /email/send:
+    post:
+      tags:
+        - Email
+      summary: Send email
+      description: Sends an email to specified recipients using the selected provider with customer credentials
+      requestBody:
+        description: Email details
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SendEmailRequest"
+        required: true
+      responses:
+        "200":
+          description: Email sent successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    $ref: "#/components/schemas/ErrorDetail"
+                  id:
+                    type: string
+                  status:
+                    type: string
+                    enum:
+                      - NotStarted
+                      - Running
+                      - Succeeded
+                      - Failed
+                      - Canceled
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+      security:
+        - ApiKeyAuth: []
+
+  /templates:
+    get:
+      tags:
+        - Template
+      summary: Get user templates
+      description: Retrieves all email templates for the authenticated user, including public ones.
+      responses:
+        "200":
+          description: List of email templates
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Template"
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+      security:
+        - ApiKeyAuth: []
+    put:
+      tags:
+        - Template
+      summary: Update template
+      description: Updates an existing email template for an authenticated user
+      requestBody:
+        description: Template details
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Template"
+        required: true
+      responses:
+        "200":
+          description: Template updated successfully
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+      security:
+        - ApiKeyAuth: []
+    post:
+      tags:
+        - Template
+      summary: Create new template
+      description: Creates a new email template for authenticated user. Private templates should include `apiKeyId`.
+      requestBody:
+        description: Template details
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Template"
+        required: true
+      responses:
+        "201":
+          description: Template created successfully
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+      security:
+        - ApiKeyAuth: []
+  /templates/{templateId}:
+    delete:
+      tags:
+        - Template
+      summary: Delete template
+      description: Deletes a template by ID
+      parameters:
+        - name: templateId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Template deleted successfully
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+      security:
+        - ApiKeyAuth: []
+
+  /groups:
+    get:
+      tags:
+        - Group
+      summary: Get user groups
+      description: Retrieves all recipient groups for authenticated user
+      responses:
+        "200":
+          description: List of recipient groups
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Group"
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+      security:
+        - ApiKeyAuth: []
+    put:
+      tags:
+        - Group
+      summary: Update group
+      description: Updates an existing recipient group for an authenticated user
+      requestBody:
+        description: Group details
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Group"
+        required: true
+      responses:
+        "200":
+          description: Group updated successfully
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+      security:
+        - ApiKeyAuth: []
+    post:
+      tags:
+        - Group
+      summary: Create new group
+      description: Creates a new recipient group for an authenticated user
+      requestBody:
+        description: Group details
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Group"
+        required: true
+      responses:
+        "201":
+          description: Group created successfully
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+      security:
+        - ApiKeyAuth: []
+  /groups/{groupId}:
+    delete:
+      tags:
+        - Group
+      summary: Delete group
+      description: Deletes a recipient group
+      parameters:
+        - name: groupId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Group deleted successfully
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+      security:
+        - ApiKeyAuth: []
+
+  /apiKeys:
+    post:
+      tags:
+        - API Keys
+      summary: Create an API key
+      description: Creates a new API key
+      requestBody:
+        description: API Key details
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateApiKeyRequest"
+        required: true
+      responses:
+        "200":
+          description: API key created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  token:
+                    type: string
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+      security:
+        - ApiKeyAuth: []
+
+    get:
+      tags:
+        - API Keys
+      summary: List API keys
+      description: Retrieves a list of API keys
+      responses:
+        "200":
+          description: List of API keys
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                        created_at:
+                          type: string
+                          format: date-time
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+      security:
+        - ApiKeyAuth: []
+
+  /apiKeys/{apiKeyId}:
+    delete:
+      tags:
+        - API Keys
+      summary: Delete API key
+      description: Deletes an API key by ID
+      parameters:
+        - name: apiKeyId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: API key deleted successfully
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+      security:
+        - ApiKeyAuth: []
+
+  /recipients:
+    post:
+      tags:
+        - Recipient
+      summary: Create a recipient
+      description: Creates a new recipient
+      requestBody:
+        description: Recipient details
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Recipient"
+        required: true
+      responses:
+        "200":
+          description: Recipient created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+      security:
+        - ApiKeyAuth: []
+
+  /recipients/{groupId}:
+    get:
+      tags:
+        - Recipient
+      summary: List recipients
+      description: Show all recipients from a group
+      parameters:
+        - name: groupId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of recipients
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        email:
+                          type: string
+                        first_name:
+                          type: string
+                        last_name:
+                          type: string
+                        created_at:
+                          type: string
+                          format: date-time
+                        unsubscribed:
+                          type: boolean
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+      security:
+        - ApiKeyAuth: []
+
+    delete:
+      tags:
+        - Recipient
+      summary: Delete a recipient
+      description: Delete an existing recipient from a group
+      parameters:
+        - name: groupId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: email
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Recipient deleted successfully
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+      security:
+        - ApiKeyAuth: []
+
+  /recipients/{id}:
+    patch:
+      tags:
+        - Recipient
+      summary: Update a recipient
+      description: Updates an existing recipient by ID for all groups
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Recipient details to update
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RecipientUpdate"
+        required: true
+      responses:
+        "200":
+          description: Recipient updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+      security:
+        - ApiKeyAuth: []
+
+  /recipients/{groupId}/{id}:
+    get:
+      tags:
+        - Recipient
+      summary: Retrieve a recipient
+      description: Retrieves a recipient by ID for a specific group
+      parameters:
+        - name: groupId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Recipient retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  email:
+                    type: string
+                  first_name:
+                    type: string
+                  last_name:
+                    type: string
+                  created_at:
+                    type: string
+                    format: date-time
+                  unsubscribed:
+                    type: boolean
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+      security:
+        - ApiKeyAuth: []
+    patch:
+      tags:
+        - Recipient
+      summary: Update a recipient
+      description: Updates an existing recipient by ID for a specific group
+      parameters:
+        - name: groupId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Recipient details to update
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RecipientUpdate"
+        required: true
+      responses:
+        "200":
+          description: Recipient updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+      security:
+        - ApiKeyAuth: []
+
+components:
+  schemas:
+    LoginUser:
+      required:
+        - email
+        - password
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+
+    TokenResponse:
+      type: object
+      properties:
+        token:
+          type: string
+
+    SendEmailRequest:
+      required:
+        - from
+        - html
+        - recipients
+        - subject
+      type: object
+      properties:
+        from:
+          type: string
+        recipients:
+          type: array
+          items:
+            type: string
+        subject:
+          type: string
+        html:
+          type: string
+        text:
+          type: string
+        bcc:
+          oneOf:
+            - type: string
+            - type: array
+              items:
+                type: string
+        ccc:
+          oneOf:
+            - type: string
+            - type: array
+              items:
+                type: string
+        headers:
+          type: object
+          description: Custom headers to add to the email
+        attachments:
+          type: array
+          description: Filename and content of attachments (max 40mb per email)
+          items:
+            type: object
+            properties: {}
+
+    ErrorDetail:
+      type: object
+      properties:
+        additionalInfo:
+          type: array
+          items:
+            $ref: "#/components/schemas/ErrorAdditionalInfo"
+        code:
+          type: string
+        details:
+          type: array
+          items:
+            $ref: "#/components/schemas/ErrorDetail"
+        message:
+          type: string
+        target:
+          type: string
+
+    ErrorAdditionalInfo:
+      type: object
+      properties:
+        info:
+          type: object
+          additionalProperties: true
+        type:
+          type: string
+
+    ErrorResponse:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+        error:
+          $ref: "#/components/schemas/ErrorDetail"
+
+    CreateApiKeyRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        permission:
+          type: string
+          enum:
+            - full_access
+            - sending_access
+        domain_id:
+          type: string
+
+    Template:
+      required:
+        - name
+        - subject
+        - html
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        subject:
+          type: string
+        html:
+          type: string
+        apiKeyId:
+          type: string  # Field added to link template to user's API key if it's private
+
+    Group:
+      required:
+        - name
+        - recipients
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        recipients:
+          type: array
+          items:
+            type: string
+
+    Recipient:
+      required:
+        - email
+        - groupId
+      type: object
+      properties:
+        email:
+          type: string
+        groupId:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        unsubscribed:
+          type: boolean
+          default: false
+
+    RecipientUpdate:
+      required:
+        - firstName
+        - lastName
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        unsubscribed:
+          type: boolean
+          default: false
+
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      description: Multi-tenant API keys for SDK authentication
+      name: x-api-key
+      in: header
+
+  responses:
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
