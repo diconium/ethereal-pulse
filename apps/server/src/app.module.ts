@@ -1,13 +1,21 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { ConfigModule } from '@nestjs/config';
+import configuration from './config/configuration';
+import { DatabaseModule } from './database/database.module';
+import { EmailServiceModule } from './email-service/email-service.module';
+import { AuthenticationModule } from './authentication/authentication.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://root:example@mongo:27017/mydatabase?authSource=admin'),
+    ConfigModule.forRoot({
+      load: [configuration],
+      isGlobal: true,
+    }),
+    MongooseModule.forRoot(process.env.DATABASE_URI || ''),
+    EmailServiceModule,
+    AuthenticationModule,
+    DatabaseModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}
