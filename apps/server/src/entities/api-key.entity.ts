@@ -1,9 +1,9 @@
-import { Schema, Document } from 'mongoose';
+import { Document } from 'mongoose';
+import { CloudProvider } from './cloud-provider.entity';
 
 export interface ApiKey extends Document {
   name: string;
-  permission: 'full_access' | 'sending_access';
-  provider: string; // The new field for provider
   createdAt: Date;
+  provider: CloudProvider;
+  permission: 'full_access' | 'sending_access';
 }
-// TODO: move this interface to another

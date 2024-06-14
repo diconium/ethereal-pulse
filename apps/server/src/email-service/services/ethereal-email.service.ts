@@ -1,12 +1,12 @@
+import * as nodemailer from 'nodemailer';
 import { Injectable } from '@nestjs/common';
 import { SendEmailDto } from '../dto/send-email.dto';
-import { EmailServiceInterface } from '../interfaces/email-service.interface';
-import * as nodemailer from 'nodemailer';
+import { IEmailService } from '../interfaces/email-service.interface';
 
 @Injectable()
-export class EtherealEmailService implements EmailServiceInterface {
+export class EtherealEmailService implements IEmailService {
   async sendEmail(sendEmailDto: SendEmailDto): Promise<any> {
-    let transporter = nodemailer.createTransport({
+    const transporter = nodemailer.createTransport({
       host: 'smtp.ethereal.email',
       port: 587,
       secure: false,
@@ -16,7 +16,7 @@ export class EtherealEmailService implements EmailServiceInterface {
       },
     });
 
-    let info = await transporter.sendMail({
+    const info = await transporter.sendMail({
       from: sendEmailDto.from,
       to: sendEmailDto.recipients.join(','),
       subject: sendEmailDto.subject,

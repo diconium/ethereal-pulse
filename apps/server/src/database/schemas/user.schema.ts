@@ -1,17 +1,38 @@
-import { Schema } from 'mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { HydratedDocument } from 'mongoose';
+import { Email, EmailSchema } from './email.schema';
+import { Group, GroupSchema } from './group.schema';
+import { Template, TemplateSchema } from './template.schema';
+import { ApiKey, ApiKeySchema } from './apiKey.schema';
+import { CloudProvider, CloudProviderSchema } from './cloud-provider.schema';
 
-export const UserSchema = new Schema({
-  username: { type: String, required: true },
-  apiKey: { type: String, required: true },
-  createdAt: { type: Date, default: Date.now },
-  providers: [
-    {
-      type: { type: String, required: true },
-      credentials: {
-        connectionString: { type: String },
-        accessKeyId: { type: String },
-        secretAccessKey: { type: String },
-      },
-    },
-  ],
-});
+export type UserDocument = HydratedDocument<User>;
+
+@Schema()
+export class User {
+  @Prop({ required: true })
+  username: string;
+
+  @Prop({ required: true })
+  email: string;
+
+  @Prop({ required: true })
+  password: string;
+
+  @Prop({ type: [EmailSchema], default: [] })
+  emails: Email[];
+
+  @Prop({ type: [GroupSchema], default: [] })
+  groups: Group[];
+
+  @Prop({ type: [TemplateSchema], default: [] })
+  templates: Template[];
+
+  @Prop({ type: [CloudProviderSchema], default: [] })
+  providers: CloudProvider[];
+
+  @Prop({ type: [ApiKeySchema], default: [] })
+  apiKeys: ApiKey[];
+}
+
+export const UserSchema = SchemaFactory.createForClass(User);

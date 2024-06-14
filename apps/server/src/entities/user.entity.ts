@@ -1,15 +1,16 @@
 import { Document } from 'mongoose';
+import { Group } from './group.entity';
+import { Email } from './email.entity';
+import { ApiKey } from './api-key.entity';
+import { Template } from './template.entity';
+import { CloudProvider } from './cloud-provider.entity';
 
 export interface User extends Document {
-  username: string;
-  apiKey: string[]; // WIP: updated to string[] check your use in the app
-  createdAt: Date;
-  providers: {
-    type: string;
-    credentials: {
-      connectionString?: string;
-      accessKeyId?: string;
-      secretAccessKey?: string;
-    };
-  }[];
+  email: string;
+  emails: Email[];
+  groups: Group[];
+  password: string;
+  apiKeys: ApiKey[];
+  templates: Template[];
+  providers: CloudProvider[];
 }

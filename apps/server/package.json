@@ -25,13 +25,16 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@azure/communication-email": "^1.0.0",
     "@nestjs/common": "^10.0.0",
     "@nestjs/core": "^10.0.0",
     "@nestjs/mongoose": "^10.0.6",
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/swagger": "^7.3.1",
+    "aws-sdk": "^2.1640.0",
     "js-yaml": "^4.1.0",
-    "mongoose": "^8.4.0"
+    "mongoose": "^8.4.0",
+    "nodemailer": "^6.9.13"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",
