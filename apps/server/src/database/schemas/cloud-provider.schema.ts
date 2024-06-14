@@ -1,6 +1,6 @@
 import { Document } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { CloudProviderType } from 'src/entities/cloud-provider.entity';
+import { CloudProviderType } from 'src/email-service/interfaces/cloud-provider.interface';
 import { EMAIL_PROVIDERS } from 'src/email-service/constants/email-providers.constants';
 
 export type CloudProviderDocument = CloudProvider & Document;

@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { EmailService } from './services/email.service';
+import { UserSchema } from 'src/database/schemas/user.schema';
 import { UserRepository } from '../repositories/user.repository';
-import { UserSchema } from './schemas/user.schema';
 import { EmailController } from './controllers/email-service.controller';
 
 @Module({

@@ -1,9 +1,9 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
-import { Email, EmailSchema } from './email.schema';
 import { Group, GroupSchema } from './group.schema';
+import { EmailSchema, Email } from './email.schema';
+import { ApiKeySchema, ApiKey } from './api-key.schema';
 import { Template, TemplateSchema } from './template.schema';
-import { ApiKey, ApiKeySchema } from './apiKey.schema';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { CloudProvider, CloudProviderSchema } from './cloud-provider.schema';
 
 export type UserDocument = HydratedDocument<User>;

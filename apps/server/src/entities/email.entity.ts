@@ -1,9 +1,14 @@
-import { Document } from 'mongoose';
+import { HydratedDocument } from 'mongoose';
 
-export interface Email extends Document {
+export interface Email {
+  from: string;
+  html: string;
   cc?: string[];
   bcc?: string[];
   subject: string;
-  content: string;
+  headers?: object;
   recipients: string[];
+  attachments?: object[];
 }
+
+export type EmailDocument = HydratedDocument<Email>;

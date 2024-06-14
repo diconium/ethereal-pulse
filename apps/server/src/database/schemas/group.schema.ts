@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
-import { Recipient, RecipientSchema } from './recipient.schema';
+import { RecipientSchema, Recipient } from './recipient.schema';
 
 export type GroupDocument = HydratedDocument<Group>;
 

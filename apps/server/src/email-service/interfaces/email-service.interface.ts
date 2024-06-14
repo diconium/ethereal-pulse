@@ -1,7 +1,7 @@
 import {
   ICloudProvider,
   ICloudProviderCredentials,
-} from 'src/entities/cloud-provider.entity';
+} from 'src/email-service/interfaces/cloud-provider.interface';
 
 export interface IEmailService {
   configure?(provider: ICloudProvider | ICloudProviderCredentials): void;
@@ -14,7 +14,7 @@ export interface ISendEmailPayload {
   subject: string;
   html: string;
   bcc?: string[];
-  ccc?: string[];
+  cc?: string[];
   headers?: object;
   attachments?: object[];
 }

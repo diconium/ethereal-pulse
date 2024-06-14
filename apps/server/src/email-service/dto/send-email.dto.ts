@@ -16,15 +16,17 @@ export class SendEmailDto {
 
   @IsOptional()
   @IsArray()
+  @IsEmail({}, { each: true })
   bcc?: string[];
 
   @IsOptional()
   @IsArray()
-  ccc?: string[];
+  @IsEmail({}, { each: true })
+  cc?: string[];
 
   @IsOptional()
-  headers?: object;
+  headers?: Record<string, any>;
 
   @IsOptional()
-  attachments?: object[];
+  attachments?: Record<string, any>[];
 }

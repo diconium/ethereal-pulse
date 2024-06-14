@@ -559,7 +559,7 @@ components:
             - type: array
               items:
                 type: string
-        ccc:
+        cc:
           oneOf:
             - type: string
             - type: array

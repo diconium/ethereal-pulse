@@ -4,7 +4,7 @@ import { AzureEmailService } from '../services/azure-email.service';
 import {
   CloudProviderType,
   ICloudProvider,
-} from 'src/entities/cloud-provider.entity';
+} from 'src/email-service/interfaces/cloud-provider.interface';
 import { IEmailService } from '../interfaces/email-service.interface';
 import { EMAIL_PROVIDERS } from '../constants/email-providers.constants';
 import { EtherealEmailService } from '../services/ethereal-email.service';
