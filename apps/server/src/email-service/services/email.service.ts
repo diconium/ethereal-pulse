@@ -1,6 +1,6 @@
 import { UserRepository } from '../../repositories/user.repository';
 import { ApiKeyDocument } from 'src/database/schemas/api-key.schema';
-import { ApiKeyRepository } from '../repositories/api-key.repository';
+import { ApiKeyRepository } from '../../authentication/repositories/api-key.repository';
 import { EmailServiceFactory } from '../factories/email-service.factory';
 import { Injectable, Inject, UnauthorizedException } from '@nestjs/common';
 import {

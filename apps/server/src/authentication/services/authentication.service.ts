@@ -1,12 +1,12 @@
-import { JwtService } from '@nestjs/jwt';
+import { UserRepository } from 'src/repositories/user.repository';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { UserRepository } from '../database/repositories/user.repository';
+import { ApiKeyRepository } from '../repositories/api-key.repository';
 
 @Injectable()
 export class AuthenticationService {
   constructor(
-    private readonly jwtService: JwtService,
     private readonly userRepository: UserRepository,
+    private readonly apiKeyRepository: ApiKeyRepository,
   ) {}
 
   async validateUser(apiKey: string): Promise<any> {
@@ -17,10 +17,13 @@ export class AuthenticationService {
     return user;
   }
 
-  async login(user: any) {
-    const payload = { username: user.username, sub: user.userId };
-    return {
-      access_token: this.jwtService.sign(payload),
-    };
+  async validateProvider(apiKey: string): Promise<any> {
+    // Add this method
+    const apiKeyRecord =
+      await this.apiKeyRepository.findOneWithProvider(apiKey);
+    if (!apiKeyRecord) {
+      throw new UnauthorizedException('Invalid API key');
+    }
+    return apiKeyRecord.provider;
   }
 }

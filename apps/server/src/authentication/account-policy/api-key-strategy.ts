@@ -1,8 +1,8 @@
+import { Request } from 'express';
 import { Strategy } from 'passport-custom';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { AuthenticationService } from './authentication.service';
-import { Request } from 'express';
+import { AuthenticationService } from '../services/authentication.service';
 
 @Injectable()
 export class ApiKeyStrategy extends PassportStrategy(Strategy, 'api-key') {
@@ -11,22 +11,30 @@ export class ApiKeyStrategy extends PassportStrategy(Strategy, 'api-key') {
   }
 
   async validate(request: Request, done: Function) {
+    try {
+      const apiKey = this.extractApiKey(request);
+      const user = await this.authService.validateUser(apiKey);
+      const selectedProvider = await this.authService.validateProvider(apiKey);
+
+      this.attachProviderToRequest(request, selectedProvider);
+      return done(null, user);
+    } catch (error) {
+      return done(error, false);
+    }
+  }
+
+  private extractApiKey(request: Request): string {
     const apiKey = request.headers['x-api-key'] as string;
     if (!apiKey) {
-      return done(new UnauthorizedException(), false);
+      throw new UnauthorizedException('API key is missing');
     }
+    return apiKey;
+  }
 
-    const user = await this.authService.validateUser(apiKey);
-    if (!user) {
-      return done(new UnauthorizedException(), false);
+  private attachProviderToRequest(request: Request, provider: any): void {
+    if (!provider) {
+      throw new UnauthorizedException('Provider validation failed');
     }
-
-    const selectedProvider = await this.authService.validateProvider(apiKey);
-    if (!selectedProvider) {
-      return done(new UnauthorizedException(), false);
-    }
-
-    (request as any).provider = selectedProvider;
-    return done(null, user);
+    (request as any).provider = provider;
   }
 }

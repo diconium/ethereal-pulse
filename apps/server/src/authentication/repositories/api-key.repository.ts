@@ -10,6 +10,10 @@ export class ApiKeyRepository {
     private readonly apiKeyModel: Model<ApiKeyDocument>,
   ) {}
 
+  async findOne(apiKey: string): Promise<ApiKeyDocument | null> {
+    return this.apiKeyModel.findOne({ key: apiKey }).exec();
+  }
+
   async findOneWithProvider(apiKey: string): Promise<ApiKeyDocument | null> {
     return this.apiKeyModel
       .findOne({ key: apiKey })
