@@ -44,9 +44,9 @@ paths:
                       - Failed
                       - Canceled
         "400":
-          description: Bad Request
+          $ref: '#/components/responses/BadRequest'
         "401":
-          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
       security:
         - ApiKeyAuth: []
 
@@ -66,7 +66,7 @@ paths:
                 items:
                   $ref: "#/components/schemas/Template"
         "401":
-          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
       security:
         - ApiKeyAuth: []
     put:
@@ -85,9 +85,9 @@ paths:
         "200":
           description: Template updated successfully
         "400":
-          description: Bad Request
+          $ref: '#/components/responses/BadRequest'
         "401":
-          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
       security:
         - ApiKeyAuth: []
     post:
@@ -106,9 +106,9 @@ paths:
         "201":
           description: Template created successfully
         "400":
-          description: Bad Request
+          $ref: '#/components/responses/BadRequest'
         "401":
-          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
       security:
         - ApiKeyAuth: []
   /templates/{templateId}:
@@ -127,7 +127,7 @@ paths:
         "200":
           description: Template deleted successfully
         "401":
-          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
       security:
         - ApiKeyAuth: []
 
@@ -147,7 +147,7 @@ paths:
                 items:
                   $ref: "#/components/schemas/Group"
         "401":
-          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
       security:
         - ApiKeyAuth: []
     put:
@@ -166,9 +166,9 @@ paths:
         "200":
           description: Group updated successfully
         "400":
-          description: Bad Request
+          $ref: '#/components/responses/BadRequest'
         "401":
-          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
       security:
         - ApiKeyAuth: []
     post:
@@ -187,9 +187,9 @@ paths:
         "201":
           description: Group created successfully
         "400":
-          description: Bad Request
+          $ref: '#/components/responses/BadRequest'
         "401":
-          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
       security:
         - ApiKeyAuth: []
   /groups/{groupId}:
@@ -208,7 +208,7 @@ paths:
         "200":
           description: Group deleted successfully
         "401":
-          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
       security:
         - ApiKeyAuth: []
 
@@ -237,6 +237,10 @@ paths:
                     type: string
                   token:
                     type: string
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
       security:
         - ApiKeyAuth: []
 
@@ -265,6 +269,8 @@ paths:
                         created_at:
                           type: string
                           format: date-time
+        "401":
+          $ref: '#/components/responses/Unauthorized'
       security:
         - ApiKeyAuth: []
 
@@ -284,7 +290,7 @@ paths:
         "200":
           description: API key deleted successfully
         "401":
-          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
       security:
         - ApiKeyAuth: []
 
@@ -311,6 +317,10 @@ paths:
                 properties:
                   id:
                     type: string
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
       security:
         - ApiKeyAuth: []
 
@@ -352,6 +362,8 @@ paths:
                           format: date-time
                         unsubscribed:
                           type: boolean
+        "401":
+          $ref: '#/components/responses/Unauthorized'
       security:
         - ApiKeyAuth: []
 
@@ -379,6 +391,8 @@ paths:
       responses:
         "200":
           description: Recipient deleted successfully
+        "401":
+          $ref: '#/components/responses/Unauthorized'
       security:
         - ApiKeyAuth: []
 
@@ -411,6 +425,10 @@ paths:
                 properties:
                   id:
                     type: string
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
       security:
         - ApiKeyAuth: []
 
@@ -452,6 +470,8 @@ paths:
                     format: date-time
                   unsubscribed:
                     type: boolean
+        "401":
+          $ref: '#/components/responses/Unauthorized'
       security:
         - ApiKeyAuth: []
     patch:
@@ -487,6 +507,10 @@ paths:
                 properties:
                   id:
                     type: string
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
       security:
         - ApiKeyAuth: []
 
@@ -578,6 +602,14 @@ components:
         type:
           type: string
 
+    ErrorResponse:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+        error:
+          $ref: "#/components/schemas/ErrorDetail"
+
     CreateApiKeyRequest:
       type: object
       properties:
@@ -607,7 +639,7 @@ components:
         html:
           type: string
         apiKeyId:
-          type: string
+          type: string  # Field added to link template to user's API key if it's private
 
     Group:
       required:
@@ -662,3 +694,35 @@ components:
       description: Multi-tenant API keys for SDK authentication
       name: x-api-key
       in: header
+
+  responses:
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
