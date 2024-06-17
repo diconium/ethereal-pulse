@@ -1,6 +1,6 @@
 import { EmailService } from '../services/email.service';
+import { SendEmailRequestDto } from '../dto/send-email.dto';
 import { Controller, Post, Body, Headers } from '@nestjs/common';
-import { ISendEmailPayload } from '../interfaces/email-service.interface';
 
 @Controller('email')
 export class EmailController {
@@ -8,7 +8,7 @@ export class EmailController {
 
   @Post('send')
   async sendEmail(
-    @Body() payload: ISendEmailPayload,
+    @Body() payload: SendEmailRequestDto,
     @Headers('x-api-key') apiKey: string,
   ): Promise<void> {
     return this.emailService.sendEmail(payload, apiKey);

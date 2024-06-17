@@ -1,6 +1,6 @@
 import * as nodemailer from 'nodemailer';
 import { Injectable } from '@nestjs/common';
-import { SendEmailDto } from '../dto/send-email.dto';
+import { SendEmailRequestDto } from '../dto/send-email.dto';
 import { IEmailService } from '../interfaces/email-service.interface';
 import { ConfigService } from '@nestjs/config';
 
@@ -8,7 +8,7 @@ import { ConfigService } from '@nestjs/config';
 export class EtherealEmailService implements IEmailService {
   constructor(private readonly configService: ConfigService) {}
 
-  async sendEmail(sendEmailDto: SendEmailDto): Promise<any> {
+  async sendEmail(SendEmailRequestDto: SendEmailRequestDto): Promise<any> {
     const transporter = nodemailer.createTransport({
       host: 'smtp.ethereal.email',
       port: 587,
@@ -20,10 +20,10 @@ export class EtherealEmailService implements IEmailService {
     });
 
     const info = await transporter.sendMail({
-      from: sendEmailDto.from,
-      to: sendEmailDto.recipients.join(','),
-      subject: sendEmailDto.subject,
-      html: sendEmailDto.html,
+      from: SendEmailRequestDto.from,
+      to: SendEmailRequestDto.recipients.join(','),
+      subject: SendEmailRequestDto.subject,
+      html: SendEmailRequestDto.html,
     });
 
     return nodemailer.getTestMessageUrl(info);

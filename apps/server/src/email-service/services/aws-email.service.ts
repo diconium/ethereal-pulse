@@ -1,10 +1,8 @@
 import * as AWS from 'aws-sdk';
 import { Injectable } from '@nestjs/common';
 import { ICloudProvider } from 'src/email-service/interfaces/cloud-provider.interface';
-import {
-  IEmailService,
-  ISendEmailPayload,
-} from '../interfaces/email-service.interface';
+import { IEmailService } from '../interfaces/email-service.interface';
+import { SendEmailRequestDto } from '../dto/send-email.dto';
 
 @Injectable()
 export class AwsEmailService implements IEmailService {
@@ -23,13 +21,13 @@ export class AwsEmailService implements IEmailService {
     });
   }
 
-  async sendEmail(payload: ISendEmailPayload): Promise<void> {
+  async sendEmail(payload: SendEmailRequestDto): Promise<void> {
     const params = this.createEmailMessage(payload);
     await this.SES.sendEmail(params).promise();
   }
 
   private createEmailMessage(
-    payload: ISendEmailPayload,
+    payload: SendEmailRequestDto,
   ): AWS.SES.SendEmailRequest {
     const { from, recipients, subject, html } = payload;
 

@@ -2,11 +2,9 @@ import { ApiKeyDocument } from 'src/database/schemas/api-key.schema';
 import { ApiKeyRepository } from '../../authentication/repositories/api-key.repository';
 import { EmailServiceFactory } from '../factories/email-service.factory';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import {
-  IEmailService,
-  ISendEmailPayload,
-} from '../interfaces/email-service.interface';
+import { IEmailService } from '../interfaces/email-service.interface';
 import { UserRepository } from 'src/user/repositories/user.repository';
+import { SendEmailRequestDto } from '../dto/send-email.dto';
 
 @Injectable()
 export class EmailService implements IEmailService {
@@ -18,7 +16,7 @@ export class EmailService implements IEmailService {
     private readonly apiKeyRepository: ApiKeyRepository,
   ) {}
 
-  async sendEmail(payload: ISendEmailPayload, apiKey: string): Promise<any> {
+  async sendEmail(payload: SendEmailRequestDto, apiKey: string): Promise<any> {
     const apiKeyDoc = await this.getApiKeyDocument(apiKey);
     this.emailService = this.getEmailService(apiKeyDoc.provider);
 

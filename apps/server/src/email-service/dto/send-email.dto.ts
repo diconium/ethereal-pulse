@@ -1,6 +1,12 @@
-import { IsString, IsArray, IsEmail, IsOptional } from 'class-validator';
+import {
+  IsString,
+  IsArray,
+  IsEmail,
+  IsEnum,
+  IsOptional,
+} from 'class-validator';
 
-export class SendEmailDto {
+export class SendEmailRequestDto {
   @IsEmail()
   from: string;
 
@@ -29,4 +35,12 @@ export class SendEmailDto {
 
   @IsOptional()
   attachments?: Record<string, any>[];
+}
+
+export class SendEmailResponseDto {
+  @IsString()
+  id: string;
+
+  @IsEnum(['NotStarted', 'Running', 'Succeeded', 'Failed', 'Canceled'])
+  status: string;
 }

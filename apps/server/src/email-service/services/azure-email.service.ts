@@ -1,8 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import {
-  IEmailService,
-  ISendEmailPayload,
-} from '../interfaces/email-service.interface';
+import { SendEmailRequestDto } from '../dto/send-email.dto';
+import { IEmailService } from '../interfaces/email-service.interface';
 import { EmailClient, EmailMessage } from '@azure/communication-email';
 import { ICloudProvider } from 'src/email-service/interfaces/cloud-provider.interface';
 
@@ -18,13 +16,13 @@ export class AzureEmailService implements IEmailService {
     this.emailClient = new EmailClient(connectionString);
   }
 
-  async sendEmail(payload: ISendEmailPayload): Promise<any> {
+  async sendEmail(payload: SendEmailRequestDto): Promise<any> {
     const message = this.createEmailMessage(payload);
     const poller = await this.emailClient.beginSend(message);
     return await poller.pollUntilDone();
   }
 
-  private createEmailMessage(payload: ISendEmailPayload): EmailMessage {
+  private createEmailMessage(payload: SendEmailRequestDto): EmailMessage {
     const { from, recipients, subject, html } = payload;
     return {
       senderAddress: from,
