@@ -1,13 +1,13 @@
 import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { UserDocument, UserModel } from 'src/entities/user.entity';
+import { UserDocument } from 'src/entities/user.entity';
 import { User } from 'src/database/schemas/user.schema';
 
 @Injectable()
 export class UserRepository {
   constructor(
-    @InjectModel(User.name) // Ensure the correct model name is used
+    @InjectModel(User.name)
     private readonly userModel: Model<UserDocument>,
   ) {}
 

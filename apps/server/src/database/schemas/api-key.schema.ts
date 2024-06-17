@@ -1,6 +1,5 @@
 import { HydratedDocument, Schema as MongooseSchema } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { CloudProvider } from 'src/database/schemas/cloud-provider.schema';
 import { ICloudProvider } from 'src/email-service/interfaces/cloud-provider.interface';
 import { API_KEY_PERMISSION_KEYS } from 'src/authentication/constants/api-key-permissions.contant';
 
