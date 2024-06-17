@@ -1,4 +1,4 @@
-import { HydratedDocument } from 'mongoose';
+import { HydratedDocument, Schema as MongooseSchema } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { CloudProvider } from 'src/database/schemas/cloud-provider.schema';
 import { ICloudProvider } from 'src/email-service/interfaces/cloud-provider.interface';
@@ -26,7 +26,7 @@ export class ApiKey {
   @Prop()
   domainId?: string;
 
-  @Prop({ required: true, type: CloudProvider })
+  @Prop({ required: true, type: MongooseSchema.Types.Mixed })
   provider: ICloudProvider;
 
   @Prop({ required: true })

@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
+import { UserModule } from './user/user.module';
+import { MongooseModule } from '@nestjs/mongoose';
 import configuration from './config/configuration';
+import { AppConfigModule } from './config/config.module';
 import { DatabaseModule } from './database/database.module';
 import { EmailServiceModule } from './email-service/email-service.module';
 import { AuthenticationModule } from './authentication/authentication.module';
@@ -12,7 +14,9 @@ import { AuthenticationModule } from './authentication/authentication.module';
       load: [configuration],
       isGlobal: true,
     }),
-    MongooseModule.forRoot(process.env.DATABASE_URI || ''),
+    AppConfigModule,
+    UserModule,
+    MongooseModule.forRoot(configuration().database.uri || ''),
     EmailServiceModule,
     AuthenticationModule,
     DatabaseModule,

@@ -1,12 +1,12 @@
-import { UserRepository } from '../../repositories/user.repository';
 import { ApiKeyDocument } from 'src/database/schemas/api-key.schema';
 import { ApiKeyRepository } from '../../authentication/repositories/api-key.repository';
 import { EmailServiceFactory } from '../factories/email-service.factory';
-import { Injectable, Inject, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import {
   IEmailService,
   ISendEmailPayload,
 } from '../interfaces/email-service.interface';
+import { UserRepository } from 'src/user/repositories/user.repository';
 
 @Injectable()
 export class EmailService implements IEmailService {
@@ -14,7 +14,7 @@ export class EmailService implements IEmailService {
 
   constructor(
     private readonly emailServiceFactory: EmailServiceFactory,
-    @Inject('UserRepository') private readonly userRepository: UserRepository,
+    private readonly userRepository: UserRepository,
     private readonly apiKeyRepository: ApiKeyRepository,
   ) {}
 

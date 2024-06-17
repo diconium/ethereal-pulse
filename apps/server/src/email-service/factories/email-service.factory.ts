@@ -1,4 +1,5 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { AwsEmailService } from '../services/aws-email.service';
 import { AzureEmailService } from '../services/azure-email.service';
 import {
@@ -11,6 +12,10 @@ import { EtherealEmailService } from '../services/ethereal-email.service';
 
 @Injectable()
 export class EmailServiceFactory {
+  constructor(
+    @Inject(ConfigService) private readonly configService: ConfigService,
+  ) {}
+
   createEmailService(provider: ICloudProvider): IEmailService {
     const emailService = this.getEmailServiceInstance(provider.type);
     this.configureEmailService(emailService, provider);
@@ -24,7 +29,7 @@ export class EmailServiceFactory {
       case EMAIL_PROVIDERS.AWS:
         return new AwsEmailService();
       case EMAIL_PROVIDERS.ETHEREAL:
-        return new EtherealEmailService();
+        return new EtherealEmailService(this.configService);
       default:
         throw new Error('Unsupported email provider');
     }

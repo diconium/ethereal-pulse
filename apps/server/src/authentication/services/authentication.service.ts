@@ -1,6 +1,6 @@
-import { UserRepository } from 'src/repositories/user.repository';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ApiKeyRepository } from '../repositories/api-key.repository';
+import { UserRepository } from 'src/user/repositories/user.repository';
 
 @Injectable()
 export class AuthenticationService {
@@ -18,7 +18,6 @@ export class AuthenticationService {
   }
 
   async validateProvider(apiKey: string): Promise<any> {
-    // Add this method
     const apiKeyRecord =
       await this.apiKeyRepository.findOneWithProvider(apiKey);
     if (!apiKeyRecord) {
