@@ -30,6 +30,9 @@ export class ApiKey {
 
   @Prop({ required: true })
   token: string;
+
+  @Prop({ required: true })
+  userId: string;
 }
 
 export const ApiKeySchema = SchemaFactory.createForClass(ApiKey);

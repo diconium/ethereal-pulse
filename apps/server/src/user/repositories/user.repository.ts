@@ -15,4 +15,9 @@ export class UserRepository {
     const result = await this.userModel.findOne(filter).lean().exec();
     return result as User | null;
   }
+
+  async findById(userId: string): Promise<User | null> {
+    const result = await this.userModel.findById(userId).lean().exec();
+    return result as User | null;
+  }
 }
