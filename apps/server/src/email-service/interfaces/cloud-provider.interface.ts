@@ -10,7 +10,7 @@ export interface ICloudProviderCredentials {
 }
 
 export interface ICloudProvider {
-  id: string;
+  apiKeyId: string;
   type: CloudProviderType;
   credentials: ICloudProviderCredentials;
 }

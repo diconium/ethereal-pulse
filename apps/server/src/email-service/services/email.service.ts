@@ -4,7 +4,11 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { IEmailService } from '../interfaces/email-service.interface';
 import { UserRepository } from 'src/user/repositories/user.repository';
 import { EmailServiceFactory } from '../factories/email-service.factory';
-import { ApiKeyRepository } from '../../authentication/repositories/api-key.repository';
+import {
+  ApiKeyRepository,
+  IApiKeyDocumentWithProvider,
+} from '../../authentication/repositories/api-key.repository';
+import { ICloudProvider } from '../interfaces/cloud-provider.interface';
 
 @Injectable()
 export class EmailService implements IEmailService {
@@ -17,19 +21,26 @@ export class EmailService implements IEmailService {
   ) {}
 
   async sendEmail(payload: SendEmailRequestDto, apiKey: string): Promise<any> {
-    const apiKeyDoc = await this.getApiKeyDocument(apiKey);
-    this.emailService = this.getEmailService(apiKeyDoc.provider);
+    const apiKeyProviderDocument = await this.getApiKeyProvider(apiKey);
+    if (!apiKeyProviderDocument) {
+      throw new UnauthorizedException('Invalid API key');
+    }
+    const { provider } = apiKeyProviderDocument;
+    this.emailService = this.getEmailService(provider);
 
     await this.emailService.sendEmail(payload, apiKey);
   }
 
-  private async getApiKeyDocument(apiKey: string): Promise<ApiKeyDocument> {
-    const apiKeyDoc = await this.apiKeyRepository.findOneWithProvider(apiKey);
-    if (!apiKeyDoc) throw new UnauthorizedException('Invalid API key');
-    return apiKeyDoc;
+  private async getApiKeyProvider(apiKey: string): Promise<{
+    apiKeyDoc: IApiKeyDocumentWithProvider;
+    provider: ICloudProvider;
+  } | null> {
+    const result = await this.apiKeyRepository.findOneWithProvider(apiKey);
+    if (!result) throw new UnauthorizedException('Invalid API key');
+    return result;
   }
 
-  private getEmailService(provider: any): IEmailService {
+  private getEmailService(provider: ICloudProvider): IEmailService {
     const emailService = this.emailServiceFactory.createEmailService(provider);
     if (!emailService) throw new Error('Email provider not set');
     return emailService;

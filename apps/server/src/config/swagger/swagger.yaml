@@ -8,6 +8,7 @@ info:
   version: 1.0.0
 servers:
   - url: https://api.yourdomain.com/v1
+  - url: http://localhost:3000
 
 paths:
   /email/send:
