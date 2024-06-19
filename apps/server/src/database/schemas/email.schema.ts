@@ -1,10 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
-
-export type EmailDocument = HydratedDocument<Email>;
+import { IEmail } from 'src/email-service/interfaces/email.interface';
 
 @Schema()
-export class Email {
+export class Email implements IEmail {
   @Prop({ required: true })
   from: string;
 

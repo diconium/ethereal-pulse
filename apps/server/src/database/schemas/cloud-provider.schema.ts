@@ -30,6 +30,10 @@ export class CloudProvider {
     secretAccessKey?: string;
     connectionString?: string;
   };
+
+  @Prop({ required: true })
+  apiKeyId: string;
 }
 
 export const CloudProviderSchema = SchemaFactory.createForClass(CloudProvider);
+

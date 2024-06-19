@@ -1,10 +1,10 @@
-import { ApiKeyDocument } from 'src/database/schemas/api-key.schema';
-import { ApiKeyRepository } from '../../authentication/repositories/api-key.repository';
-import { EmailServiceFactory } from '../factories/email-service.factory';
+import { SendEmailRequestDto } from '../dto/send-email.dto';
+import { ApiKeyDocument } from 'src/entities/api-key.entity';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { IEmailService } from '../interfaces/email-service.interface';
 import { UserRepository } from 'src/user/repositories/user.repository';
-import { SendEmailRequestDto } from '../dto/send-email.dto';
+import { EmailServiceFactory } from '../factories/email-service.factory';
+import { ApiKeyRepository } from '../../authentication/repositories/api-key.repository';
 
 @Injectable()
 export class EmailService implements IEmailService {

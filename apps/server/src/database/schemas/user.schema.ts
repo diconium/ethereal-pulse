@@ -1,10 +1,5 @@
-import { HydratedDocument } from 'mongoose';
-import { Group, GroupSchema } from './group.schema';
-import { EmailSchema, Email } from './email.schema';
-import { ApiKeySchema, ApiKey } from './api-key.schema';
-import { Template, TemplateSchema } from './template.schema';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { CloudProvider, CloudProviderSchema } from './cloud-provider.schema';
+import { HydratedDocument, Types, Schema as MongooseSchema } from 'mongoose';
 
 export type UserDocument = HydratedDocument<User>;
 
@@ -16,23 +11,35 @@ export class User {
   @Prop({ required: true })
   email: string;
 
-  @Prop({ required: true })
-  password: string;
+  @Prop({
+    type: [{ type: MongooseSchema.Types.ObjectId, ref: 'Email' }],
+    default: [],
+  })
+  emails: Types.ObjectId[];
 
-  @Prop({ type: [EmailSchema], default: [] })
-  emails: Email[];
+  @Prop({
+    type: [{ type: MongooseSchema.Types.ObjectId, ref: 'Group' }],
+    default: [],
+  })
+  groups: Types.ObjectId[];
 
-  @Prop({ type: [GroupSchema], default: [] })
-  groups: Group[];
+  @Prop({
+    type: [{ type: MongooseSchema.Types.ObjectId, ref: 'Template' }],
+    default: [],
+  })
+  templates: Types.ObjectId[];
 
-  @Prop({ type: [TemplateSchema], default: [] })
-  templates: Template[];
+  @Prop({
+    type: [{ type: MongooseSchema.Types.ObjectId, ref: 'CloudProvider' }],
+    default: [],
+  })
+  providers: Types.ObjectId[];
 
-  @Prop({ type: [CloudProviderSchema], default: [] })
-  providers: CloudProvider[];
-
-  @Prop({ type: [ApiKeySchema], default: [] })
-  apiKeys: ApiKey[];
+  @Prop({
+    type: [{ type: MongooseSchema.Types.ObjectId, ref: 'ApiKey' }],
+    default: [],
+  })
+  apiKeys: Types.ObjectId[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { ApiKey, ApiKeyDocument } from 'src/database/schemas/api-key.schema';
+import { ApiKey } from 'src/database/schemas/api-key.schema';
+import { ApiKeyDocument } from 'src/entities/api-key.entity';
 
 @Injectable()
 export class ApiKeyRepository {
