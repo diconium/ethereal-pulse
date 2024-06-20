@@ -8,6 +8,7 @@ info:
   version: 1.0.0
 servers:
   - url: https://api.yourdomain.com/v1
+  - url: http://localhost:3000
 
 paths:
   /email/send:
@@ -559,7 +560,7 @@ components:
             - type: array
               items:
                 type: string
-        ccc:
+        cc:
           oneOf:
             - type: string
             - type: array
