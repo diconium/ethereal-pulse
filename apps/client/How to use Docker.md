@@ -56,10 +56,10 @@ Create a **`Dockerfile`** in the root dir of your project. this file will define
 
     # Set environment variables for the Astro application
     ENV HOST=0.0.0.0
-    ENV PORT=4321
+    ENV PORT=5173
 
     # Expose the port the app runs on
-    EXPOSE 4321
+    EXPOSE 5173
 
     # Start the application
     CMD ["pnpm", "start"]
@@ -81,7 +81,7 @@ Ensure your **`package.json`** has the correct start script to run the Astro app
 
 ```json
 "scripts": {
-    "start": "astro preview --host 0.0.0.0 --port 4321"
+    "start": "astro preview --host 0.0.0.0 --port 5173"
     }
 ```
 
@@ -100,12 +100,12 @@ docker build -t your-astro-app .
 Use the **`"docker run"`** command to start a container from the image you just built. The `'-p'` flag maps a port on your host to a port in the container:
 
 ```shell
-docker run -p 4321:4321 your-astro-app
+docker run -p 5173:5173 your-astro-app
 ```
 
 - `'docker run'`: Command to run a Docker container.
-- `'-p 4321:4321'`: Maps port '`4321'` on the host to port `'4321'` in the container.
+- `'-p 5173:5173'`: Maps port '`5173'` on the host to port `'5173'` in the container.
 - `'your-astro-app'`: The name of the Docker image to run.
 
 ## Step 7: Access Your Application
-Open your web browser and navigate to http://localhost:4321 to see your Astro web application running inside the Docker container.
+Open your web browser and navigate to http://localhost:5173 to see your Astro web application running inside the Docker container.
