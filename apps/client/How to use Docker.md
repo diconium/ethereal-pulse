@@ -1,4 +1,4 @@
-# How to Guide: Dockerizing Astro Web Application
+# How to Guide: Dockerizing Remix Web Application
 
 ## Prerequisites
 
@@ -54,7 +54,7 @@ Create a **`Dockerfile`** in the root dir of your project. this file will define
     COPY --from=prod-deps /app/node_modules /app/node_modules
     COPY --from=build /app/dist /app/dist
 
-    # Set environment variables for the Astro application
+    # Set environment variables for the Remix application
     ENV HOST=0.0.0.0
     ENV PORT=5173
 
@@ -77,35 +77,35 @@ Create a **`.dockerignore`** file in the root of your project to exclude files a
     .DS_Store
 ```
 ## Step 4 Modify Start Script
-Ensure your **`package.json`** has the correct start script to run the Astro application on the desired host and port:
+Ensure your **`package.json`** has the correct start script to run the Remix application on the desired host and port:
 
 ```json
 "scripts": {
-    "start": "astro preview --host 0.0.0.0 --port 5173"
-    }
+    "preview": "remix-serve ./build/server/index.js",
+}
 ```
 
 ## Step 5: Build the Docker Image
 Use the **`"docker build"`** command to create a Docker image for your application. The `'-t'` flag is used to tag the image with a name for easier reference:
 
 ```shell
-docker build -t your-astro-app .
+docker build -t your-remix-app .
 ```
 
 - `'docker build'`: Command to build a Docker image.
-- `'-t'` your-astro-app: The `'-t'` (or `'--tag'`) flag names the image `'your-astro-app.'`
+- `'-t'` your-remix-app: The `'-t'` (or `'--tag'`) flag names the image `'your-remix-app.'`
 - `'.'`: The build context, which is the current directory.
 
 ## Step 6: Run the Docker Container
 Use the **`"docker run"`** command to start a container from the image you just built. The `'-p'` flag maps a port on your host to a port in the container:
 
 ```shell
-docker run -p 5173:5173 your-astro-app
+docker run -p 5173:5173 your-remix-app
 ```
 
 - `'docker run'`: Command to run a Docker container.
 - `'-p 5173:5173'`: Maps port '`5173'` on the host to port `'5173'` in the container.
-- `'your-astro-app'`: The name of the Docker image to run.
+- `'your-remix-app'`: The name of the Docker image to run.
 
 ## Step 7: Access Your Application
-Open your web browser and navigate to http://localhost:5173 to see your Astro web application running inside the Docker container.
+Open your web browser and navigate to http://localhost:5173 to see your Remix web application running inside the Docker container.
