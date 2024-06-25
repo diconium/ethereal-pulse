@@ -2,6 +2,7 @@ import { Request } from 'express';
 import { Strategy } from 'passport-custom';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { AUTH_HEADERS } from '../constants/api-key-permissions.contant';
 import { AuthenticationService } from '../services/authentication.service';
 
 @Injectable()
@@ -24,7 +25,7 @@ export class ApiKeyStrategy extends PassportStrategy(Strategy, 'api-key') {
   }
 
   private extractApiKey(request: Request): string {
-    const apiKey = request.headers['x-api-key'] as string;
+    const apiKey = request.headers[AUTH_HEADERS.API_KEY] as string;
     if (!apiKey) {
       throw new UnauthorizedException('API key is missing');
     }

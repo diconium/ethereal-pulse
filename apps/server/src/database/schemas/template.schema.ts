@@ -1,7 +1,5 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
-
-export type TemplateDocument = HydratedDocument<Template>;
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 @Schema()
 export class Template {
@@ -15,4 +13,5 @@ export class Template {
   html: string;
 }
 
+export type TemplateDocument = HydratedDocument<Template>;
 export const TemplateSchema = SchemaFactory.createForClass(Template);
