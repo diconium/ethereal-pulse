@@ -1,4 +1,4 @@
-import { API_KEY_PERMISSION_KEYS } from 'src/authentication/constants/api-key-permissions.contant';
+import { API_KEY_PERMISSION_KEYS } from 'src/authentication/constants/api-key-permissions.constant';
 import { Types } from 'mongoose';
 
 export type ApiKeyPermission =

@@ -5,6 +5,8 @@ import { ApiKey } from 'src/database/schemas/api-key.schema';
 import { ApiKeyDocument } from 'src/entities/api-key.entity';
 import { ICloudProvider } from 'src/email-service/interfaces/cloud-provider.interface';
 import { CloudProviderRepository } from 'src/cloud-provider/repositories/cloud-provider.repository';
+import { CreateApiKeyDto } from 'src/api-key/dto/api-key.dto';
+import * as bcrypt from 'bcrypt';
 
 export interface IApiKeyDocumentWithProvider extends ApiKeyDocument {
   provider?: ICloudProvider;
@@ -17,6 +19,16 @@ export class ApiKeyRepository {
     private readonly apiKeyModel: Model<ApiKeyDocument>,
     private readonly cloudProviderRepository: CloudProviderRepository,
   ) {}
+
+  /**
+   * Creates a new API Key.
+   * @param {CreateApiKeyDto} createApiKeyDto - Data transfer object containing the details of the Api Key to create.
+   * @returns {Promise<ApiKey>} The created ApiKey.
+   */
+  async create(createApiKeyDto: CreateApiKeyDto): Promise<ApiKey> {
+    const createdApiKey = new this.apiKeyModel(createApiKeyDto);
+    return createdApiKey.save();
+  }
 
   /**
    * Finds an API key document by its ID.
@@ -33,7 +45,14 @@ export class ApiKeyRepository {
    * @returns {Promise<ApiKeyDocument | null>} - A promise that resolves to the API key document if found, otherwise null.
    */
   async findOne(apiKey: string): Promise<ApiKeyDocument | null> {
-    return this.apiKeyModel.findOne({ token: apiKey }).exec();
+    const apiKeys = await this.apiKeyModel.find().exec();
+
+    for (const key of apiKeys) {
+      if (await bcrypt.compare(apiKey, key.token)) {
+        return key;
+      }
+    }
+    return null;
   }
 
   /**
