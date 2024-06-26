@@ -20,12 +20,12 @@ RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --no-frozen-lockf
 # Stage 3: Build 
 RUN pnpm run build
 
-# Set environment variables for the Astro application
+# Set environment variables for the Remix application
 ENV HOST=0.0.0.0
-ENV PORT=4321
+ENV PORT=5173
 
 # Expose the port the app runs on
-EXPOSE 4321
+EXPOSE 5173
 
 # Start the application
 CMD ["pnpm", "preview"]
