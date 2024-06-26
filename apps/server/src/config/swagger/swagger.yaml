@@ -45,9 +45,9 @@ paths:
                       - Failed
                       - Canceled
         "400":
-          $ref: '#/components/responses/BadRequest'
+          $ref: "#/components/responses/BadRequest"
         "401":
-          $ref: '#/components/responses/Unauthorized'
+          $ref: "#/components/responses/Unauthorized"
       security:
         - ApiKeyAuth: []
 
@@ -56,7 +56,7 @@ paths:
       tags:
         - Template
       summary: Get user templates
-      description: Retrieves all email templates for the authenticated user, including public ones.
+      description: Retrieves all email templates for the authenticated user, including public ones
       responses:
         "200":
           description: List of email templates
@@ -67,7 +67,7 @@ paths:
                 items:
                   $ref: "#/components/schemas/Template"
         "401":
-          $ref: '#/components/responses/Unauthorized'
+          $ref: "#/components/responses/Unauthorized"
       security:
         - ApiKeyAuth: []
     put:
@@ -86,9 +86,9 @@ paths:
         "200":
           description: Template updated successfully
         "400":
-          $ref: '#/components/responses/BadRequest'
+          $ref: "#/components/responses/BadRequest"
         "401":
-          $ref: '#/components/responses/Unauthorized'
+          $ref: "#/components/responses/Unauthorized"
       security:
         - ApiKeyAuth: []
     post:
@@ -107,9 +107,9 @@ paths:
         "201":
           description: Template created successfully
         "400":
-          $ref: '#/components/responses/BadRequest'
+          $ref: "#/components/responses/BadRequest"
         "401":
-          $ref: '#/components/responses/Unauthorized'
+          $ref: "#/components/responses/Unauthorized"
       security:
         - ApiKeyAuth: []
   /templates/{templateId}:
@@ -128,7 +128,7 @@ paths:
         "200":
           description: Template deleted successfully
         "401":
-          $ref: '#/components/responses/Unauthorized'
+          $ref: "#/components/responses/Unauthorized"
       security:
         - ApiKeyAuth: []
 
@@ -148,7 +148,7 @@ paths:
                 items:
                   $ref: "#/components/schemas/Group"
         "401":
-          $ref: '#/components/responses/Unauthorized'
+          $ref: "#/components/responses/Unauthorized"
       security:
         - ApiKeyAuth: []
     put:
@@ -167,9 +167,9 @@ paths:
         "200":
           description: Group updated successfully
         "400":
-          $ref: '#/components/responses/BadRequest'
+          $ref: "#/components/responses/BadRequest"
         "401":
-          $ref: '#/components/responses/Unauthorized'
+          $ref: "#/components/responses/Unauthorized"
       security:
         - ApiKeyAuth: []
     post:
@@ -188,9 +188,9 @@ paths:
         "201":
           description: Group created successfully
         "400":
-          $ref: '#/components/responses/BadRequest'
+          $ref: "#/components/responses/BadRequest"
         "401":
-          $ref: '#/components/responses/Unauthorized'
+          $ref: "#/components/responses/Unauthorized"
       security:
         - ApiKeyAuth: []
   /groups/{groupId}:
@@ -209,7 +209,7 @@ paths:
         "200":
           description: Group deleted successfully
         "401":
-          $ref: '#/components/responses/Unauthorized'
+          $ref: "#/components/responses/Unauthorized"
       security:
         - ApiKeyAuth: []
 
@@ -239,12 +239,11 @@ paths:
                   token:
                     type: string
         "400":
-          $ref: '#/components/responses/BadRequest'
+          $ref: "#/components/responses/BadRequest"
         "401":
-          $ref: '#/components/responses/Unauthorized'
+          $ref: "#/components/responses/Unauthorized"
       security:
         - ApiKeyAuth: []
-
     get:
       tags:
         - API Keys
@@ -271,7 +270,7 @@ paths:
                           type: string
                           format: date-time
         "401":
-          $ref: '#/components/responses/Unauthorized'
+          $ref: "#/components/responses/Unauthorized"
       security:
         - ApiKeyAuth: []
 
@@ -291,7 +290,7 @@ paths:
         "200":
           description: API key deleted successfully
         "401":
-          $ref: '#/components/responses/Unauthorized'
+          $ref: "#/components/responses/Unauthorized"
       security:
         - ApiKeyAuth: []
 
@@ -319,9 +318,9 @@ paths:
                   id:
                     type: string
         "400":
-          $ref: '#/components/responses/BadRequest'
+          $ref: "#/components/responses/BadRequest"
         "401":
-          $ref: '#/components/responses/Unauthorized'
+          $ref: "#/components/responses/Unauthorized"
       security:
         - ApiKeyAuth: []
 
@@ -354,20 +353,19 @@ paths:
                           type: string
                         email:
                           type: string
-                        first_name:
+                        firstName:
                           type: string
-                        last_name:
+                        lastName:
                           type: string
-                        created_at:
+                        createdAt:
                           type: string
                           format: date-time
                         unsubscribed:
                           type: boolean
         "401":
-          $ref: '#/components/responses/Unauthorized'
+          $ref: "#/components/responses/Unauthorized"
       security:
         - ApiKeyAuth: []
-
     delete:
       tags:
         - Recipient
@@ -393,7 +391,7 @@ paths:
         "200":
           description: Recipient deleted successfully
         "401":
-          $ref: '#/components/responses/Unauthorized'
+          $ref: "#/components/responses/Unauthorized"
       security:
         - ApiKeyAuth: []
 
@@ -427,9 +425,9 @@ paths:
                   id:
                     type: string
         "400":
-          $ref: '#/components/responses/BadRequest'
+          $ref: "#/components/responses/BadRequest"
         "401":
-          $ref: '#/components/responses/Unauthorized'
+          $ref: "#/components/responses/Unauthorized"
       security:
         - ApiKeyAuth: []
 
@@ -462,17 +460,17 @@ paths:
                     type: string
                   email:
                     type: string
-                  first_name:
+                  firstName:
                     type: string
-                  last_name:
+                  lastName:
                     type: string
-                  created_at:
+                  createdAt:
                     type: string
                     format: date-time
                   unsubscribed:
                     type: boolean
         "401":
-          $ref: '#/components/responses/Unauthorized'
+          $ref: "#/components/responses/Unauthorized"
       security:
         - ApiKeyAuth: []
     patch:
@@ -509,9 +507,9 @@ paths:
                   id:
                     type: string
         "400":
-          $ref: '#/components/responses/BadRequest'
+          $ref: "#/components/responses/BadRequest"
         "401":
-          $ref: '#/components/responses/Unauthorized'
+          $ref: "#/components/responses/Unauthorized"
       security:
         - ApiKeyAuth: []
 
@@ -621,7 +619,7 @@ components:
           enum:
             - full_access
             - sending_access
-        domain_id:
+        domainId:
           type: string
 
     Template:
@@ -640,7 +638,7 @@ components:
         html:
           type: string
         apiKeyId:
-          type: string  # Field added to link template to user's API key if it's private
+          type: string
 
     Group:
       required:
@@ -671,6 +669,9 @@ components:
           type: string
         lastName:
           type: string
+        createdAt:
+          type: string
+          format: date-time
         unsubscribed:
           type: boolean
           default: false
@@ -702,28 +703,28 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: "#/components/schemas/ErrorResponse"
     Unauthorized:
       description: Unauthorized
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: "#/components/schemas/ErrorResponse"
     Forbidden:
       description: Forbidden
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: "#/components/schemas/ErrorResponse"
     NotFound:
       description: Not Found
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: "#/components/schemas/ErrorResponse"
     InternalServerError:
       description: Internal Server Error
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: "#/components/schemas/ErrorResponse"
