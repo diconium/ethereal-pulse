@@ -6,7 +6,6 @@ import { DatabaseModule } from 'src/database/database.module';
 import { UserRepository } from 'src/user/repositories/user.repository';
 import { EmailServiceFactory } from './factories/email-service.factory';
 import { EmailController } from './controllers/email-service.controller';
-import { CloudProviderModule } from 'src/cloud-provider/cloud-provider.module';
 import { UserRepositoryModule } from 'src/user/repositories/user.repository.module';
 import { ApiKeyRepository } from 'src/authentication/repositories/api-key.repository';
 
@@ -14,7 +13,6 @@ import { ApiKeyRepository } from 'src/authentication/repositories/api-key.reposi
   imports: [
     MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]),
     DatabaseModule,
-    CloudProviderModule,
     UserRepositoryModule,
   ],
   providers: [

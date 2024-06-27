@@ -7,7 +7,6 @@ import { AppConfigModule } from './config/config.module';
 import { DatabaseModule } from './database/database.module';
 import { EmailServiceModule } from './email-service/email-service.module';
 import { AuthenticationModule } from './authentication/authentication.module';
-import { CloudProviderModule } from './cloud-provider/cloud-provider.module';
 
 @Module({
   imports: [
@@ -20,7 +19,6 @@ import { CloudProviderModule } from './cloud-provider/cloud-provider.module';
     DatabaseModule,
     AppConfigModule,
     EmailServiceModule,
-    CloudProviderModule,
     AuthenticationModule,
   ],
 })

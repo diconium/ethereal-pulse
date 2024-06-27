@@ -30,12 +30,6 @@ export class User {
   templates: Types.ObjectId[];
 
   @Prop({
-    type: [{ type: MongooseSchema.Types.ObjectId, ref: 'CloudProvider' }],
-    default: [],
-  })
-  providers: Types.ObjectId[];
-
-  @Prop({
     type: [{ type: MongooseSchema.Types.ObjectId, ref: 'ApiKey' }],
     default: [],
   })

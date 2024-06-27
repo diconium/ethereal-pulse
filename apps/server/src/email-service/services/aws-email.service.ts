@@ -1,8 +1,8 @@
 import * as AWS from 'aws-sdk';
 import { Injectable } from '@nestjs/common';
-import { ICloudProvider } from 'src/email-service/interfaces/cloud-provider.interface';
-import { IEmailService } from '../interfaces/email-service.interface';
 import { SendEmailRequestDto } from '../dto/send-email.dto';
+import { IEmailService } from '../interfaces/email-service.interface';
+import { ICloudProvider } from 'src/email-service/interfaces/cloud-provider.interface';
 
 @Injectable()
 export class AwsEmailService implements IEmailService {

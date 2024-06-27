@@ -6,14 +6,13 @@ import { ApiKeySchema } from '../database/schemas/api-key.schema';
 import { ApiKeyStrategy } from './account-policy/api-key-strategy';
 import { ApiKeyRepository } from './repositories/api-key.repository';
 import { AuthenticationService } from './services/authentication.service';
-import { CloudProviderModule } from 'src/cloud-provider/cloud-provider.module';
+
 
 @Module({
   imports: [
     PassportModule,
     MongooseModule.forFeature([{ name: 'ApiKey', schema: ApiKeySchema }]),
     UserModule,
-    CloudProviderModule,
   ],
   providers: [
     AuthenticationService,

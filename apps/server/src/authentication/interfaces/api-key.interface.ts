@@ -1,5 +1,4 @@
 import { API_KEY_PERMISSION_KEYS } from 'src/authentication/constants/api-key-permissions.contant';
-import { Types } from 'mongoose';
 
 export type ApiKeyPermission =
   | typeof API_KEY_PERMISSION_KEYS.FULL_ACCESS
@@ -11,6 +10,5 @@ export interface IApiKey {
   userId: string;
   createdAt: Date;
   domainId?: string;
-  providerId: Types.ObjectId;
   permission: ApiKeyPermission;
 }
