@@ -2,7 +2,7 @@ import { Request } from 'express';
 import { Strategy } from 'passport-custom';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { AUTH_HEADERS } from '../constants/api-key-permissions.contant';
+import { AUTH_HEADERS } from '../constants/api-key-permissions.constant';
 import { AuthenticationService } from '../services/authentication.service';
 
 @Injectable()

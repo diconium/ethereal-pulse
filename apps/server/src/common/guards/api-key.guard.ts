@@ -10,7 +10,7 @@ import { Request } from 'express';
 import { Reflector, REQUEST } from '@nestjs/core';
 import { PERMISSION_KEY } from 'src/authentication/decorators/permission.decorator';
 import { ApiKeyRepository } from 'src/authentication/repositories/api-key.repository';
-import { AUTH_HEADERS } from 'src/authentication/constants/api-key-permissions.contant';
+import { AUTH_HEADERS } from 'src/authentication/constants/api-key-permissions.constant';
 
 @Injectable()
 export class ApiKeyGuard implements CanActivate {

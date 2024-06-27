@@ -1,5 +1,5 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-import { AUTH_HEADERS } from 'src/authentication/constants/api-key-permissions.contant';
+import { AUTH_HEADERS } from 'src/authentication/constants/api-key-permissions.constant';
 
 export const GetApiKey = createParamDecorator(
   (data: unknown, ctx: ExecutionContext) => {
