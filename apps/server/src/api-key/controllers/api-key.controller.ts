@@ -27,7 +27,9 @@ export class ApiKeyController {
   }
 
   @Post()
-  async createApiKey(@Body() payload: PostApiKeyRequestDto): Promise<PostApiKeyResponseDto> {
+  async createApiKey(
+    @Body() payload: PostApiKeyRequestDto,
+  ): Promise<PostApiKeyResponseDto> {
     return this.apiKeyService.createApiKey(payload);
   }
 
