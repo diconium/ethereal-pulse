@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { render } from "@react-email/render";
 import WelcomeEmail from "../components/emails/WelcomeEmail.jsx";
-import "../styles/previwer.css";
+import "./previewer.css";
 import GoodByeEmail from "./emails/GoodBye.jsx";
 
 const WelcomeEmailHtml = render(<WelcomeEmail />);

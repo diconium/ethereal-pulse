@@ -42,5 +42,5 @@ Spin up the apps
 pnpm start
 ```
 
-Open client in: `http://localhost:4321`
+Open client in: `http://localhost:5173`
 Open server in: `http://localhost:3000`
