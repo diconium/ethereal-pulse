@@ -21,5 +21,5 @@ export class TemplateDto {
 
   @IsString()
   @IsOptional()
-  apiKeyId?: string;
+  userId?: string;
 }

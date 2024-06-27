@@ -11,7 +11,7 @@ export class UserRepository {
     private readonly userModel: Model<UserDocument>,
   ) {}
 
-  async findOne(filter: any): Promise<User | null> {
+  async findOne(filter: Partial<User>): Promise<User | null> {
     const result = await this.userModel.findOne(filter).lean().exec();
     return result as User | null;
   }
@@ -19,5 +19,10 @@ export class UserRepository {
   async findById(userId: string): Promise<User | null> {
     const result = await this.userModel.findById(userId).lean().exec();
     return result as User | null;
+  }
+
+  async exists(userId: string): Promise<boolean> {
+    const count = await this.userModel.countDocuments({ _id: userId }).exec();
+    return count > 0;
   }
 }

@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { TemplateDto, IdParamDto } from 'src/templates/dto/template.dto';
 import { TemplateService } from 'src/templates/services/template.service';
 import { TemplateController } from 'src/templates/controller/template.controller';
+import { ApiKeyRepository } from 'src/authentication/repositories/api-key.repository';
 
 describe('TemplateController', () => {
   let controller: TemplateController;
@@ -20,11 +21,22 @@ describe('TemplateController', () => {
             remove: jest.fn(),
           },
         },
+        {
+          provide: ApiKeyRepository,
+          useValue: {
+            find: jest.fn(),
+            create: jest.fn(),
+            update: jest.fn(),
+            remove: jest.fn(),
+          },
+        },
       ],
     }).compile();
 
     controller = module.get<TemplateController>(TemplateController);
     service = module.get<TemplateService>(TemplateService);
+
+    (controller as any).templateService = service;
   });
 
   it('should be defined', () => {
