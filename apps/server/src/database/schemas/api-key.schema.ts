@@ -4,10 +4,10 @@ import {
   ApiKeyPermission,
 } from 'src/authentication/interfaces/api-key.interface';
 import { API_KEY_PERMISSION_KEYS } from 'src/authentication/constants/api-key-permissions.constant';
-import { Types, Schema as MongooseSchema } from 'mongoose';
+import { Types, Schema as MongooseSchema, Document } from 'mongoose';
 
 @Schema()
-export class ApiKey implements IApiKey {
+export class ApiKey extends Document implements IApiKey {
   @Prop({ required: true })
   name: string;
 

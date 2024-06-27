@@ -90,4 +90,8 @@ export class ApiKeyRepository {
       .exec();
     return apiKeyDocument ? apiKeyDocument.userId : null;
   }
+
+  async findAll(): Promise<ApiKey[]> {
+    return this.apiKeyModel.find().exec();
+  }
 }

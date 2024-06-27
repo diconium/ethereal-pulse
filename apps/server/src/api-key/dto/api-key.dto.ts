@@ -5,6 +5,12 @@ export class PostApiKeyRequestDto {
   permission: ApiKeyPermission;
 }
 
+export class GetApiKeyRequestDto {
+  id?: string;
+  name: string;
+  created_at: Date;
+}
+
 export class CreateApiKeyDto {
   token: string;
   name: string;
