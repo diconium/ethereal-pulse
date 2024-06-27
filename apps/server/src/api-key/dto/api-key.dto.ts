@@ -1,4 +1,11 @@
+import { IsNotEmpty, IsString } from 'class-validator';
 import { ApiKeyPermission } from 'src/authentication/interfaces/api-key.interface';
+
+export class IdParamDto {
+  @IsString()
+  @IsNotEmpty()
+  id: string;
+}
 
 export class PostApiKeyRequestDto {
   name: string;

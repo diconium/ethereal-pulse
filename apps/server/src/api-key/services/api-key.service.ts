@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import {
   CreateApiKeyDto,
   GetApiKeyRequestDto,
@@ -7,6 +7,7 @@ import {
 import { ApiKeyRepository } from 'src/authentication/repositories/api-key.repository';
 import * as bcrypt from 'bcrypt';
 import { randomUUID } from 'crypto';
+import { Types } from 'mongoose';
 
 @Injectable()
 export class ApiKeyService {
@@ -32,5 +33,12 @@ export class ApiKeyService {
     };
 
     await this.apiKeyRepository.create(dto);
+  }
+
+  async remove(id: string): Promise<void> {
+    if (!Types.ObjectId.isValid(id)) {
+      throw new BadRequestException('Invalid API key ID');
+    }
+    return this.apiKeyRepository.findByIdAndDelete(id);
   }
 }

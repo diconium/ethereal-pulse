@@ -1,5 +1,5 @@
 import { Model } from 'mongoose';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { ApiKey } from 'src/database/schemas/api-key.schema';
 import { ApiKeyDocument } from 'src/entities/api-key.entity';
@@ -93,5 +93,12 @@ export class ApiKeyRepository {
 
   async findAll(): Promise<ApiKey[]> {
     return this.apiKeyModel.find().exec();
+  }
+
+  async findByIdAndDelete(id: string): Promise<void> {
+    const result = await this.apiKeyModel.findByIdAndDelete(id).exec();
+    if (!result) {
+      throw new NotFoundException(`API Key #${id} not found`);
+    }
   }
 }
