@@ -1,15 +1,18 @@
 import { EmailService } from '../services/email.service';
 import { SendEmailRequestDto } from '../dto/send-email.dto';
-import { Controller, Post, Body, Headers } from '@nestjs/common';
+import { ApiKeyGuard } from 'src/common/guards/api-key.guard';
+import { Controller, Post, Body, Headers, UseGuards } from '@nestjs/common';
+import { AUTH_HEADERS } from 'src/authentication/constants/api-key-permissions.constant';
 
 @Controller('email')
+@UseGuards(ApiKeyGuard)
 export class EmailController {
   constructor(private readonly emailService: EmailService) {}
 
   @Post('send')
   async sendEmail(
     @Body() payload: SendEmailRequestDto,
-    @Headers('x-api-key') apiKey: string,
+    @Headers(AUTH_HEADERS.API_KEY) apiKey: string,
   ): Promise<void> {
     return this.emailService.sendEmail(payload, apiKey);
   }

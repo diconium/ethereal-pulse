@@ -27,7 +27,7 @@ services:
       context: ./apps/client
     container_name: webapp
     ports:
-      - "4321:4321"
+      - "5173:5173"
     depends_on:
       - server
     environment:

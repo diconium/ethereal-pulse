@@ -36,6 +36,7 @@
     "@nestjs/platform-express": "^10.3.9",
     "@nestjs/swagger": "^7.3.1",
     "aws-sdk": "^2.1640.0",
+    "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "js-yaml": "^4.1.0",
     "mongoose": "^8.4.1",
@@ -70,20 +71,32 @@
     "typescript": "^5.4.5"
   },
   "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
     "moduleFileExtensions": [
+      "ts",
+      "tsx",
       "js",
-      "json",
-      "ts"
+      "json"
     ],
-    "rootDir": "src",
+    "roots": [
+      "<rootDir>/src",
+      "<rootDir>/test"
+    ],
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
     },
     "collectCoverageFrom": [
-      "src/**/*.(t|j)s"
+      "**/*.(t|j)s"
     ],
     "coverageDirectory": "./coverage",
-    "testEnvironment": "node"
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/dist/"
+    ],
+    "moduleNameMapper": {
+      "^src/(.*)$": "<rootDir>/src/$1"
+    }
   }
 }

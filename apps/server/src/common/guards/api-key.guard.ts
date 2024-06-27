@@ -11,6 +11,7 @@ import { Request } from 'express';
 import { PERMISSION_KEY } from 'src/authentication/decorators/permission.decorator';
 import { ApiKeyRepository } from 'src/authentication/repositories/api-key.repository';
 import * as bcrypt from 'bcrypt';
+import { AUTH_HEADERS } from 'src/authentication/constants/api-key-permissions.constant';
 
 @Injectable()
 export class ApiKeyGuard implements CanActivate {
@@ -54,7 +55,7 @@ export class ApiKeyGuard implements CanActivate {
   }
 
   private getApiKeyFromHeaders(request: Request): string | undefined {
-    const apiKey = request.headers['x-api-key'];
+    const apiKey = request.headers[AUTH_HEADERS.API_KEY];
     if (Array.isArray(apiKey)) {
       return apiKey[0];
     }

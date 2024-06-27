@@ -5,9 +5,10 @@ import { MongooseModule } from '@nestjs/mongoose';
 import configuration from './config/configuration';
 import { AppConfigModule } from './config/config.module';
 import { DatabaseModule } from './database/database.module';
+import { TemplateModule } from './templates/template.module';
 import { EmailServiceModule } from './email-service/email-service.module';
-import { AuthenticationModule } from './authentication/authentication.module';
 import { CloudProviderModule } from './cloud-provider/cloud-provider.module';
+import { AuthenticationModule } from './authentication/authentication.module';
 import { ApiKeyModule } from './api-key/api-key.module';
 
 @Module({
@@ -19,6 +20,7 @@ import { ApiKeyModule } from './api-key/api-key.module';
     MongooseModule.forRoot(configuration().database.uri || ''),
     UserModule,
     DatabaseModule,
+    TemplateModule,
     AppConfigModule,
     EmailServiceModule,
     CloudProviderModule,
