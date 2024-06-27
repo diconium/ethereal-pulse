@@ -26,8 +26,7 @@ export class ApiKeyRepository {
    * @returns {Promise<ApiKey>} The created ApiKey.
    */
   async create(createApiKeyDto: CreateApiKeyDto): Promise<ApiKey> {
-    const createdApiKey = new this.apiKeyModel(createApiKeyDto);
-    return createdApiKey.save();
+    return this.apiKeyModel.create(createApiKeyDto);
   }
 
   /**
