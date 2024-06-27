@@ -1,3 +1,4 @@
+import { Types } from 'mongoose';
 import { TemplateDto } from '../dto/template.dto';
 import { Template } from 'src/database/schemas/template.schema';
 import { BadRequestException, Injectable } from '@nestjs/common';
@@ -37,6 +38,9 @@ export class TemplateService {
   }
 
   private async validateUserId(userId: string): Promise<boolean> {
+    if (!Types.ObjectId.isValid(userId)) {
+      throw new BadRequestException('Invalid userId format');
+    }
     const userExists = await this.userRepository.exists(userId);
     if (!userExists) {
       throw new BadRequestException('Invalid userId');

@@ -11,6 +11,9 @@ export class Template {
 
   @Prop({ required: true })
   html: string;
+
+  @Prop()
+  userId?: string;
 }
 
 export type TemplateDocument = HydratedDocument<Template>;
