@@ -12,6 +12,11 @@ export class PostApiKeyRequestDto {
   permission: ApiKeyPermission;
 }
 
+export class PostApiKeyResponseDto {
+  id?: string;
+  token: string;
+}
+
 export class GetApiKeyRequestDto {
   id?: string;
   name: string;

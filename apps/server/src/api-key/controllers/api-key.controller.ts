@@ -13,6 +13,7 @@ import {
   GetApiKeyRequestDto,
   IdParamDto,
   PostApiKeyRequestDto,
+  PostApiKeyResponseDto,
 } from '../dto/api-key.dto';
 
 @Controller('apiKeys')
@@ -26,7 +27,7 @@ export class ApiKeyController {
   }
 
   @Post()
-  async createApiKey(@Body() payload: PostApiKeyRequestDto): Promise<void> {
+  async createApiKey(@Body() payload: PostApiKeyRequestDto): Promise<PostApiKeyResponseDto> {
     return this.apiKeyService.createApiKey(payload);
   }
 
