@@ -6,8 +6,8 @@ import {
   Inject,
   ForbiddenException,
 } from '@nestjs/common';
-import { Request } from 'express';
 import { Reflector, REQUEST } from '@nestjs/core';
+import { Request } from 'express';
 import { PERMISSION_KEY } from 'src/authentication/decorators/permission.decorator';
 import { ApiKeyRepository } from 'src/authentication/repositories/api-key.repository';
 import { AUTH_HEADERS } from 'src/authentication/constants/api-key-permissions.constant';

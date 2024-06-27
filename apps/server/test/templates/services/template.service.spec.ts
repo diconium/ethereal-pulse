@@ -54,7 +54,7 @@ describe('TemplateService', () => {
 
   it('should validate userId in create method', async () => {
     const dto = new TemplateDto();
-    dto.userId = 'valid-user-id';
+    dto.userId = '667c3f8104f210e351bf05a5';
     (userRepository.exists as jest.Mock).mockResolvedValue(true);
 
     await service.create(dto);
@@ -79,7 +79,7 @@ describe('TemplateService', () => {
 
   it('should validate userId in update method', async () => {
     const dto = new TemplateDto();
-    dto.userId = 'valid-user-id';
+    dto.userId = '667c3f8104f210e351bf05a5';
     const id = 'some-id';
     (userRepository.exists as jest.Mock).mockResolvedValue(true);
 
