@@ -3,7 +3,7 @@ import {
   IApiKey,
   ApiKeyPermission,
 } from 'src/authentication/interfaces/api-key.interface';
-import { API_KEY_PERMISSION_KEYS } from 'src/authentication/constants/api-key-permissions.contant';
+import { API_KEY_PERMISSION_KEYS } from 'src/authentication/constants/api-key-permissions.constant';
 import { Types, Schema as MongooseSchema } from 'mongoose';
 
 @Schema()

@@ -7,6 +7,7 @@ import { ApiKeyStrategy } from './account-policy/api-key-strategy';
 import { ApiKeyRepository } from './repositories/api-key.repository';
 import { AuthenticationService } from './services/authentication.service';
 import { CloudProviderModule } from 'src/cloud-provider/cloud-provider.module';
+import { ApiKeyGuard } from 'src/common/guards/api-key.guard';
 
 @Module({
   imports: [
@@ -19,8 +20,8 @@ import { CloudProviderModule } from 'src/cloud-provider/cloud-provider.module';
     AuthenticationService,
     ApiKeyStrategy,
     ApiKeyRepository,
-    UserModule,
+    ApiKeyGuard,
   ],
-  exports: [AuthenticationService],
+  exports: [AuthenticationService, ApiKeyRepository, ApiKeyGuard],
 })
 export class AuthenticationModule {}
