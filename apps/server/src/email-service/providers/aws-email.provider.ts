@@ -8,6 +8,7 @@ import {
   AWS_SECRET_ACCESS_KEY,
   AWS_CFG_REGION,
 } from '../../config/config.constants';
+import { validateOrReject } from 'class-validator';
 
 @Injectable()
 export class AwsEmailProvider implements IEmailProvider {
@@ -45,13 +46,15 @@ export class AwsEmailProvider implements IEmailProvider {
   }
 
   async sendEmail(payload: SendEmailRequestDto): Promise<void> {
-    const params = this.createEmailMessage(payload);
+    const params = await this.createEmailMessage(payload);
     await this.SES.sendEmail(params).promise();
   }
 
-  private createEmailMessage(
+  private async createEmailMessage(
     payload: SendEmailRequestDto,
-  ): AWS.SES.SendEmailRequest {
+  ): Promise<AWS.SES.SendEmailRequest> {
+    await validateOrReject(payload);
+
     const { from, recipients, subject, html } = payload;
 
     return {

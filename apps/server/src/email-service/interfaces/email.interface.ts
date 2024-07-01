@@ -8,3 +8,9 @@ export interface IEmail {
   recipients: string[];
   attachments?: object[];
 }
+
+export interface IEmailErrorResponse {
+  error?: string;
+  message: string;
+  statusCode: number;
+}
