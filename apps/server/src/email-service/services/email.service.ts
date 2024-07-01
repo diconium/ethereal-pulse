@@ -17,6 +17,6 @@ export class EmailService implements IEmailService {
     apiKey: string,
   ): Promise<any> {
     this.emailProvider = this.emailProviderFactory.createEmailProvider();
-    await this.emailProvider.sendEmail(payload, apiKey);
+    return await this.emailProvider.sendEmail(payload, apiKey);
   }
 }
