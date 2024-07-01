@@ -1,18 +1,28 @@
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { SendEmailRequestDto } from '../dto/send-email.dto';
-import { IEmailService } from '../interfaces/email-service.interface';
+import { AZURE_CONNECTION_STRING } from 'src/config/config.constants';
+import { IEmailProvider } from '../interfaces/email-service.interface';
 import { EmailClient, EmailMessage } from '@azure/communication-email';
-import { ICloudProvider } from 'src/email-service/interfaces/cloud-provider.interface';
 
 @Injectable()
-export class AzureEmailService implements IEmailService {
+export class AzureEmailProvider implements IEmailProvider {
   private emailClient: EmailClient;
+  private readonly configService: ConfigService;
 
-  configure({ credentials }: ICloudProvider): void {
-    const connectionString = credentials?.connectionString;
+  constructor() {
+    this.configService = new ConfigService();
+  }
+
+  configure(): void {
+    const connectionString = this.configService.get<string>(
+      AZURE_CONNECTION_STRING,
+    );
+
     if (!connectionString) {
-      throw new Error('Connection string is undefined');
+      throw new Error('Azure connection string is undefined');
     }
+
     this.emailClient = new EmailClient(connectionString);
   }
 
