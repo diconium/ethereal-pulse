@@ -25,7 +25,7 @@ paths:
               $ref: "#/components/schemas/SendEmailRequest"
         required: true
       responses:
-        "200":
+        "201":
           description: Email sent successfully
           content:
             application/json:

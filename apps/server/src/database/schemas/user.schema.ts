@@ -1,7 +1,6 @@
+import { MODEL_NAMES } from '../constants/common.constant';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Types, Schema as MongooseSchema } from 'mongoose';
-
-export type UserDocument = HydratedDocument<User>;
 
 @Schema()
 export class User {
@@ -12,34 +11,29 @@ export class User {
   email: string;
 
   @Prop({
-    type: [{ type: MongooseSchema.Types.ObjectId, ref: 'Email' }],
+    type: [{ type: MongooseSchema.Types.ObjectId, ref: MODEL_NAMES.EMAIL }],
     default: [],
   })
   emails: Types.ObjectId[];
 
   @Prop({
-    type: [{ type: MongooseSchema.Types.ObjectId, ref: 'Group' }],
+    type: [{ type: MongooseSchema.Types.ObjectId, ref: MODEL_NAMES.GROUP }],
     default: [],
   })
   groups: Types.ObjectId[];
 
   @Prop({
-    type: [{ type: MongooseSchema.Types.ObjectId, ref: 'Template' }],
+    type: [{ type: MongooseSchema.Types.ObjectId, ref: MODEL_NAMES.TEMPLATE }],
     default: [],
   })
   templates: Types.ObjectId[];
 
   @Prop({
-    type: [{ type: MongooseSchema.Types.ObjectId, ref: 'CloudProvider' }],
-    default: [],
-  })
-  providers: Types.ObjectId[];
-
-  @Prop({
-    type: [{ type: MongooseSchema.Types.ObjectId, ref: 'ApiKey' }],
+    type: [{ type: MongooseSchema.Types.ObjectId, ref: MODEL_NAMES.APIKEY }],
     default: [],
   })
   apiKeys: Types.ObjectId[];
 }
 
+export type UserDocument = HydratedDocument<User>;
 export const UserSchema = SchemaFactory.createForClass(User);

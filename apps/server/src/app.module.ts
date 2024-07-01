@@ -7,7 +7,6 @@ import { AppConfigModule } from './config/config.module';
 import { DatabaseModule } from './database/database.module';
 import { TemplateModule } from './templates/template.module';
 import { EmailServiceModule } from './email-service/email-service.module';
-import { CloudProviderModule } from './cloud-provider/cloud-provider.module';
 import { AuthenticationModule } from './authentication/authentication.module';
 
 @Module({
@@ -22,7 +21,6 @@ import { AuthenticationModule } from './authentication/authentication.module';
     TemplateModule,
     AppConfigModule,
     EmailServiceModule,
-    CloudProviderModule,
     AuthenticationModule,
   ],
 })

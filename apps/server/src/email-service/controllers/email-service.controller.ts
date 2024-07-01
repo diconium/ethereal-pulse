@@ -14,6 +14,6 @@ export class EmailController {
     @Body() payload: SendEmailRequestDto,
     @Headers(AUTH_HEADERS.API_KEY) apiKey: string,
   ): Promise<void> {
-    return this.emailService.sendEmail(payload, apiKey);
+    return this.emailService.processEmail(payload, apiKey);
   }
 }

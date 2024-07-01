@@ -1,10 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { API_KEY_PERMISSION_KEYS } from 'src/authentication/constants/api-key-permissions.constant';
 import {
   IApiKey,
   ApiKeyPermission,
 } from 'src/authentication/interfaces/api-key.interface';
-import { API_KEY_PERMISSION_KEYS } from 'src/authentication/constants/api-key-permissions.constant';
-import { Types, Schema as MongooseSchema } from 'mongoose';
+
 
 @Schema()
 export class ApiKey implements IApiKey {
@@ -22,11 +22,6 @@ export class ApiKey implements IApiKey {
 
   @Prop()
   domainId?: string;
-
-  @Prop({
-    type: [{ type: MongooseSchema.Types.ObjectId, ref: 'CloudProvider' }],
-  })
-  providerId: Types.ObjectId;
 
   @Prop({ required: true })
   token: string;
