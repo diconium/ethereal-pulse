@@ -6,17 +6,18 @@ import { ApiKeyRepository } from 'src/authentication/repositories/api-key.reposi
 import { CreateApiKeyDto } from 'src/api-key/dto/api-key.dto';
 import { CloudProviderRepository } from 'src/cloud-provider/repositories/cloud-provider.repository';
 import { CloudProvider } from 'src/database/schemas/cloud-provider.schema';
+import { ApiKeyPermission } from 'src/common/enums/api-key-permission.enum';
 
 const mockApiKeyDto = {
   name: 'Test ApiKey',
-  permission: 'FULL_ACCESS',
+  permission: ApiKeyPermission.FULL_ACCESS,
   createdAt: new Date(2024),
   token: 'test token',
   userId: 'test user id',
 };
 const mockCreateApiKeyDto: CreateApiKeyDto = {
   name: 'Test ApiKey',
-  permission: 'FULL_ACCESS',
+  permission: ApiKeyPermission.FULL_ACCESS,
   token: 'test token',
   userId: 'test user id',
 };
@@ -26,7 +27,7 @@ const mockApiKeyModel = {
   exec: jest.fn().mockResolvedValue([mockApiKeyDto]),
   create: jest.fn().mockResolvedValue(mockApiKeyDto),
   findByIdAndUpdate: jest.fn().mockReturnThis(),
-  findByIdAndDelete: jest.fn().mockReturnThis(),
+  findOneAndDelete: jest.fn().mockReturnThis(),
 };
 
 const mockCloudProviderModel = {
@@ -80,15 +81,15 @@ describe('ApiKeyRepository', () => {
     it('should delete the api-key', async () => {
       mockApiKeyModel.exec.mockResolvedValueOnce(mockApiKeyDto);
       await expect(
-        repository.findByIdAndDelete('someId'),
+        repository.findByIdAndUserAndDelete('someId', 'test user id'),
       ).resolves.toBeUndefined();
     });
 
     it('should throw NotFoundException if api-key not found', async () => {
       mockApiKeyModel.exec.mockResolvedValueOnce(null);
-      await expect(repository.findByIdAndDelete('someId')).rejects.toThrow(
-        NotFoundException,
-      );
+      await expect(
+        repository.findByIdAndUserAndDelete('someId', 'test user id'),
+      ).rejects.toThrow(NotFoundException);
     });
   });
 });

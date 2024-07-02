@@ -1,13 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ApiKeyController } from 'src/api-key/controllers/api-key.controller';
 import {
-  GetApiKeyRequestDto,
+  GetApiKeysWrapperResponseDto,
   IdParamDto,
   PostApiKeyRequestDto,
   PostApiKeyResponseDto,
 } from 'src/api-key/dto/api-key.dto';
 import { ApiKeyService } from 'src/api-key/services/api-key.service';
 import { ApiKeyRepository } from 'src/authentication/repositories/api-key.repository';
+import { ApiKeyPermission } from 'src/common/enums/api-key-permission.enum';
+import { ApiKey } from 'src/database/schemas/api-key.schema';
 
 describe('ApiKeyController', () => {
   let controller: ApiKeyController;
@@ -54,10 +56,12 @@ describe('ApiKeyController', () => {
 
   describe('findAll', () => {
     it('should return an array of API keys', async () => {
-      const mockApiKeys: GetApiKeyRequestDto[] = [
-        { id: '1', name: 'Key 1', created_at: new Date() },
-        { id: '2', name: 'Key 2', created_at: new Date() },
-      ];
+      const mockApiKeys: GetApiKeysWrapperResponseDto = {
+        data: [
+          { id: '1', name: 'Key 1', created_at: new Date() },
+          { id: '2', name: 'Key 2', created_at: new Date() },
+        ],
+      };
       (service.findAll as jest.Mock).mockResolvedValue(mockApiKeys);
 
       const result = await controller.findAll();
@@ -71,7 +75,8 @@ describe('ApiKeyController', () => {
     it('should create a new API key', async () => {
       const payload: PostApiKeyRequestDto = {
         name: 'New Key',
-        permission: 'FULL_ACCESS',
+        permission: ApiKeyPermission.FULL_ACCESS,
+        domainId: 'domainTest',
       };
       const mockApiResponse: PostApiKeyResponseDto = {
         id: '1',
