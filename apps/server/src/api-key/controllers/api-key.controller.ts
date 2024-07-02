@@ -10,7 +10,7 @@ import {
 import { ApiKeyGuard } from 'src/common/guards/api-key.guard';
 import { ApiKeyService } from '../services/api-key.service';
 import {
-  GetApiKeyRequestDto,
+  GetApiKeysWrapperResponseDto,
   IdParamDto,
   PostApiKeyRequestDto,
   PostApiKeyResponseDto,
@@ -22,7 +22,7 @@ export class ApiKeyController {
   constructor(private readonly apiKeyService: ApiKeyService) {}
 
   @Get()
-  async findAll(): Promise<GetApiKeyRequestDto[]> {
+  async findAll(): Promise<GetApiKeysWrapperResponseDto> {
     return this.apiKeyService.findAll();
   }
 

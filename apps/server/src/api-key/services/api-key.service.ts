@@ -1,7 +1,7 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, Scope } from '@nestjs/common';
 import {
   CreateApiKeyDto,
-  GetApiKeyRequestDto,
+  GetApiKeysWrapperResponseDto,
   PostApiKeyRequestDto,
   PostApiKeyResponseDto,
 } from '../dto/api-key.dto';
@@ -9,19 +9,33 @@ import { ApiKeyRepository } from 'src/authentication/repositories/api-key.reposi
 import * as bcrypt from 'bcrypt';
 import { randomUUID } from 'crypto';
 import { Types } from 'mongoose';
+import { getApiKeyFromRequest } from 'src/common/utils/utils';
+import { REQUEST } from '@nestjs/core';
+import { Request } from 'express';
 
-@Injectable()
+@Injectable({ scope: Scope.REQUEST })
 export class ApiKeyService {
-  constructor(private readonly apiKeyRepository: ApiKeyRepository) {}
+  constructor(
+    @Inject(REQUEST) private readonly request: Request,
+    private readonly apiKeyRepository: ApiKeyRepository,
+  ) {}
 
-  async findAll(): Promise<GetApiKeyRequestDto[]> {
-    return (await this.apiKeyRepository.findAll()).map((apiKey) => {
-      return {
-        id: apiKey._id?.toString(),
-        name: apiKey.name,
-        created_at: apiKey.createdAt,
-      };
-    });
+  async findAll(): Promise<GetApiKeysWrapperResponseDto> {
+    const userId = await this.apiKeyRepository.findUserIdByApiKey(
+      getApiKeyFromRequest(this.request) ?? '',
+    );
+
+    return {
+      data: (await this.apiKeyRepository.findAllByUserId(userId ?? '')).map(
+        (apiKey) => {
+          return {
+            id: apiKey._id?.toString(),
+            name: apiKey.name,
+            created_at: apiKey.createdAt,
+          };
+        },
+      ),
+    };
   }
 
   async createApiKey(

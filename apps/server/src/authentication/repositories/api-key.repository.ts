@@ -84,14 +84,16 @@ export class ApiKeyRepository {
    * @returns {Promise<string | null>} - The user ID associated with the API key or null if not found.
    */
   async findUserIdByApiKey(apiKey: string): Promise<string | null> {
-    const apiKeyDocument = await this.apiKeyModel
-      .findOne({ key: apiKey })
-      .exec();
+    const apiKeyDocument = await this.findOne(apiKey);
     return apiKeyDocument ? apiKeyDocument.userId : null;
   }
 
   async findAll(): Promise<ApiKey[]> {
     return this.apiKeyModel.find().exec();
+  }
+
+  async findAllByUserId(userId: string): Promise<ApiKey[]> {
+    return this.apiKeyModel.find({ userId }).exec();
   }
 
   async findByIdAndDelete(id: string): Promise<void> {
