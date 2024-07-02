@@ -1,16 +1,14 @@
 import * as nodemailer from 'nodemailer';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { SendEmailRequestDto } from '../dto/send-email.dto';
 import { IEmailProvider } from '../interfaces/email-service.interface';
 
 @Injectable()
 export class EtherealEmailProvider implements IEmailProvider {
-  private readonly configService: ConfigService;
-
-  constructor() {
-    this.configService = new ConfigService();
-  }
+  constructor(
+    @Inject(ConfigService) private readonly configService: ConfigService,
+  ) {}
 
   async sendEmail(SendEmailRequestDto: SendEmailRequestDto): Promise<any> {
     const transporter = nodemailer.createTransport({

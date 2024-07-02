@@ -1,6 +1,5 @@
 import { ConfigService } from '@nestjs/config';
 import { Injectable, Inject } from '@nestjs/common';
-import { CLOUD_PROVIDER_NAME } from 'src/config/config.constants';
 import { AwsEmailProvider } from '../providers/aws-email.provider';
 import { AzureEmailProvider } from '../providers/azure-email.provider';
 import { IEmailProvider } from '../interfaces/email-service.interface';
@@ -15,7 +14,7 @@ export class EmailProviderFactory {
 
   createEmailProvider(): IEmailProvider {
     const providerName = this.configService
-      .get<string>(CLOUD_PROVIDER_NAME)
+      .get<string>('providers.common.cloudProviderName')
       ?.toLocaleLowerCase();
 
     if (!providerName) {
@@ -33,11 +32,11 @@ export class EmailProviderFactory {
   private getEmailProviderInstance(type: CloudProviderType): IEmailProvider {
     switch (type) {
       case EMAIL_PROVIDERS.AZURE:
-        return new AzureEmailProvider();
+        return new AzureEmailProvider(this.configService);
       case EMAIL_PROVIDERS.AWS:
-        return new AwsEmailProvider();
+        return new AwsEmailProvider(this.configService);
       case EMAIL_PROVIDERS.ETHEREAL:
-        return new EtherealEmailProvider();
+        return new EtherealEmailProvider(this.configService);
       default:
         throw new Error('Unsupported email provider');
     }

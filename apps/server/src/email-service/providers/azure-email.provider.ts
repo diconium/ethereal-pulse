@@ -1,25 +1,23 @@
-import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { validateOrReject } from 'class-validator';
+import { Inject, Injectable } from '@nestjs/common';
 import { SendEmailRequestDto } from '../dto/send-email.dto';
-import { AZURE_CONNECTION_STRING } from 'src/config/config.constants';
-import { IEmailProvider } from '../interfaces/email-service.interface';
-import { EmailClient, EmailMessage } from '@azure/communication-email';
 import { AzureEmailResponse } from '../interfaces/azure.interface';
 import { IEmailErrorResponse } from '../interfaces/email.interface';
-import { validateOrReject } from 'class-validator';
+import { IEmailProvider } from '../interfaces/email-service.interface';
+import { EmailClient, EmailMessage } from '@azure/communication-email';
 
 @Injectable()
 export class AzureEmailProvider implements IEmailProvider {
   private emailClient: EmailClient;
-  private readonly configService: ConfigService;
 
-  constructor() {
-    this.configService = new ConfigService();
-  }
+  constructor(
+    @Inject(ConfigService) private readonly configService: ConfigService,
+  ) {}
 
   configure(): void {
     const connectionString = this.configService.get<string>(
-      AZURE_CONNECTION_STRING,
+      'providers.azure.connectionString',
     );
 
     if (!connectionString) {
@@ -48,8 +46,8 @@ export class AzureEmailProvider implements IEmailProvider {
 
     return {
       senderAddress: from,
-      recipients: { to: recipients.map((email) => ({ address: email })) },
       content: { subject, html },
+      recipients: { to: recipients.map((email) => ({ address: email })) },
     };
   }
 }

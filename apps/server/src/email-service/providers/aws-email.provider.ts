@@ -1,23 +1,17 @@
 import * as AWS from 'aws-sdk';
 import { ConfigService } from '@nestjs/config';
-import { Injectable } from '@nestjs/common';
+import { validateOrReject } from 'class-validator';
+import { Inject, Injectable } from '@nestjs/common';
 import { SendEmailRequestDto } from '../dto/send-email.dto';
 import { IEmailProvider } from '../interfaces/email-service.interface';
-import {
-  AWS_ACCESS_KEY_ID,
-  AWS_SECRET_ACCESS_KEY,
-  AWS_CFG_REGION,
-} from '../../config/config.constants';
-import { validateOrReject } from 'class-validator';
 
 @Injectable()
 export class AwsEmailProvider implements IEmailProvider {
-  private readonly configService: ConfigService;
   private SES: AWS.SES;
 
-  constructor() {
-    this.configService = new ConfigService();
-  }
+  constructor(
+    @Inject(ConfigService) private readonly configService: ConfigService,
+  ) {}
 
   configure(): void {
     this.updateAwsConfig();
@@ -25,12 +19,14 @@ export class AwsEmailProvider implements IEmailProvider {
   }
 
   private updateAwsConfig(): void {
-    const accessKeyId = this.configService.get<string>(AWS_ACCESS_KEY_ID);
+    const accessKeyId = this.configService.get<string>(
+      'providers.aws.accessKeyId',
+    );
     const secretAccessKey = this.configService.get<string>(
-      AWS_SECRET_ACCESS_KEY,
+      'providers.aws.secretAccessKey',
     );
     const region =
-      this.configService.get<string>(AWS_CFG_REGION) ?? 'us-west-2';
+      this.configService.get<string>('providers.aws.region') ?? 'us-west-2';
 
     if (!accessKeyId || !secretAccessKey) {
       throw new Error(
