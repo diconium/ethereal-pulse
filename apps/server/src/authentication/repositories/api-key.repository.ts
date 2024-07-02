@@ -96,8 +96,10 @@ export class ApiKeyRepository {
     return this.apiKeyModel.find({ userId }).exec();
   }
 
-  async findByIdAndDelete(id: string): Promise<void> {
-    const result = await this.apiKeyModel.findByIdAndDelete(id).exec();
+  async findByIdAndUserAndDelete(id: string, userId: string): Promise<void> {
+    const result = await this.apiKeyModel
+      .findOneAndDelete({ _id: id, userId: userId })
+      .exec();
     if (!result) {
       throw new NotFoundException(`API Key #${id} not found`);
     }

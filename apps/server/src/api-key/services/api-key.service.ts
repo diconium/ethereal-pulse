@@ -21,12 +21,10 @@ export class ApiKeyService {
   ) {}
 
   async findAll(): Promise<GetApiKeysWrapperResponseDto> {
-    const userId = await this.apiKeyRepository.findUserIdByApiKey(
-      getApiKeyFromRequest(this.request) ?? '',
-    );
+    const userId = await this.getUserId();
 
     return {
-      data: (await this.apiKeyRepository.findAllByUserId(userId ?? '')).map(
+      data: (await this.apiKeyRepository.findAllByUserId(userId)).map(
         (apiKey) => {
           return {
             id: apiKey._id?.toString(),
@@ -46,7 +44,7 @@ export class ApiKeyService {
     const dto: CreateApiKeyDto = {
       ...payload,
       token: await bcrypt.hash(token, 10),
-      userId: 'test',
+      userId: await this.getUserId(),
     };
 
     const apiKeyDocument = await this.apiKeyRepository.create(dto);
@@ -58,6 +56,17 @@ export class ApiKeyService {
     if (!Types.ObjectId.isValid(id)) {
       throw new BadRequestException('Invalid API key ID');
     }
-    return this.apiKeyRepository.findByIdAndDelete(id);
+    return this.apiKeyRepository.findByIdAndUserAndDelete(
+      id,
+      await this.getUserId(),
+    );
+  }
+
+  private async getUserId(): Promise<string> {
+    const userId = await this.apiKeyRepository.findUserIdByApiKey(
+      getApiKeyFromRequest(this.request) ?? '',
+    );
+    if (!userId) throw new BadRequestException('Invalid User ID');
+    return userId;
   }
 }
