@@ -1,6 +1,6 @@
-# EtherealPulse SDK
+# Ethereal Pulse SDK
 
-EtherealPulse is an easy-to-use TypeScript-based SDK designed to facilitate email sending through a RESTful API. This SDK provides a streamlined way to integrate email functionalities into your applications.
+Ethereal Pulse is an easy-to-use TypeScript-based SDK designed to facilitate email sending through a RESTful API. This SDK provides a streamlined way to integrate email functionalities into your applications.
 
 ## Features
 
@@ -10,7 +10,7 @@ EtherealPulse is an easy-to-use TypeScript-based SDK designed to facilitate emai
 
 ## Installation
 
-To install EtherealPulse, you need to have [Node.js](https://nodejs.org/) and npm installed. Then, you can install the package via npm:
+To install Ethereal Pulse, you need to have [Node.js](https://nodejs.org/) and npm installed. Then, you can install the package via npm:
 
 ```bash
 npm install ethereal-pulse
@@ -24,7 +24,7 @@ yarn add ethereal-pulse
 
 ## Usage
 
-To use EtherealPulse, you need to provide an API key. Below is an example of how to use this SDK to send an email:
+To use Ethereal Pulse, you need to provide an API key. Below is an example of how to use this SDK to send an email:
 
 ### Import and Initialize
 
