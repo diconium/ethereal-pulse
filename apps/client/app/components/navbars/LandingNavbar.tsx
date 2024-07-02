@@ -2,10 +2,10 @@ import fccLogo from '~/assets/images/FCC-Logo-BulbBlackBG.svg';
 import { NavLink } from "@remix-run/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
-import { landingPageLinks } from "~/models/navbarLink.model";
+import { LANDING_PAGE_LINKS } from "~/models/constants/navbarLinks.const";
 
 const LandingNavbar = () => {
-  const navLinks = landingPageLinks;
+  const navLinks = LANDING_PAGE_LINKS;
   const [menuOpened, setMenuOpened] = useState(false);
   const MenuIcon = menuOpened ? XMarkIcon : Bars3Icon;
 

@@ -2,10 +2,10 @@
 import { NavLink } from "@remix-run/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
-import { defaultLinks } from "~/models/navbarLink.model";
+import { DEFAULT_LINKS } from "~/models/constants/navbarLinks.const";
 
 const SideNavbar = () => {
-  const navLinks = defaultLinks;
+  const navLinks = DEFAULT_LINKS;
   const [menuOpened, setMenuOpened] = useState(false);
   const MenuIcon = menuOpened ? XMarkIcon : Bars3Icon;
 
