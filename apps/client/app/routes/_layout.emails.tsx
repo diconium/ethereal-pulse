@@ -1,6 +1,6 @@
 import { Form, useLoaderData, useNavigate, useNavigation, useSubmit } from "@remix-run/react";
 import { json, LoaderFunctionArgs } from "@remix-run/node";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { MOCKED_EMAILS } from "~/mocks/emails";
 import { Email } from "~/models/email.model";
 
@@ -22,6 +22,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
 
 const Emails = () => {
+  const searchEmailInput = useRef<null | HTMLInputElement>(null)
   const { emails, searchedStr } = useLoaderData<typeof loader>();
   const navigate = useNavigate();
   const navigation = useNavigation();
@@ -55,12 +56,10 @@ const Emails = () => {
     );
 
   useEffect(() => {
-    const searchField = document.getElementById("emails-search-input");
-    if (searchField instanceof HTMLInputElement) {
-      searchField.value = searchedStr || "";
+    if (searchEmailInput?.current) {
+      searchEmailInput.current.value = searchedStr || "";
     }
   }, [ searchedStr ]);
-
 
   return (
     <>
@@ -76,7 +75,7 @@ const Emails = () => {
         role="search"
       >
         <input
-          id="emails-search-input"
+          ref={searchEmailInput}
           className="w-full px-3 py-2 bg-gray-100 focus:outline-gray-400 rounded-lg text-md mb-4 leading-7"
           aria-label="Search email"
           defaultValue={ searchedStr || "" }
