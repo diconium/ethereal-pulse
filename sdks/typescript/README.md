@@ -10,16 +10,10 @@ Ethereal Pulse is an easy-to-use TypeScript-based SDK designed to facilitate ema
 
 ## Installation
 
-To install Ethereal Pulse, you need to have [Node.js](https://nodejs.org/) and npm installed. Then, you can install the package via npm:
+To install Ethereal Pulse, you need to have [Node.js](https://nodejs.org/) and npm installed. Then, you can install the package via pnpm:
 
 ```bash
-npm install ethereal-pulse
-```
-
-Alternatively, if you are using yarn:
-
-```bash
-yarn add ethereal-pulse
+pnpm install ethereal-pulse
 ```
 
 ## Usage

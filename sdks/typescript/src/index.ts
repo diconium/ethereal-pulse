@@ -1,8 +1,8 @@
-import axios, { AxiosError } from "axios";
 import {
   IEtherealPulse,
   ISendEmailRequest,
 } from "./interfaces/email-services.interface";
+import { DEFAULT_BASE_URL } from "./constants/common.constants";
 
 class EtherealPulse implements IEtherealPulse {
   private apiKey: string;
@@ -10,7 +10,7 @@ class EtherealPulse implements IEtherealPulse {
 
   constructor(apiKey: string) {
     this.apiKey = apiKey;
-    this.baseUrl = process.env.BASE_URL || "https://api.yourdomain.com/v1";
+    this.baseUrl = process.env.BASE_URL ?? DEFAULT_BASE_URL;
   }
 
   private createRequestBody({
@@ -36,8 +36,8 @@ class EtherealPulse implements IEtherealPulse {
     return requestBody;
   }
 
-  private handleError(error: AxiosError) {
-    const errorMessage = error.response ? error.response.data : error.message;
+  private async handleError(response: Response) {
+    const errorMessage = await response.text();
     throw new Error(`Failed to send email: ${errorMessage}`);
   }
 
@@ -62,20 +62,23 @@ class EtherealPulse implements IEtherealPulse {
     });
 
     try {
-      const response = await axios.post(
-        `${this.baseUrl}/email/send`,
-        requestBody,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            "x-api-key": this.apiKey,
-            ...headers,
-          },
-        }
-      );
-      return response.data;
+      const response = await fetch(`${this.baseUrl}/email/send`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": this.apiKey,
+          ...headers,
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      if (!response.ok) {
+        await this.handleError(response);
+      }
+
+      return await response.json();
     } catch (error: any) {
-      this.handleError(error);
+      throw new Error(`Failed to send email: ${error.message}`);
     }
   }
 }
