@@ -1,13 +1,15 @@
 import { json, LoaderFunctionArgs } from "@remix-run/node";
 import { NavLink, useLoaderData, useNavigate } from "@remix-run/react";
-import { MOCKED_EMAILS } from "../../mocks/emails";
+import { MOCKED_EMAILS } from "~/mocks/emails";
 import { ChevronLeftIcon, PencilIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
-import { render } from "@react-email/render";
 
 
 type EmailViewer = "CONTENT" | "HTML" | "CODE";
 
+/*
+* Simulates a server request to fetch for a particular email with the specified id
+* */
 async function getEmailById(id: string) {
   await new Promise((resolve) => setTimeout(resolve, 500));
   return MOCKED_EMAILS.find(email => email.id === id);
@@ -34,16 +36,6 @@ const EmailDetails = () => {
       (view === selectedView ? "bg-black text-white" : "hover:bg-gray-200")
     )
   }
-
-  /*
-  const html = render(
-    <div dangerouslySetInnerHTML={ { __html: email.content } }/>,
-    {
-      pretty: true,
-    }
-  );
-  console.log(html);
-  */
 
   function renderEmail() {
     switch (selectedView) {

@@ -2,50 +2,10 @@
 import { NavLink } from "@remix-run/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
-import { NavbarLinks } from "../../../models/navbarLinks.model";
+import { defaultLinks } from "~/models/navbarLink.model";
 
-interface Props {
-  links?: NavbarLinks[]
-}
-
-const defaultLinks: NavbarLinks[] = [
-  {
-    path: "/emails",
-    label: "Emails"
-  },
-  {
-    path: "/templates",
-    label: "Templates"
-  },
-  {
-    path: "/groups",
-    label: "Groups"
-  },
-  {
-    path: "/api-keys",
-    label: "API Keys"
-  },
-  {
-    path: "/docs",
-    label: "Docs"
-  },
-  {
-    path: "/help",
-    label: "Help"
-  },
-  {
-    path: "/settings",
-    label: "Settings"
-  },
-  {
-    path: "/user",
-    label: "User name"
-  },
-]
-
-
-const SideNavbar = ({ links }: Props) => {
-  const navLinks = links?.length ? links : defaultLinks;
+const SideNavbar = () => {
+  const navLinks = defaultLinks;
   const [menuOpened, setMenuOpened] = useState(false);
   const MenuIcon = menuOpened ? XMarkIcon : Bars3Icon;
 
@@ -88,11 +48,11 @@ const SideNavbar = ({ links }: Props) => {
         onClick={() => setMenuOpened(!menuOpened)}
       />
       {
-        menuOpened ? (
+        menuOpened && (
           <ul className="absolute top-[60px] left-0 h-screen w-screen bg-gray-50 flex md:hidden flex-col gap-2 p-4">
             { drawLinks() }
           </ul>
-        ) : ""
+        )
       }
     </nav>
   )

@@ -1,30 +1,11 @@
-import Navbar, {  } from "~/components/navbars/navbar";
 import { ChevronRightIcon } from "@heroicons/react/24/solid";
-import { NavbarLinks } from "../../models/navbarLinks.model";
+import LandingNavbar from "~/components/navbars/LandingNavbar";
 
-const links: NavbarLinks[] = [
-  {
-    path: "/login",
-    label: "Sign in"
-  },
-  {
-    path: "/signup",
-    label: "Sign up"
-  },
-  {
-    path: "/docs",
-    label: "Docs"
-  },
-  {
-    path: "/emails",
-    label: "Emails"
-  }
-]
 
 export default function Index() {
   return (
     <div className="flex flex-col w-full h-screen font-sans bg-black text-gray-200">
-      <Navbar links={links}/>
+      <LandingNavbar />
       <section className="flex flex-1 items-center p-6 my-auto text-center md:text-justify max-w-2xl md:mx-auto">
         <div>
           <h1 className="text-6xl font-bold tracking-tight">Email for developers</h1>

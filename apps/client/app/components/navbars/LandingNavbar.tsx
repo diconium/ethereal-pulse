@@ -1,18 +1,11 @@
-import fccLogo from 'assets/images/FCC-Logo-BulbBlackBG.svg';
+import fccLogo from '~/assets/images/FCC-Logo-BulbBlackBG.svg';
 import { NavLink } from "@remix-run/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
-import { NavbarLinks } from "../../../models/navbarLinks.model";
+import { landingPageLinks } from "~/models/navbarLink.model";
 
-interface Props {
-  links?: NavbarLinks[]
-}
-
-const defaultLinks: NavbarLinks[] = []
-
-
-const Navbar = ({links}: Props) => {
-  const navLinks = links?.length ? links : defaultLinks;
+const LandingNavbar = () => {
+  const navLinks = landingPageLinks;
   const [menuOpened, setMenuOpened] = useState(false);
   const MenuIcon = menuOpened ? XMarkIcon : Bars3Icon;
 
@@ -49,13 +42,13 @@ const Navbar = ({links}: Props) => {
         </div>
       </div>
       {
-        menuOpened ? (
+        menuOpened && (
           <div className="h-screen w-screen bg-black absolute flex md:hidden flex-col gap-2 p-4">
             { drawLinks() }
           </div>
-        ) : ""
+        )
       }
     </nav>
   );
 }
-export default Navbar;
+export default LandingNavbar;

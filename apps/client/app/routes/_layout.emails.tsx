@@ -1,8 +1,8 @@
 import { Form, useLoaderData, useNavigate, useNavigation, useSubmit } from "@remix-run/react";
 import { json, LoaderFunctionArgs } from "@remix-run/node";
 import { useEffect } from "react";
-import { MOCKED_EMAILS } from "../../mocks/emails";
-import { Email } from "../../models/email.model";
+import { MOCKED_EMAILS } from "~/mocks/emails";
+import { Email } from "~/models/email.model";
 
 
 async function getEmails(searchString: string | null): Promise<Email[]> {
@@ -13,9 +13,7 @@ async function getEmails(searchString: string | null): Promise<Email[]> {
   return MOCKED_EMAILS;
 }
 
-export const loader = async ({
-                               request,
-                             }: LoaderFunctionArgs) => {
+export const loader = async ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
   const searchedStr = url.searchParams.get("email");
   const emails = await getEmails(searchedStr);
