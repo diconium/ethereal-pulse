@@ -35,14 +35,15 @@ const EmailDetails = () => {
     )
   }
 
+  /*
   const html = render(
     <div dangerouslySetInnerHTML={ { __html: email.content } }/>,
     {
       pretty: true,
     }
   );
-
   console.log(html);
+  */
 
   function renderEmail() {
     switch (selectedView) {
