@@ -1,5 +1,4 @@
 // src/emails/WelcomeEmail.jsx
-import React from 'react';
 import { Html, Head, Body, Container, Text } from '@react-email/components';
 
 const GoodByeEmail = () => (

@@ -5,6 +5,6 @@ import {
 import { SendEmailRequestDto } from '../dto/send-email.dto';
 
 export interface IEmailService {
-  configure?(provider: ICloudProvider | ICloudProviderCredentials): void;
-  sendEmail(payload: SendEmailRequestDto, apiKey: string): Promise<any>;
+  configure?(_provider: ICloudProvider | ICloudProviderCredentials): void;
+  sendEmail(_payload: SendEmailRequestDto, _apiKey: string): Promise<any>;
 }

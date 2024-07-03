@@ -1,8 +1,6 @@
 import { SendEmailRequestDto } from '../dto/send-email.dto';
-import { ApiKeyDocument } from 'src/entities/api-key.entity';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { IEmailService } from '../interfaces/email-service.interface';
-import { UserRepository } from 'src/user/repositories/user.repository';
 import { EmailServiceFactory } from '../factories/email-service.factory';
 import {
   ApiKeyRepository,
@@ -15,9 +13,8 @@ export class EmailService implements IEmailService {
   private emailService: IEmailService;
 
   constructor(
-    private readonly emailServiceFactory: EmailServiceFactory,
-    private readonly userRepository: UserRepository,
-    private readonly apiKeyRepository: ApiKeyRepository,
+    private readonly _emailServiceFactory: EmailServiceFactory,
+    private readonly _apiKeyRepository: ApiKeyRepository,
   ) {}
 
   async sendEmail(payload: SendEmailRequestDto, apiKey: string): Promise<any> {
@@ -35,14 +32,18 @@ export class EmailService implements IEmailService {
     apiKeyDoc: IApiKeyDocumentWithProvider;
     provider: ICloudProvider;
   } | null> {
-    const result = await this.apiKeyRepository.findOneWithProvider(apiKey);
-    if (!result) throw new UnauthorizedException('Invalid API key');
+    const result = await this._apiKeyRepository.findOneWithProvider(apiKey);
+    if (!result) {
+      throw new UnauthorizedException('Invalid API key');
+    }
     return result;
   }
 
   private getEmailService(provider: ICloudProvider): IEmailService {
-    const emailService = this.emailServiceFactory.createEmailService(provider);
-    if (!emailService) throw new Error('Email provider not set');
+    const emailService = this._emailServiceFactory.createEmailService(provider);
+    if (!emailService) {
+      throw new Error('Email provider not set');
+    }
     return emailService;
   }
 }

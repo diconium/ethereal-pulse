@@ -6,7 +6,7 @@ import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class EtherealEmailService implements IEmailService {
-  constructor(private readonly configService: ConfigService) {}
+  constructor(private readonly _configService: ConfigService) {}
 
   async sendEmail(SendEmailRequestDto: SendEmailRequestDto): Promise<any> {
     const transporter = nodemailer.createTransport({
@@ -14,8 +14,8 @@ export class EtherealEmailService implements IEmailService {
       port: 587,
       secure: false,
       auth: {
-        user: this.configService.get<string>('ethereal.username'),
-        pass: this.configService.get<string>('ethereal.password'),
+        user: this._configService.get<string>('ethereal.username'),
+        pass: this._configService.get<string>('ethereal.password'),
       },
     });
 

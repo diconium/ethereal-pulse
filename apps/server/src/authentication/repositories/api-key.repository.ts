@@ -14,8 +14,8 @@ export interface IApiKeyDocumentWithProvider extends ApiKeyDocument {
 export class ApiKeyRepository {
   constructor(
     @InjectModel(ApiKey.name)
-    private readonly apiKeyModel: Model<ApiKeyDocument>,
-    private readonly cloudProviderRepository: CloudProviderRepository,
+    private readonly _apiKeyModel: Model<ApiKeyDocument>,
+    private readonly _cloudProviderRepository: CloudProviderRepository,
   ) {}
 
   /**
@@ -24,7 +24,7 @@ export class ApiKeyRepository {
    * @returns {Promise<ApiKeyDocument | null>} - A promise that resolves to the API key document if found, otherwise null.
    */
   async findOneById(apiKeyId: string): Promise<ApiKeyDocument | null> {
-    return this.apiKeyModel.findOne({ _id: apiKeyId }).exec();
+    return this._apiKeyModel.findOne({ _id: apiKeyId }).exec();
   }
 
   /**
@@ -33,7 +33,7 @@ export class ApiKeyRepository {
    * @returns {Promise<ApiKeyDocument | null>} - A promise that resolves to the API key document if found, otherwise null.
    */
   async findOne(apiKey: string): Promise<ApiKeyDocument | null> {
-    return this.apiKeyModel.findOne({ token: apiKey }).exec();
+    return this._apiKeyModel.findOne({ token: apiKey }).exec();
   }
 
   /**
@@ -45,17 +45,21 @@ export class ApiKeyRepository {
     apiKeyDoc: IApiKeyDocumentWithProvider;
     provider: ICloudProvider;
   } | null> {
-    const apiKeyDoc = (await this.apiKeyModel
+    const apiKeyDoc = (await this._apiKeyModel
       .findOne({ token: apiKey })
       .exec()) as IApiKeyDocumentWithProvider;
 
-    if (!apiKeyDoc ?? !apiKeyDoc.providerId) return null;
+    if (!apiKeyDoc ?? !apiKeyDoc.providerId) {
+      return null;
+    }
 
-    const provider = await this.cloudProviderRepository.findOne(
+    const provider = await this._cloudProviderRepository.findOne(
       apiKeyDoc.providerId?.toString(),
     );
 
-    if (!provider) return null;
+    if (!provider) {
+      return null;
+    }
 
     return { apiKeyDoc, provider };
   }
@@ -66,7 +70,7 @@ export class ApiKeyRepository {
    * @returns {Promise<string | null>} - The user ID associated with the API key or null if not found.
    */
   async findUserIdByApiKey(apiKey: string): Promise<string | null> {
-    const apiKeyDocument = await this.apiKeyModel
+    const apiKeyDocument = await this._apiKeyModel
       .findOne({ key: apiKey })
       .exec();
     return apiKeyDocument ? apiKeyDocument.userId : null;

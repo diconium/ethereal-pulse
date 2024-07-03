@@ -36,4 +36,3 @@ export class CloudProvider {
 }
 
 export const CloudProviderSchema = SchemaFactory.createForClass(CloudProvider);
-

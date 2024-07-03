@@ -10,7 +10,7 @@ import {
 export class CloudProviderRepository {
   constructor(
     @InjectModel(CloudProvider.name)
-    private cloudProviderModel: Model<CloudProviderDocument>,
+    private _cloudProviderModel: Model<CloudProviderDocument>,
   ) {}
 
   /**
@@ -19,7 +19,7 @@ export class CloudProviderRepository {
    * @returns {Promise<CloudProvider>} The created CloudProvider.
    */
   async create(createCloudProviderDto: any): Promise<CloudProvider> {
-    const createdCloudProvider = new this.cloudProviderModel(
+    const createdCloudProvider = new this._cloudProviderModel(
       createCloudProviderDto,
     );
     return createdCloudProvider.save();
@@ -30,7 +30,7 @@ export class CloudProviderRepository {
    * @returns {Promise<CloudProvider[]>} An array of all CloudProviders.
    */
   async findAll(): Promise<CloudProvider[]> {
-    return this.cloudProviderModel.find().exec();
+    return this._cloudProviderModel.find().exec();
   }
 
   /**
@@ -39,7 +39,7 @@ export class CloudProviderRepository {
    * @returns {Promise<CloudProvider | null>} The CloudProvider with the specified ID, or null if not found.
    */
   async findOne(id: string): Promise<CloudProvider | null> {
-    return this.cloudProviderModel.findById(id).exec();
+    return this._cloudProviderModel.findById(id).exec();
   }
 
   /**
@@ -52,7 +52,7 @@ export class CloudProviderRepository {
     id: string,
     updateCloudProviderDto: any,
   ): Promise<CloudProvider | null> {
-    return this.cloudProviderModel
+    return this._cloudProviderModel
       .findByIdAndUpdate(id, updateCloudProviderDto, { new: true })
       .exec();
   }
@@ -63,6 +63,6 @@ export class CloudProviderRepository {
    * @returns {Promise<CloudProvider | null>} The deleted CloudProvider, or null if not found.
    */
   async delete(id: string): Promise<CloudProvider | null> {
-    return this.cloudProviderModel.findByIdAndDelete(id).exec();
+    return this._cloudProviderModel.findByIdAndDelete(id).exec();
   }
 }

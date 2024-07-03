@@ -13,7 +13,7 @@ import { EtherealEmailService } from '../services/ethereal-email.service';
 @Injectable()
 export class EmailServiceFactory {
   constructor(
-    @Inject(ConfigService) private readonly configService: ConfigService,
+    @Inject(ConfigService) private readonly _configService: ConfigService,
   ) {}
 
   createEmailService(provider: ICloudProvider): IEmailService {
@@ -29,7 +29,7 @@ export class EmailServiceFactory {
       case EMAIL_PROVIDERS.AWS:
         return new AwsEmailService();
       case EMAIL_PROVIDERS.ETHEREAL:
-        return new EtherealEmailService(this.configService);
+        return new EtherealEmailService(this._configService);
       default:
         throw new Error('Unsupported email provider');
     }

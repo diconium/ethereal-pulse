@@ -8,21 +8,21 @@ import { User } from 'src/database/schemas/user.schema';
 export class UserRepository {
   constructor(
     @InjectModel(User.name)
-    private readonly userModel: Model<UserDocument>,
+    private readonly _userModel: Model<UserDocument>,
   ) {}
 
   async findOne(filter: Partial<User>): Promise<User | null> {
-    const result = await this.userModel.findOne(filter).lean().exec();
+    const result = await this._userModel.findOne(filter).lean().exec();
     return result as User | null;
   }
 
   async findById(userId: string): Promise<User | null> {
-    const result = await this.userModel.findById(userId).lean().exec();
+    const result = await this._userModel.findById(userId).lean().exec();
     return result as User | null;
   }
 
   async exists(userId: string): Promise<boolean> {
-    const count = await this.userModel.countDocuments({ _id: userId }).exec();
+    const count = await this._userModel.countDocuments({ _id: userId }).exec();
     return count > 0;
   }
 }

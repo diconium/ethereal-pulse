@@ -7,15 +7,16 @@ import { AuthenticationService } from '../services/authentication.service';
 
 @Injectable()
 export class ApiKeyStrategy extends PassportStrategy(Strategy, 'api-key') {
-  constructor(private readonly authService: AuthenticationService) {
+  constructor(private readonly _authService: AuthenticationService) {
     super();
   }
 
+  // eslint-disable-next-line @typescript-eslint/ban-types
   async validate(request: Request, done: Function) {
     try {
       const apiKey = this.extractApiKey(request);
-      const user = await this.authService.validateUser(apiKey);
-      const selectedProvider = await this.authService.validateProvider(apiKey);
+      const user = await this._authService.validateUser(apiKey);
+      const selectedProvider = await this._authService.validateProvider(apiKey);
 
       this.attachProviderToRequest(request, selectedProvider);
       return done(null, user);
