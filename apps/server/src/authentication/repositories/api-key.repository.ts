@@ -42,7 +42,14 @@ export class ApiKeyRepository {
    * @returns {Promise<ApiKeyDocument | null>} - A promise that resolves to the API key document if found, otherwise null.
    */
   async findOne(apiKey: string): Promise<ApiKeyDocument | null> {
-    return this.apiKeyModel.findOne({ token: apiKey }).exec();
+    const apiKeys = await this.apiKeyModel.find().exec();
+
+    for (const key of apiKeys) {
+      if (await bcrypt.compare(apiKey, key.token)) {
+        return key;
+      }
+    }
+    return null;
   }
 
   /**

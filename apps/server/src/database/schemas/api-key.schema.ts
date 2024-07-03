@@ -1,4 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document } from 'mongoose';
 import { API_KEY_PERMISSION_KEYS } from 'src/authentication/constants/api-key-permissions.constant';
 import {
   IApiKey,

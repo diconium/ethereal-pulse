@@ -4,8 +4,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ApiKey } from 'src/database/schemas/api-key.schema';
 import { ApiKeyRepository } from 'src/authentication/repositories/api-key.repository';
 import { CreateApiKeyDto } from 'src/api-key/dto/api-key.dto';
-import { CloudProviderRepository } from 'src/cloud-provider/repositories/cloud-provider.repository';
-import { CloudProvider } from 'src/database/schemas/cloud-provider.schema';
 import { ApiKeyPermission } from 'src/common/enums/api-key-permission.enum';
 
 const mockApiKeyDto = {
@@ -44,14 +42,9 @@ describe('ApiKeyRepository', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         ApiKeyRepository,
-        CloudProviderRepository,
         {
           provide: getModelToken(ApiKey.name),
           useValue: mockApiKeyModel,
-        },
-        {
-          provide: getModelToken(CloudProvider.name),
-          useValue: mockCloudProviderModel,
         },
       ],
     }).compile();
