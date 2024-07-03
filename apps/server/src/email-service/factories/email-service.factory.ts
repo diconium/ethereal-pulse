@@ -1,49 +1,53 @@
-import { Injectable, Inject } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { AwsEmailService } from '../services/aws-email.service';
-import { AzureEmailService } from '../services/azure-email.service';
-import {
-  CloudProviderType,
-  ICloudProvider,
-} from 'src/email-service/interfaces/cloud-provider.interface';
-import { IEmailService } from '../interfaces/email-service.interface';
+import { Injectable, Inject } from '@nestjs/common';
+import { AwsEmailProvider } from '../providers/aws-email.provider';
+import { AzureEmailProvider } from '../providers/azure-email.provider';
+import { IEmailProvider } from '../interfaces/email-service.interface';
 import { EMAIL_PROVIDERS } from '../constants/email-providers.constants';
-import { EtherealEmailService } from '../services/ethereal-email.service';
-
+import { EtherealEmailProvider } from '../providers/ethereal-email.provider';
+import { CloudProviderType } from 'src/email-service/interfaces/cloud-provider.interface';
 @Injectable()
-export class EmailServiceFactory {
+export class EmailProviderFactory {
   constructor(
     @Inject(ConfigService) private readonly configService: ConfigService,
   ) {}
 
-  createEmailService(provider: ICloudProvider): IEmailService {
-    const emailService = this.getEmailServiceInstance(provider.type);
-    this.configureEmailService(emailService, provider);
-    return emailService;
+  createEmailProvider(): IEmailProvider {
+    const providerName = this.configService
+      .get<string>('providers.common.cloudProviderName')
+      ?.toLocaleLowerCase();
+
+    if (!providerName) {
+      throw new Error('Email provider not set');
+    }
+
+    const emailProvider = this.getEmailProviderInstance(
+      providerName as CloudProviderType,
+    );
+
+    this.configureEmailProvider(emailProvider);
+    return emailProvider;
   }
 
-  private getEmailServiceInstance(type: CloudProviderType): IEmailService {
+  private getEmailProviderInstance(type: CloudProviderType): IEmailProvider {
     switch (type) {
       case EMAIL_PROVIDERS.AZURE:
-        return new AzureEmailService();
+        return new AzureEmailProvider(this.configService);
       case EMAIL_PROVIDERS.AWS:
-        return new AwsEmailService();
+        return new AwsEmailProvider(this.configService);
       case EMAIL_PROVIDERS.ETHEREAL:
-        return new EtherealEmailService(this.configService);
+        return new EtherealEmailProvider(this.configService);
       default:
         throw new Error('Unsupported email provider');
     }
   }
 
-  private configureEmailService(
-    emailService: IEmailService,
-    provider: ICloudProvider,
-  ): void {
+  private configureEmailProvider(emailProvider: IEmailProvider): void {
     if (
-      emailService instanceof AzureEmailService ||
-      emailService instanceof AwsEmailService
+      emailProvider instanceof AzureEmailProvider ||
+      emailProvider instanceof AwsEmailProvider
     ) {
-      emailService.configure(provider);
+      emailProvider.configure();
     }
   }
 }

@@ -4,7 +4,6 @@ import { InjectModel } from '@nestjs/mongoose';
 import { ApiKey } from 'src/database/schemas/api-key.schema';
 import { ApiKeyDocument } from 'src/entities/api-key.entity';
 import { ICloudProvider } from 'src/email-service/interfaces/cloud-provider.interface';
-import { CloudProviderRepository } from 'src/cloud-provider/repositories/cloud-provider.repository';
 import { CreateApiKeyDto } from 'src/api-key/dto/api-key.dto';
 import * as bcrypt from 'bcrypt';
 
@@ -17,7 +16,6 @@ export class ApiKeyRepository {
   constructor(
     @InjectModel(ApiKey.name)
     private readonly apiKeyModel: Model<ApiKeyDocument>,
-    private readonly cloudProviderRepository: CloudProviderRepository,
   ) {}
 
   /**
@@ -44,38 +42,7 @@ export class ApiKeyRepository {
    * @returns {Promise<ApiKeyDocument | null>} - A promise that resolves to the API key document if found, otherwise null.
    */
   async findOne(apiKey: string): Promise<ApiKeyDocument | null> {
-    const apiKeys = await this.apiKeyModel.find().exec();
-
-    for (const key of apiKeys) {
-      if (await bcrypt.compare(apiKey, key.token)) {
-        return key;
-      }
-    }
-    return null;
-  }
-
-  /**
-   * Retrieves an API key document based on the provided API key token and enriches it with the associated cloud provider details.
-   * @param {string} apiKey - The token of the API key to search for.
-   * @returns {Promise<{ apiKeyDoc: IApiKeyDocumentWithProvider, provider: ICloudProvider } | null>} - The API key document and its associated cloud provider if both are found, otherwise null.
-   */
-  async findOneWithProvider(apiKey: string): Promise<{
-    apiKeyDoc: IApiKeyDocumentWithProvider;
-    provider: ICloudProvider;
-  } | null> {
-    const apiKeyDoc = (await this.apiKeyModel
-      .findOne({ token: apiKey })
-      .exec()) as IApiKeyDocumentWithProvider;
-
-    if (!apiKeyDoc ?? !apiKeyDoc.providerId) return null;
-
-    const provider = await this.cloudProviderRepository.findOne(
-      apiKeyDoc.providerId?.toString(),
-    );
-
-    if (!provider) return null;
-
-    return { apiKeyDoc, provider };
+    return this.apiKeyModel.findOne({ token: apiKey }).exec();
   }
 
   /**

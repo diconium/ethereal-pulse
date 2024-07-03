@@ -131,3 +131,7 @@ dist
 
 # macOS files
 .DS_Store
+
+# Webstorm
+.idea
+.idea/*
