@@ -10,6 +10,9 @@ importers:
 
   apps/client:
     dependencies:
+      '@heroicons/react':
+        specifier: ^2.1.4
+        version: 2.1.4(react@18.3.1)
       '@react-email/components':
         specifier: 0.0.18
         version: 0.0.18(@types/react@18.3.3)(react@18.3.1)
@@ -1605,6 +1608,14 @@ packages:
 
   /@floating-ui/utils@0.2.2:
     resolution: {integrity: sha512-J4yDIIthosAsRZ5CPYP/jQvUAQtlZTTD/4suA08/FEnlxqW3sKS9iAhgsa9VYLZ6vDHn/ixJgIqRQPotoBjxIw==}
+    dev: false
+
+  /@heroicons/react@2.1.4(react@18.3.1):
+    resolution: {integrity: sha512-ju0wj0wwrUTMQ2Yceyrma7TKuI3BpSjp+qKqV81K9KGcUHdvTMdiwfRc2cwXBp3uXtKuDZkh0v03nWOQnJFv2Q==}
+    peerDependencies:
+      react: '>= 16'
+    dependencies:
+      react: 18.3.1
     dev: false
 
   /@humanwhocodes/config-array@0.11.14:
