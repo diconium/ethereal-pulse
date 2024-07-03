@@ -3,9 +3,11 @@ import { NavLink, useLoaderData, useNavigate } from "@remix-run/react";
 import { MOCKED_EMAILS } from "~/mocks/emails";
 import { ChevronLeftIcon, PencilIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
+import CodeView from "~/components/CodeView";
+import parse from "html-react-parser";
 
 
-type EmailViewer = "CONTENT" | "HTML" | "CODE";
+type EmailViewer = "CONTENT" | "HTML" | "TEXT";
 
 /*
 * Simulates a server request to fetch for a particular email with the specified id
@@ -40,11 +42,17 @@ const EmailDetails = () => {
   function renderEmail() {
     switch (selectedView) {
       case "CONTENT":
-        return <div dangerouslySetInnerHTML={ { __html: email.content } }/>;
+        return parse(email.content);
       case "HTML":
-        return <div>{ email.content }</div>;
-      case "CODE":
-        return <div>{ email.content }</div>;
+        return CodeView({
+          code: email.content,
+          language: "html"
+         });
+      case "TEXT":
+        return CodeView({
+          code: email.content,
+          language: "markdown"
+        });
       default:
         return null;
     }
@@ -73,10 +81,10 @@ const EmailDetails = () => {
             Html
           </button>
           <button
-            className={viewButtonClass("CODE")}
-            onClick={() => setSelectedView("CODE")}
+            className={viewButtonClass("TEXT")}
+            onClick={() => setSelectedView("TEXT")}
           >
-            Code
+            Plain Text
           </button>
         </div>
         <NavLink
@@ -86,7 +94,7 @@ const EmailDetails = () => {
           <PencilIcon className="size-4 mr-1"/> Edit
         </NavLink>
       </div>
-      <section className="bg-white overflow-auto border-2 border-gray-200 p-4">
+      <section className="overflow-auto border-2 border-gray-200 p-4">
         { renderEmail() }
       </section>
     </>
