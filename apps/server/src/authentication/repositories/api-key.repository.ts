@@ -23,7 +23,7 @@ export class ApiKeyRepository {
    * @param {CreateApiKeyDto} createApiKeyDto - Data transfer object containing the details of the Api Key to create.
    * @returns {Promise<ApiKey>} The created ApiKey.
    */
-  async create(createApiKeyDto: CreateApiKeyDto): Promise<ApiKey> {
+  async create(createApiKeyDto: CreateApiKeyDto): Promise<ApiKeyDocument> {
     return this.apiKeyModel.create(createApiKeyDto);
   }
 
@@ -66,7 +66,7 @@ export class ApiKeyRepository {
     return this.apiKeyModel.find().exec();
   }
 
-  async findAllByUserId(userId: string): Promise<ApiKey[]> {
+  async findAllByUserId(userId: string): Promise<ApiKeyDocument[]> {
     return this.apiKeyModel.find({ userId }).exec();
   }
 
