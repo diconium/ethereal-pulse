@@ -25,21 +25,6 @@ export class AuthenticationService {
   }
 
   /**
-   * Validates a provider based on the provided API key.
-   * @param {string} apiKey - The API key to validate.
-   * @returns {Promise<any>} - The validated provider.
-   * @throws {UnauthorizedException} - If the API key is invalid.
-   */
-  async validateProvider(apiKey: string): Promise<any> {
-    const apiKeyRecord =
-      await this._apiKeyRepository.findOneWithProvider(apiKey);
-    if (!apiKeyRecord) {
-      throw new UnauthorizedException('Invalid API key');
-    }
-    return apiKeyRecord.provider;
-  }
-
-  /**
    * Retrieves the user ID associated with the provided API key.
    * @param {string} apiKey - The API key to validate.
    * @returns {Promise<string>} - The user ID.

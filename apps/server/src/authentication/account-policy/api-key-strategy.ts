@@ -16,7 +16,7 @@ export class ApiKeyStrategy extends PassportStrategy(Strategy, 'api-key') {
     try {
       const apiKey = this.extractApiKey(request);
       const user = await this._authService.validateUser(apiKey);
-      const selectedProvider = await this._authService.validateProvider(apiKey);
+      const selectedProvider = null; // TODO: GET PROVIDER ENV
 
       this.attachProviderToRequest(request, selectedProvider);
       return done(null, user);
