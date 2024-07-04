@@ -1,20 +1,10 @@
 import { Await, Form, useLoaderData, useNavigate, useNavigation, useSubmit } from "@remix-run/react";
 import { json, LoaderFunctionArgs } from "@remix-run/node";
-import { Suspense, useEffect, useRef } from "react";
-import { MOCKED_TEMPLATES } from "~/mocks/templates";
+import { useEffect, useRef } from "react";
 import { Template } from "~/models/template.model";
 import { PlusIcon } from "@heroicons/react/16/solid";
+import { getTemplates } from "~/services/templates/templates.service";
 
-
-async function getTemplates(searchString: string | null): Promise<Template[]> {
-  const result = searchString?.length ?
-    MOCKED_TEMPLATES.filter((item) => item.name.toLowerCase().includes(searchString.toLowerCase())) :
-    MOCKED_TEMPLATES
-
-  return new Promise<Template[]>((resolve) => {
-    setTimeout(() => {resolve(result);}, 1000)
-  })
-}
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
