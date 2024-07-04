@@ -5,7 +5,6 @@ import {
   ApiKeyPermission,
 } from 'src/authentication/interfaces/api-key.interface';
 
-
 @Schema()
 export class ApiKey implements IApiKey {
   @Prop({ required: true })
