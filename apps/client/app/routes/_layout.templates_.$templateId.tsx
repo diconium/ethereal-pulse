@@ -2,9 +2,10 @@ import { json, LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData, useNavigate } from "@remix-run/react";
 import { ChevronLeftIcon, PencilIcon } from "@heroicons/react/16/solid";
 import { useState } from "react";
-import CodeView from "~/components/CodeView";
 import parse from "html-react-parser";
 import { MOCKED_TEMPLATES } from "~/mocks/templates";
+import { Template } from "~/models/template.model";
+import CodeView from "~/components/templates/CodeView";
 
 
 type TemplateViewer = "CONTENT" | "HTML" | "TEXT";
@@ -13,8 +14,12 @@ type TemplateViewer = "CONTENT" | "HTML" | "TEXT";
 * Simulates a server request to fetch for a particular template with the specified id
 * */
 async function getTemplateById(id: string) {
-  await new Promise((resolve) => setTimeout(resolve, 500));
-  return MOCKED_TEMPLATES.find(template => template.id === id);
+  const result = MOCKED_TEMPLATES.find(template => template.id === id);
+  return new Promise<Template | undefined>((resolve) => {
+    setTimeout(() => {
+      resolve(result);
+      }, 1000)
+  })
 }
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
