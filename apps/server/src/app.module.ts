@@ -8,6 +8,7 @@ import { DatabaseModule } from './database/database.module';
 import { TemplateModule } from './templates/template.module';
 import { EmailServiceModule } from './email-service/email-service.module';
 import { AuthenticationModule } from './authentication/authentication.module';
+import { ApiKeyModule } from './api-key/api-key.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { AuthenticationModule } from './authentication/authentication.module';
     AppConfigModule,
     EmailServiceModule,
     AuthenticationModule,
+    ApiKeyModule,
   ],
 })
 export class AppModule {}

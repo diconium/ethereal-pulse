@@ -5,11 +5,10 @@ import {
   UnauthorizedException,
   ForbiddenException,
 } from '@nestjs/common';
-import { Request } from 'express';
 import { Reflector } from '@nestjs/core';
 import { PERMISSION_KEY } from 'src/authentication/decorators/permission.decorator';
 import { ApiKeyRepository } from 'src/authentication/repositories/api-key.repository';
-import { AUTH_HEADERS } from 'src/authentication/constants/api-key-permissions.constant';
+import { getApiKeyFromContext } from '../utils/utils';
 
 @Injectable()
 export class ApiKeyGuard implements CanActivate {
@@ -19,8 +18,7 @@ export class ApiKeyGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const request = this.getRequest(context);
-    const apiKey = this.getApiKeyFromHeaders(request);
+    const apiKey = getApiKeyFromContext(context);
 
     if (!apiKey) {
       throw new UnauthorizedException('API key is required');
@@ -45,18 +43,6 @@ export class ApiKeyGuard implements CanActivate {
     }
 
     return true;
-  }
-
-  private getRequest(context: ExecutionContext): Request {
-    return context.switchToHttp().getRequest();
-  }
-
-  private getApiKeyFromHeaders(request: Request): string | undefined {
-    const apiKey = request.headers[AUTH_HEADERS.API_KEY];
-    if (Array.isArray(apiKey)) {
-      return apiKey[0];
-    }
-    return apiKey;
   }
 
   private async validateApiKey(apiKey: string): Promise<boolean> {
