@@ -1,0 +1,38 @@
+name: Deploy to Azure Container Instances
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Build and push Docker image
+        uses: azure/docker-login@v1
+        with:
+          login-server: etherealpulse.azurecr.io
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+      - run: |
+          docker build . -t etherealpulse.azurecr.io/myapp:${{ github.sha }}
+          docker push etherealpulse.azurecr.io/myapp:${{ github.sha }}
+
+      - name: Deploy to Azure Container Instances
+        uses: azure/aci-deploy@v1
+        with:
+          resource-group: RG-Ethereal-Pulse
+          dns-name-label: myapp-${{ github.sha }}
+          image: etherealpulse.azurecr.io/myapp:${{ github.sha }}
+          registry-login-server: etherealpulse.azurecr.io
+          registry-username: ${{ secrets.REGISTRY_USERNAME }}
+          registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+          location: "eastus"
