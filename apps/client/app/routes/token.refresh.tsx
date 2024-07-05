@@ -1,15 +1,9 @@
 import { LoaderFunctionArgs, json } from "@remix-run/node";
-import { refreshTokenCookie } from "~/services/session.server";
+import { getRefreshToken } from "~/services/session.server";
 import { JWT } from "~/utils/jwt";
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  const cookieHeader = request.headers.get('Cookie');
-
-  if (!cookieHeader) {
-    return json({ error: 'Cookie not found' }, { status: 500 });
-  }
-
-  const refreshToken = await refreshTokenCookie.parse(cookieHeader) as string | undefined;
+  const refreshToken = await getRefreshToken(request);
 
   if (!refreshToken) {
     return json({}, { status: 401 });

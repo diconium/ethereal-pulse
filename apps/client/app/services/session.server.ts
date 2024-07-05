@@ -29,10 +29,11 @@ export async function getRefreshToken(request: Request): Promise<string | null> 
 }
 
 /**
- * Creates a user session with the provided token.
- * @param token - The token to be associated with the session.
+ * Creates a user session with the provided tokens.
+ * @param accessToken - The access token.
+ * @param refreshToken - The refresh token
  * @param options - Optional object for configuring user session.
- * @returns A redirect response to the "/emails" page with the session token set as a cookie.
+ * @returns A redirect response with the session token set as a cookie.
  */
 export async function createUserSession(
   accessToken: string,

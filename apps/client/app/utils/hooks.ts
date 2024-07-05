@@ -10,7 +10,7 @@ import type { RootData } from "~/types/session";
  */
 export function useMatchesData(
   id: string
-): RootData {
+): RootData | undefined {
   const matchingRoutes = useMatches();
   const route = useMemo(
     () => matchingRoutes.find((route) => route.id === id),
@@ -25,5 +25,5 @@ export function useMatchesData(
  */
 export function useFetchUser(): User | undefined {
   const data = useMatchesData("root");
-  return data.user;
+  return data?.user;
 }

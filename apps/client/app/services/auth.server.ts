@@ -67,12 +67,11 @@ export async function logout(request: Request, redirectTo: string = "/") {
 
 /**
  * Middleware function for authentication.
- * Should be used in the loader and action functions for protected routes.
- *
+ * Should be used in the loader and action functions of protected routes.
+ * 
  * @param request - The request object.
- * @param redirectTo - The URL to redirect to if the user is not authenticated. Defaults to the current URL.
- * @returns The user ID if the user is authenticated.
- * @throws If the user is not authenticated, it is redirected to the login page.
+ * @returns A Promise that resolves to void.
+ * @throws Logs out User if tokens are invalid.
  */
 export async function authMiddleware(request: Request) {
   const jwt = new JWT();

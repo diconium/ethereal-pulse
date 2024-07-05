@@ -6,10 +6,6 @@ export interface User {
   password: string;
 }
 
-export interface AuthMiddlewareOptions {
-  onErrorRedirectTo?: string;
-}
-
 export interface JWTPayload {
   userId: string;
 }
