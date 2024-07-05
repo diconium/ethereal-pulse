@@ -29,22 +29,10 @@ export const DEFAULT_LINKS: NavbarLink[] = [
     path: "/settings",
     label: "Settings"
   },
-  {
-    path: "/user",
-    label: "User name"
-  },
 ]
 
 
 export const LANDING_PAGE_LINKS: NavbarLink[] = [
-  {
-    path: "/login",
-    label: "Sign in"
-  },
-  {
-    path: "/signup",
-    label: "Sign up"
-  },
   {
     path: "/docs",
     label: "Docs"
@@ -52,5 +40,9 @@ export const LANDING_PAGE_LINKS: NavbarLink[] = [
   {
     path: "/emails",
     label: "Emails"
-  }
+  },
+  {
+    path: "/login",
+    label: "Login"
+  },
 ]

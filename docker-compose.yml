@@ -19,7 +19,7 @@ services:
     depends_on:
       - mongo
     environment:
-      MONGO_URI: mongodb://root:example@mongo:27017/mydatabase?authSource=admin
+      MONGO_URI: mongodb://root:example@localhost:27017/mydatabase?authSource=admin
       # Add other environment variables for the server here
 
   webapp:
