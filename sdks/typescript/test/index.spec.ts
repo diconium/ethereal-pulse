@@ -30,7 +30,7 @@ describe("EtherealPulse", () => {
     } as any;
 
     expect(() => etherealPulse["handleError"](error)).toThrow(
-      "Failed to send email: Error message from server"
+      "Failed to send email: Error message from server",
     );
   });
 
@@ -59,7 +59,7 @@ describe("EtherealPulse", () => {
           "Content-Type": "application/json",
           "x-api-key": apiKey,
         },
-      }
+      },
     );
   });
 
@@ -81,7 +81,7 @@ describe("EtherealPulse", () => {
     mockedAxios.post.mockRejectedValue(error);
 
     await expect(etherealPulse.sendEmail(emailRequest)).rejects.toThrow(
-      "Failed to send email: Error message from server"
+      "Failed to send email: Error message from server",
     );
   });
 });

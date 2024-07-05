@@ -29,9 +29,15 @@ class EtherealPulse implements IEtherealPulse {
       html,
     };
 
-    if (bcc) requestBody.bcc = bcc;
-    if (cc) requestBody.cc = cc;
-    if (attachments) requestBody.attachments = attachments;
+    if (bcc) {
+      requestBody.bcc = bcc;
+    }
+    if (cc) {
+      requestBody.cc = cc;
+    }
+    if (attachments) {
+      requestBody.attachments = attachments;
+    }
 
     return requestBody;
   }
