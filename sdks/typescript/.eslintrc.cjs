@@ -27,7 +27,7 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 1,
     'prettier/prettier': 'error',
     'no-console': 'warn',
-    'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+    '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     'prefer-const': 'error',
     eqeqeq: ['error', 'always'],
     curly: 'error',

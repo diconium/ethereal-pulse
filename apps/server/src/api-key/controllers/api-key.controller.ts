@@ -19,22 +19,22 @@ import {
 @Controller('apiKeys')
 @UseGuards(ApiKeyGuard)
 export class ApiKeyController {
-  constructor(private readonly apiKeyService: ApiKeyService) {}
+  constructor(private readonly _apiKeyService: ApiKeyService) {}
 
   @Get()
   async findAll(): Promise<GetApiKeysWrapperResponseDto> {
-    return this.apiKeyService.findAll();
+    return this._apiKeyService.findAll();
   }
 
   @Post()
   async createApiKey(
     @Body() payload: PostApiKeyRequestDto,
   ): Promise<PostApiKeyResponseDto> {
-    return this.apiKeyService.createApiKey(payload);
+    return this._apiKeyService.createApiKey(payload);
   }
 
   @Delete(':id')
   async remove(@Param() params: IdParamDto): Promise<void> {
-    return this.apiKeyService.remove(params.id);
+    return this._apiKeyService.remove(params.id);
   }
 }
