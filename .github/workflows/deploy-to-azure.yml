@@ -24,7 +24,7 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
       - run: |
-          docker build . -t etherealpulse.azurecr.io/myapp:${{ github.sha }}
+          docker build -f apps/server/Dockerfile . -t etherealpulse.azurecr.io/myapp:${{ github.sha }}
           docker push etherealpulse.azurecr.io/myapp:${{ github.sha }}
 
       - name: Deploy to Azure Container Instances
