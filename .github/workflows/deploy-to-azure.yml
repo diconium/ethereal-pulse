@@ -36,4 +36,4 @@ jobs:
           registry-login-server: etherealpulse.azurecr.io
           registry-username: ${{ secrets.REGISTRY_USERNAME }}
           registry-password: ${{ secrets.REGISTRY_PASSWORD }}
-          location: "eastus"
+          location: "westeurope"
