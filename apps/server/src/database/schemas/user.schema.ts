@@ -14,25 +14,25 @@ export class User {
     type: [{ type: MongooseSchema.Types.ObjectId, ref: MODEL_NAMES.EMAIL }],
     default: [],
   })
-  emails: Types.ObjectId[];
+  emailsIds: Types.ObjectId[];
 
   @Prop({
     type: [{ type: MongooseSchema.Types.ObjectId, ref: MODEL_NAMES.GROUP }],
     default: [],
   })
-  groups: Types.ObjectId[];
+  groupsIds: Types.ObjectId[];
 
   @Prop({
     type: [{ type: MongooseSchema.Types.ObjectId, ref: MODEL_NAMES.TEMPLATE }],
     default: [],
   })
-  templates: Types.ObjectId[];
+  templatesIds: Types.ObjectId[];
 
   @Prop({
     type: [{ type: MongooseSchema.Types.ObjectId, ref: MODEL_NAMES.APIKEY }],
     default: [],
   })
-  apiKeys: Types.ObjectId[];
+  apiKeysIds: Types.ObjectId[];
 }
 
 export type UserDocument = HydratedDocument<User>;
