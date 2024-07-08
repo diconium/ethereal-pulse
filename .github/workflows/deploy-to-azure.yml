@@ -31,6 +31,7 @@ jobs:
         uses: azure/aci-deploy@v1
         with:
           resource-group: RG-Ethereal-Pulse
+          name: myapp-${{ github.sha }}
           dns-name-label: myapp-${{ github.sha }}
           image: etherealpulse.azurecr.io/myapp:${{ github.sha }}
           registry-login-server: etherealpulse.azurecr.io
