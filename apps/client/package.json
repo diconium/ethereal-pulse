@@ -15,6 +15,7 @@
     "start": "remix vite:dev",
     "build": "remix vite:build",
     "preview": "remix-serve ./build/server/index.js",
+    "format": "prettier --write \"app/**/*.ts\"",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
     "typecheck": "tsc"
   },

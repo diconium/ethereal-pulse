@@ -1,8 +1,8 @@
 import {
   IEtherealPulse,
   ISendEmailRequest,
-} from "./interfaces/email-services.interface";
-import { DEFAULT_BASE_URL } from "./constants/common.constants";
+} from './interfaces/email-services.interface';
+import { DEFAULT_BASE_URL } from './constants/common.constants';
 
 class EtherealPulse implements IEtherealPulse {
   private apiKey: string;
@@ -69,10 +69,10 @@ class EtherealPulse implements IEtherealPulse {
 
     try {
       const response = await fetch(`${this.baseUrl}/email/send`, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
-          "x-api-key": this.apiKey,
+          'Content-Type': 'application/json',
+          'x-api-key': this.apiKey,
           ...headers,
         },
         body: JSON.stringify(requestBody),
