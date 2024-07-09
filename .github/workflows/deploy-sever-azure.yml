@@ -1,4 +1,4 @@
-name: Deploy to AKS
+name: Deploy to Server to Azure
 
 on:
   push:
@@ -39,10 +39,15 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-
+      - name: DEBUG
+        shell: bash
+        run: |
+          echo "!!! DEBUG !!!"
+          az aks list --query "[].{name:name, resourceGroup:resourceGroup}" -o table
+          echo "!!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!!"
       - name: Set up AKS context
         run: |
-          az aks get-credentials --resource-group YOUR_RESOURCE_GROUP_NAME --name YOUR_AKS_CLUSTER_NAME
+          az aks get-credentials --resource-group RG-Ethereal-Pulse --name YOUR_AKS_CLUSTER_NAME
 
       - name: Deploy to AKS
         run: |
