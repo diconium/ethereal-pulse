@@ -27,7 +27,7 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker build -t docker.pkg.github.com/${{ github.repository }}/nextjs-image:latest .
+          docker build -f apps/server/Dockerfile -t docker.pkg.github.com/${{ github.repository }}/nextjs-image:latest .
           docker push docker.pkg.github.com/${{ github.repository }}/nextjs-image:latest
 
       - name: Set up kubectl
