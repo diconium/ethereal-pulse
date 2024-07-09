@@ -38,3 +38,8 @@ jobs:
           registry-username: ${{ secrets.REGISTRY_USERNAME }}
           registry-password: ${{ secrets.REGISTRY_PASSWORD }}
           location: "westeurope"
+          environment-variables: |
+            PORT=${{ secrets.MS_PORT }}
+            DATABASE_URI=${{ secrets.DATABASE_URI }}
+            AZURE_CONNECTION_STRING=${{ secrets.AZURE_CONNECTION_STRING }}
+            CLOUD_PROVIDER_NAME=${{ secrets.CLOUD_PROVIDER_NAME }}

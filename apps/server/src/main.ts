@@ -14,6 +14,7 @@ async function bootstrap() {
   app.useGlobalFilters(new MongooseValidationFilter());
 
   const port = configService.get<number>('port') ?? 3000;
+  console.log(`Application is starting on port ${port}`); // Log for testing purposes
   await app.listen(port);
 }
 bootstrap();
