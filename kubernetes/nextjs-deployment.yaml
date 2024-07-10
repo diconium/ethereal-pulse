@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: nextjs
-          image: ethereal-pulse-server:latest
+          image: nextjs-image:latest
           ports:
             - containerPort: 3000
           env:
