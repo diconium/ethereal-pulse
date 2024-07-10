@@ -26,5 +26,8 @@ jobs:
           appSourcePath: ${{ github.workspace }}/apps/client
           acrName: etherealpulse
           containerAppName: ethereal-pulse-webapp
+          containerAppEnvironment: container-apps-env
           resourceGroup: RG-Ethereal-Pulse
           location: westeurope
+          targetPort: 5173
+          ingress: external
