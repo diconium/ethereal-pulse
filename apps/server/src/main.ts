@@ -14,7 +14,7 @@ async function bootstrap() {
   app.useGlobalFilters(new MongooseValidationFilter());
 
   const port = configService.get<number>('port') ?? 8080;
-  console.log(`Application is starting on port ${port}`); // Log for testing purposes, changing just for deploy trigger
+  console.log(`Application is starting on port: ${port}`); // Log for testing purposes, changing just for deploy trigger
   await app.listen(port);
 }
 bootstrap();
