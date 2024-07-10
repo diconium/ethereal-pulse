@@ -31,13 +31,13 @@ jobs:
       - name: Check for existing ACI and delete (if any)
         run: |
           echo "Checking for existing Azure Container Instances..."
-          az container delete --resource-group RG-Ethereal-Pulse --name myapp-${{ github.sha }} --yes || true
+          az container delete --resource-group RG-Ethereal-Pulse --name myapp --yes || true
           echo "Existing Azure Container Instance deleted (if existed)."
 
       - name: Verify Deletion
         run: |
           echo "Verifying the deletion of the container instance..."
-          if az container show --resource-group RG-Ethereal-Pulse --name myapp-${{ github.sha }} 2>/dev/null; then
+          if az container show --resource-group RG-Ethereal-Pulse --name myapp 2>/dev/null; then
             echo "Error: Container instance still exists!"
             exit 1
           else
@@ -48,8 +48,8 @@ jobs:
         uses: azure/aci-deploy@v1
         with:
           resource-group: RG-Ethereal-Pulse
-          name: myapp-${{ github.sha }}
-          dns-name-label: myapp-${{ github.sha }}
+          name: myapp
+          dns-name-label: myapp
           image: etherealpulse.azurecr.io/myapp:${{ github.sha }}
           registry-login-server: etherealpulse.azurecr.io
           registry-username: ${{ secrets.REGISTRY_USERNAME }}
@@ -65,4 +65,4 @@ jobs:
       - name: Post-deployment check
         run: |
           echo "Deployment complete. Verifying deployment..."
-          az container show --resource-group RG-Ethereal-Pulse --name myapp-${{ github.sha }}
+          az container show --resource-group RG-Ethereal-Pulse --name myapp

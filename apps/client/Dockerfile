@@ -15,7 +15,11 @@ WORKDIR /app
 COPY . .
 
 # Stage 1: Install production dependencies
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --no-frozen-lockfile
+#RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --no-frozen-lockfile
+
+# --mount=type=cache causes error when building on container apps
+# also as this will run on github i dont think cache will even be preserved so no point in runn it like so
+RUN id=pnpm,target=/pnpm/store pnpm install --no-frozen-lockfile
 
 # Stage 3: Build 
 RUN pnpm run build
