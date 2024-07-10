@@ -18,16 +18,16 @@ spec:
           ports:
             - containerPort: 3000
           env:
-            - name: MONGODB_URI
+            - name: DATABASE_URI
               valueFrom:
                 secretKeyRef:
                   name: mongodb-secret
                   key: uri
-            - name: MONGODB_DB
-              valueFrom:
-                secretKeyRef:
-                  name: mongodb-secret
-                  key: db
+            # - name: MONGODB_DB
+            #   valueFrom:
+            #     secretKeyRef:
+            #       name: mongodb-secret
+            #       key: db
 ---
 apiVersion: v1
 kind: Service

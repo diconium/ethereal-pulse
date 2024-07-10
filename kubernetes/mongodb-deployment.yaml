@@ -43,5 +43,5 @@ metadata:
   name: mongodb-secret
 type: Opaque
 data:
-  uri: bW9uZ29kYjovL3Jvb3Q6ZXhhbXBsZUBsb2NhbGhvc3Q6MjcwMTc=
-  db: bXlkYXRhYmFzZQ==
+  uri: bW9uZ29kYjovL3Jvb3Q6ZXhhbXBsZUBsb2NhbGhvc3Q6MjcwMTcvbXlkYXRhYmFzZT9hdXRoU291cmNlPWFkbWlu
+  # db: bXlkYXRhYmFzZQ==
