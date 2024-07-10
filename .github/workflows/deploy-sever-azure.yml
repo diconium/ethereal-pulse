@@ -47,7 +47,7 @@ jobs:
           echo "!!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!!"
       - name: Set up AKS context
         run: |
-          az aks get-credentials --resource-group RG-Ethereal-Pulse --name CL-Ethereal-Pulse
+          az aks get-credentials --resource-group RG-Ethereal-Pulse --name CL-Ethereal-Pulse-West
 
       - name: Deploy to AKS
         run: |
