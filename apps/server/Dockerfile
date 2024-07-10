@@ -24,7 +24,7 @@ WORKDIR /app/apps/server
 RUN pnpm run build
 
 # Expose the port the app runs on
-EXPOSE 3000
+EXPOSE 8080
 
 # Define the command to run the app
 CMD ["pnpm", "start"]
