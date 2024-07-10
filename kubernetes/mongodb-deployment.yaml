@@ -35,3 +35,13 @@ spec:
       targetPort: 27017
   selector:
     app: mongodb
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mongodb-secret
+type: Opaque
+data:
+  uri: bW9uZ29kYjovL3Jvb3Q6ZXhhbXBsZUBsb2NhbGhvc3Q6MjcwMTc=
+  db: bXlkYXRhYmFzZQ==
