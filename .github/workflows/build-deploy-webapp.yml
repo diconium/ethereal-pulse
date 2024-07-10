@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'apps/client/**'
   workflow_dispatch:
 
 jobs:
@@ -22,6 +24,7 @@ jobs:
         uses: azure/container-apps-deploy-action@v1
         with:
           appSourcePath: ${{ github.workspace }}/apps/client
-          acrName: etherealpulseregistry
+          acrName: etherealpulse
           containerAppName: ethereal-pulse-webapp
           resourceGroup: RG-Ethereal-Pulse
+          location: westeurope
