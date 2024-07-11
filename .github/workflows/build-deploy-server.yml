@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'apps/server/**'
+      - "apps/server/**"
   workflow_dispatch:
 
 jobs:
@@ -34,8 +34,4 @@ jobs:
           location: westeurope
           targetPort: ${{ secrets.MS_PORT }}
           ingress: external
-          environmentVariables: |
-            PORT=${{ secrets.MS_PORT }}
-            DATABASE_URI=${{ secrets.DATABASE_URI }}
-            CLOUD_PROVIDER_NAME=${{ secrets.CLOUD_PROVIDER_NAME }}
-            AZURE_CONNECTION_STRING=${{ secrets.AZURE_CONNECTION_STRING }}
+          environmentVariables: PORT=${{ secrets.MS_PORT }} DATABASE_URI=${{ secrets.DATABASE_URI }} CLOUD_PROVIDER_NAME=${{ secrets.CLOUD_PROVIDER_NAME }} AZURE_CONNECTION_STRING=${{ secrets.AZURE_CONNECTION_STRING }}
