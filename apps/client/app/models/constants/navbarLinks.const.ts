@@ -50,7 +50,7 @@ export const LANDING_PAGE_LINKS: NavbarLink[] = [
     label: "Docs"
   },
   {
-    path: "/emails",
-    label: "Emails"
+    path: "/templates",
+    label: "Templates"
   }
 ]
