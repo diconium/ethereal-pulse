@@ -18,6 +18,9 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+      - name: Log in to the Azure Container Registry
+        run: az acr login --name etherealpulse
+
       - name: Build and push Docker image
         uses: azure/docker-login@v1
         with:
@@ -25,7 +28,9 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
       - run: |
-          docker build -f apps/client/Dockerfile . -t etherealpulse.azurecr.io/webapp:${{ github.run_id }}
+          echo ${{ github.CONTEXT }}
+          echo ${{ github.WORKSPACE }}
+          docker build -t etherealpulse.azurecr.io/github-action/container-app:${{ github.run_id }} ./apps/client
           echo ${{ secrets.REGISTRY_PASSWORD }} | docker login etherealpulse.azurecr.io --username ${{ secrets.REGISTRY_USERNAME }} --password-stdin
           docker push etherealpulse.azurecr.io/webapp:${{ github.run_id }}
 
