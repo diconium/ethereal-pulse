@@ -28,10 +28,9 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
       - run: |
-          echo ${{ github.CONTEXT }}
           echo ${{ github.WORKSPACE }}
-          docker build -t etherealpulse.azurecr.io/github-action/container-app:${{ github.run_id }} ./apps/client
           echo ${{ secrets.REGISTRY_PASSWORD }} | docker login etherealpulse.azurecr.io --username ${{ secrets.REGISTRY_USERNAME }} --password-stdin
+          docker build /apps/client/Dockerfile . -t etherealpulse.azurecr.io/webapp:${{ github.run_id }}
           docker push etherealpulse.azurecr.io/webapp:${{ github.run_id }}
 
       - name: Build and deploy Container App
