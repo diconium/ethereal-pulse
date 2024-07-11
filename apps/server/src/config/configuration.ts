@@ -1,6 +1,4 @@
 export default () => {
-  console.log("🚀 ~ process.env.DATABASE_URI:", process.env.DATABASE_URI)
-  
   return {
     port: parseInt(process.env.MS_PORT ?? '8080', 10),
     database: {
