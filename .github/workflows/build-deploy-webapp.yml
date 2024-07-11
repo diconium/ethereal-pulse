@@ -29,7 +29,7 @@ jobs:
           registryUsername: ${{ secrets.REGISTRY_USERNAME }}
           registryPassword: ${{ secrets.REGISTRY_PASSWORD }}
           containerAppName: ethereal-pulse-webapp
-          containerAppEnvironment: container-apps-env
+          containerAppEnvironment: container-apps-enviroment
           resourceGroup: RG-Ethereal-Pulse
           location: westeurope
           targetPort: 5173
