@@ -22,20 +22,21 @@ jobs:
         run: az acr login --name etherealpulse
 
       - name: Build and push Docker image
-        uses: azure/docker-login@v1
+        uses: azure/docker-login@v2
         with:
           login-server: etherealpulse.azurecr.io
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
+
       - run: |
-          echo ${{ github.WORKSPACE }}
-          docker build -f /apps/client/Dockerfile . -t etherealpulse.azurecr.io/webapp:${{ github.run_id }}
-          docker push etherealpulse.azurecr.io/webapp:${{ github.run_id }}
+          cd apps/client
+          docker build . -t etherealpulse.azurecr.io/webapp:${{ github.sha }}
+          docker push etherealpulse.azurecr.io/webapp:${{ github.sha }}
 
       - name: Build and deploy Container App
         uses: azure/container-apps-deploy-action@v1
         with:
-          imageToDeploy: etherealpulse.azurecr.io/webapp:${{ github.run_id }}
+          imageToDeploy: etherealpulse.azurecr.io/webapp:${{ github.sha }}
           registryUrl: etherealpulse.azurecr.io
           registryUsername: ${{ secrets.REGISTRY_USERNAME }}
           registryPassword: ${{ secrets.REGISTRY_PASSWORD }}
