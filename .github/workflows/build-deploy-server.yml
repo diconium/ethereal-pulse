@@ -34,8 +34,4 @@ jobs:
           location: westeurope
           targetPort: ${{ secrets.MS_PORT }}
           ingress: external
-          environmentVariables: |
-            PORT=secretref:port
-            DATABASE_URI=secretref:database-uri
-            CLOUD_PROVIDER_NAME=azure
-            AZURE_CONNECTION_STRING=secretref:azure-connection-string
+          environmentVariables: PORT=secretref:port DATABASE_URI=secretref:database-uri CLOUD_PROVIDER_NAME=azure AZURE_CONNECTION_STRING=secretref:azure-connection-string
