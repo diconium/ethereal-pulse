@@ -1,5 +1,16 @@
-import SideNavbar from "~/components/navbars/SideNavbar";
+import { LoaderFunctionArgs } from "@remix-run/node";
 import { Outlet } from "@remix-run/react";
+import SideNavbar from "~/components/navbars/SideNavbar";
+import { authenticator } from "~/services/auth/auth.server";
+
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+  const currentPath = new URL(request.url).pathname;
+  const searchParams = new URLSearchParams([["redirectTo", currentPath]]);
+
+  return await authenticator.isAuthenticated(request, {
+    failureRedirect: `/login?${searchParams}`,
+  });
+};
 
 const BaseLayout = () => {
   return (

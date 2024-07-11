@@ -5,13 +5,3 @@ export interface User {
   email: string;
   password: string;
 }
-
-export interface JWTPayload {
-  userId: string;
-}
-
-export interface JWTVerifyResponse {
-  success: boolean;
-  data?: JWTPayload;
-  error?: Error;
-}

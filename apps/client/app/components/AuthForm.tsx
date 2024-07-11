@@ -80,16 +80,6 @@ export default function AuthForm({ type }: { type: "login" | "signup" }) {
               />
             </div>
           )}
-          {type === "login" && (
-            <div className="flex gap-4 mt-4">
-              <input
-                id="remember"
-                name="remember"
-                type="checkbox"
-              />
-              <label htmlFor="remember">Remember me</label>
-            </div>
-          )}
           <div className="flex flex-col items-center mt-6">
             {actionData?.error && (
               <p className="text-red-600 font-bold">{actionData.error}</p>

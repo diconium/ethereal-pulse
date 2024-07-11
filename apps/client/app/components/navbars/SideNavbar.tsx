@@ -1,4 +1,3 @@
-
 import { Form, NavLink } from "@remix-run/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";

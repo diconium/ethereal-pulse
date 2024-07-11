@@ -9,7 +9,7 @@ export function storeUser(user: User) {
   return user.id;
 }
 
-export function getUserById(userId: string | undefined) {
+export function getUserById(userId: string | null) {
   if (!userId) {
     return undefined;
   }

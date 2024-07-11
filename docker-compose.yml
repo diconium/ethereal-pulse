@@ -10,29 +10,5 @@ services:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
 
-  server:
-    build:
-      context: ./apps/server
-    container_name: server
-    ports:
-      - "3000:3000"
-    depends_on:
-      - mongo
-    environment:
-      MONGO_URI: mongodb://root:example@localhost:27017/mydatabase?authSource=admin
-      # Add other environment variables for the server here
-
-  webapp:
-    build:
-      context: ./apps/client
-    container_name: webapp
-    ports:
-      - "5173:5173"
-    depends_on:
-      - server
-    environment:
-      API_URL: http://server:3000
-      # Add other environment variables for the webapp here
-
 volumes:
   mongo-data:

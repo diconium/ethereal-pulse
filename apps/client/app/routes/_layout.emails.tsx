@@ -3,8 +3,6 @@ import { json, LoaderFunctionArgs } from "@remix-run/node";
 import { useEffect, useRef } from "react";
 import { MOCKED_EMAILS } from "~/mocks/emails";
 import { Email } from "~/models/email.model";
-import { authMiddleware } from "~/services/auth.server";
-
 
 async function getEmails(searchString: string | null): Promise<Email[]> {
   await new Promise((resolve) => setTimeout(resolve, 500));
@@ -15,8 +13,6 @@ async function getEmails(searchString: string | null): Promise<Email[]> {
 }
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  await authMiddleware(request);
-
   const url = new URL(request.url);
   const searchedStr = url.searchParams.get("email");
   const emails = await getEmails(searchedStr);

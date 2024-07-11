@@ -1,14 +1,13 @@
 import { Link } from "@remix-run/react";
-import { json, LoaderFunctionArgs, redirect } from "@remix-run/node";
+import { LoaderFunctionArgs } from "@remix-run/node";
 import { ChevronRightIcon } from "@heroicons/react/24/solid";
 import LandingNavbar from "~/components/navbars/LandingNavbar";
-import { isUserLoggedIn } from "~/services/auth.server";
+import { authenticator } from "~/services/auth/auth.server";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  if (await isUserLoggedIn(request)) {
-    return redirect("/emails");
-  }
-  return json({});
+  return await authenticator.isAuthenticated(request, {
+    successRedirect: "/emails",
+  });
 };
 
 export default function Index() {
