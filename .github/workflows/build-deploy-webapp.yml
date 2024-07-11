@@ -25,6 +25,8 @@ jobs:
         with:
           appSourcePath: ${{ github.workspace }}/apps/client
           acrName: etherealpulse
+          registryUsername: ${{ secrets.REGISTRY_USERNAME }}
+          registryPassword: ${{ secrets.REGISTRY_PASSWORD }}
           containerAppName: ethereal-pulse-webapp
           containerAppEnvironment: container-apps-env
           resourceGroup: RG-Ethereal-Pulse
