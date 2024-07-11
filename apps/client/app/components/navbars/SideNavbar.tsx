@@ -34,7 +34,6 @@ const SideNavbar = () => {
     >
       <div className="flex w-full">
         <NavLink className="flex flex-shrink-0 items-center" to="/emails">
-          {/*<img className="h-10 w-auto rounded-full border-[1px] border-black" src={ fccLogo } alt="Ethereal logo"/>*/}
           <span className="text-black text-xl font-bold ml-2">
             Ethereal Pulse
           </span>

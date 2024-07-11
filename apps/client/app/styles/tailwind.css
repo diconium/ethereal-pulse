@@ -1,3 +1,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+@layer components {
+    .pulse-input {
+        @apply w-full px-3 py-2 bg-gray-100 focus:outline-gray-400 rounded-lg leading-6;
+    }
+
+    .outline-button {
+        @apply flex items-center px-3 py-1 border-2 rounded-lg hover:bg-gray-200;
+    }
+
+    .shadow-button {
+        @apply flex items-center px-3 py-1 rounded-lg hover:bg-gray-200;
+    }
+}

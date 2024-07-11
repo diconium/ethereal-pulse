@@ -7,7 +7,6 @@ import { ApiKeyRepository } from 'src/authentication/repositories/api-key.reposi
 
 @Module({
   imports: [
-    MongooseModule.forRoot(configuration().database.uri || ''),
     MongooseModule.forFeature([
       { name: 'ApiKey', schema: ApiKeySchema },
       { name: 'User', schema: UserSchema },

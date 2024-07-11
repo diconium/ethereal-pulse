@@ -1,5 +1,5 @@
 export default () => ({
-  port: parseInt(process.env.PORT ?? '3000', 10),
+  port: parseInt(process.env.MS_PORT ?? '8080', 10),
   database: {
     uri: process.env.DATABASE_URI ?? '',
   },
