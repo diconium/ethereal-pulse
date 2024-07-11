@@ -1,11 +1,6 @@
 name: Deploy to Azure Container Instances
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'apps/server/**'
   workflow_dispatch:
 
 jobs:

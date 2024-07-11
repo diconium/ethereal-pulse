@@ -1,16 +1,6 @@
 name: Build Server Docker Image
 
 on:
-  push:
-    branches: ["main"]
-    # Publish semver tags as releases.
-    tags: [ 'v*.*.*' ]
-    paths:
-      - 'apps/server/**'
-  pull_request:
-    branches: ["main"]
-    paths:
-      - 'apps/server/**'
   workflow_dispatch:
 
 env:
