@@ -33,6 +33,7 @@ jobs:
           app: server
       - name: Build and push Docker image
         run: |
+          echo "IMAGE_TO_DEPLOY ${{ steps.get_image.outputs.image_to_deploy }}"
           cd apps/server
           docker build . -t ${{ steps.get_image.outputs.image_to_deploy }}
           docker push ${{ steps.get_image.outputs.image_to_deploy }}
@@ -41,13 +42,13 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: build
-    env:
-      IMAGE_TO_DEPLOY: ${{ needs.build.outputs.image_to_deploy }}
     steps:
+      - name: Debug
+        run: echo "IMAGE_TO_DEPLOY ${{ needs.build.outputs.image_to_deploy }}"
       - name: Build and deploy Container App
         uses: azure/container-apps-deploy-action@v2
         with:
-          imageToDeploy: ${{ env.IMAGE_TO_DEPLOY }}
+          imageToDeploy: ${{ needs.build.outputs.image_to_deploy }}
           registryUsername: ${{ secrets.REGISTRY_USERNAME }}
           registryPassword: ${{ secrets.REGISTRY_PASSWORD }}
           containerAppName: ethereal-pulse-server
