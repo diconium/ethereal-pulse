@@ -21,7 +21,7 @@ runs:
       shell: bash
       run: |
         VERSION=$(jq -r '.version' apps/${{ inputs.app }}/package.json)
-        TAG=$VERSION_$BRANCH_NAME
+        TAG=${VERSION}_$BRANCH_NAME
         echo "TAG=$TAG"
         IMAGE_TO_DEPLOY=etherealpulse.azurecr.io/${{ inputs.app }}:$TAG
         echo "image_to_deploy=$IMAGE_TO_DEPLOY" >> $GITHUB_OUTPUT

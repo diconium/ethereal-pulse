@@ -38,6 +38,7 @@ jobs:
       - name: Deploy to Azure Container Apps
         uses: azure/container-apps-deploy-action@v2
         with:
+          imageToDeploy: ${{ steps.get_image.outputs.image_to_deploy }}
           registryUsername: ${{ secrets.REGISTRY_USERNAME }}
           registryPassword: ${{ secrets.REGISTRY_PASSWORD }}
           containerAppName: ethereal-pulse-webapp
