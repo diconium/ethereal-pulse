@@ -18,15 +18,21 @@ jobs:
         uses: azure/login@v2.1.1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Docker login
+        uses: azure/docker-login@v2
+        with:
+          login-server: etherealpulse.azurecr.io
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
       - name: Define image to deploy
         id: get_tag
         run: |
           VERSION=$(jq -r '.version' apps/server/package.json)
 
           if [ -z "$GITHUB_SHA" ]; then
-            TAG=${VERSION}_$(date +%s)
+            TAG=${VERSION}_$(date +%Y%m%d%H%M%S)
           else
-            TAG=${VERSION}_${{ github.sha }}
+            TAG=${VERSION}_$(git rev-parse --short "$GITHUB_SHA")
           fi
 
           echo "TAG=$TAG"
