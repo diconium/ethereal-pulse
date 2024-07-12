@@ -7,13 +7,13 @@ import { AUTH_HEADERS } from 'src/authentication/constants/api-key-permissions.c
 @Controller('email')
 @UseGuards(ApiKeyGuard)
 export class EmailController {
-  constructor(private readonly emailService: EmailService) {}
+  constructor(private readonly _emailService: EmailService) {}
 
   @Post('send')
   async sendEmail(
     @Body() payload: SendEmailRequestDto,
     @Headers(AUTH_HEADERS.API_KEY) apiKey: string,
   ): Promise<void> {
-    return this.emailService.processEmail(payload, apiKey);
+    return this._emailService.processEmail(payload, apiKey);
   }
 }

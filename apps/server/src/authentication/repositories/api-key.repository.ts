@@ -15,7 +15,7 @@ export interface IApiKeyDocumentWithProvider extends ApiKeyDocument {
 export class ApiKeyRepository {
   constructor(
     @InjectModel(ApiKey.name)
-    private readonly apiKeyModel: Model<ApiKeyDocument>,
+    private readonly _apiKeyModel: Model<ApiKeyDocument>,
   ) {}
 
   /**
@@ -24,7 +24,7 @@ export class ApiKeyRepository {
    * @returns {Promise<ApiKey>} The created ApiKey.
    */
   async create(createApiKeyDto: CreateApiKeyDto): Promise<ApiKeyDocument> {
-    return this.apiKeyModel.create(createApiKeyDto);
+    return this._apiKeyModel.create(createApiKeyDto);
   }
 
   /**
@@ -33,7 +33,7 @@ export class ApiKeyRepository {
    * @returns {Promise<ApiKeyDocument | null>} - A promise that resolves to the API key document if found, otherwise null.
    */
   async findOneById(apiKeyId: string): Promise<ApiKeyDocument | null> {
-    return this.apiKeyModel.findOne({ _id: apiKeyId }).exec();
+    return this._apiKeyModel.findOne({ _id: apiKeyId }).exec();
   }
 
   /**
@@ -42,7 +42,7 @@ export class ApiKeyRepository {
    * @returns {Promise<ApiKeyDocument | null>} - A promise that resolves to the API key document if found, otherwise null.
    */
   async findOne(apiKey: string): Promise<ApiKeyDocument | null> {
-    const apiKeys = await this.apiKeyModel.find().exec();
+    const apiKeys = await this._apiKeyModel.find().exec();
 
     for (const key of apiKeys) {
       if (await bcrypt.compare(apiKey, key.token)) {
@@ -63,15 +63,15 @@ export class ApiKeyRepository {
   }
 
   async findAll(): Promise<ApiKey[]> {
-    return this.apiKeyModel.find().exec();
+    return this._apiKeyModel.find().exec();
   }
 
   async findAllByUserId(userId: string): Promise<ApiKeyDocument[]> {
-    return this.apiKeyModel.find({ userId }).exec();
+    return this._apiKeyModel.find({ userId }).exec();
   }
 
   async findByIdAndUserAndDelete(id: string, userId: string): Promise<void> {
-    const result = await this.apiKeyModel
+    const result = await this._apiKeyModel
       .findOneAndDelete({ _id: id, userId: userId })
       .exec();
     if (!result) {

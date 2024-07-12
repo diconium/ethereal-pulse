@@ -9,11 +9,11 @@ import { CloudProviderType } from 'src/email-service/interfaces/cloud-provider.i
 @Injectable()
 export class EmailProviderFactory {
   constructor(
-    @Inject(ConfigService) private readonly configService: ConfigService,
+    @Inject(ConfigService) private readonly _configService: ConfigService,
   ) {}
 
   createEmailProvider(): IEmailProvider {
-    const providerName = this.configService
+    const providerName = this._configService
       .get<string>('providers.common.cloudProviderName')
       ?.toLocaleLowerCase();
 
@@ -32,11 +32,11 @@ export class EmailProviderFactory {
   private getEmailProviderInstance(type: CloudProviderType): IEmailProvider {
     switch (type) {
       case EMAIL_PROVIDERS.AZURE:
-        return new AzureEmailProvider(this.configService);
+        return new AzureEmailProvider(this._configService);
       case EMAIL_PROVIDERS.AWS:
-        return new AwsEmailProvider(this.configService);
+        return new AwsEmailProvider(this._configService);
       case EMAIL_PROVIDERS.ETHEREAL:
-        return new EtherealEmailProvider(this.configService);
+        return new EtherealEmailProvider(this._configService);
       default:
         throw new Error('Unsupported email provider');
     }

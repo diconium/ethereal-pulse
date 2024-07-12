@@ -15,11 +15,16 @@
     "preinstall": "npx only-allow pnpm",
     "build": "pnpm -r run build",
     "start": "pnpm -r --parallel --filter='./apps/*' run start",
-    "preview": "pnpm -r --parallel --filter='./apps/*' run preview"
+    "preview": "pnpm -r --parallel --filter='./apps/*' run preview",
+    "lint": "pnpm -r --parallel run lint",
+    "format": "pnpm -r --parallel run format"
   },
   "packageManager": "pnpm@9.1.4",
   "workspaces": [
     "apps/*",
     "sdks/*"
-  ]
+  ],
+  "dependencies": {
+    "eslint-plugin-jest": "^28.6.0"
+  }
 }

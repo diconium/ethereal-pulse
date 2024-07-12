@@ -10,7 +10,7 @@ export class AwsEmailProvider implements IEmailProvider {
   private SES: AWS.SES;
 
   constructor(
-    @Inject(ConfigService) private readonly configService: ConfigService,
+    @Inject(ConfigService) private readonly _configService: ConfigService,
   ) {}
 
   configure(): void {
@@ -19,14 +19,14 @@ export class AwsEmailProvider implements IEmailProvider {
   }
 
   private updateAwsConfig(): void {
-    const accessKeyId = this.configService.get<string>(
+    const accessKeyId = this._configService.get<string>(
       'providers.aws.accessKeyId',
     );
-    const secretAccessKey = this.configService.get<string>(
+    const secretAccessKey = this._configService.get<string>(
       'providers.aws.secretAccessKey',
     );
     const region =
-      this.configService.get<string>('providers.aws.region') ?? 'us-west-2';
+      this._configService.get<string>('providers.aws.region') ?? 'us-west-2';
 
     if (!accessKeyId || !secretAccessKey) {
       throw new Error(

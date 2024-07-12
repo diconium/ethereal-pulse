@@ -28,13 +28,6 @@ const mockApiKeyModel = {
   findOneAndDelete: jest.fn().mockReturnThis(),
 };
 
-const mockCloudProviderModel = {
-  find: jest.fn().mockReturnThis(),
-  findOne: jest.fn().mockReturnThis(),
-  findByIdAndUpdate: jest.fn().mockReturnThis(),
-  findByIdAndDelete: jest.fn().mockReturnThis(),
-};
-
 describe('ApiKeyRepository', () => {
   let repository: ApiKeyRepository;
 

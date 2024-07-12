@@ -18,17 +18,17 @@ import { Template } from 'src/database/schemas/template.schema';
 @Controller('templates')
 @UseGuards(ApiKeyGuard)
 export class TemplateController {
-  constructor(private readonly templateService: TemplateService) {}
+  constructor(private readonly _templateService: TemplateService) {}
 
   @Get()
   async findAll(): Promise<Template[]> {
-    return this.templateService.findAll();
+    return this._templateService.findAll();
   }
 
   @Post()
   @UsePipes(new ValidationPipe({ transform: true }))
   async create(@Body() createTemplateDto: TemplateDto) {
-    return this.templateService.create(createTemplateDto);
+    return this._templateService.create(createTemplateDto);
   }
 
   @Put(':id')
@@ -37,12 +37,12 @@ export class TemplateController {
     @Param('id') id: string,
     @Body() updateTemplateDto: TemplateDto,
   ): Promise<Template> {
-    return this.templateService.update(id, updateTemplateDto);
+    return this._templateService.update(id, updateTemplateDto);
   }
 
   @Delete(':id')
   @UsePipes(new ValidationPipe({ transform: true }))
   async remove(@Param() params: IdParamDto): Promise<void> {
-    return this.templateService.remove(params.id);
+    return this._templateService.remove(params.id);
   }
 }
