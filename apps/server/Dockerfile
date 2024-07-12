@@ -26,10 +26,6 @@ RUN pnpm run build
 
 # Set environment variables for the NestJs application
 ENV HOST=0.0.0.0
-ENV PORT=""
-ENV DATABASE_URI=""
-ENV CLOUD_PROVIDER_NAME=""
-ENV AZURE_CONNECTION_STRING=""
 
 # Expose the port the app runs on
 EXPOSE 8080
