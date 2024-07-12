@@ -12,11 +12,11 @@ export class AzureEmailProvider implements IEmailProvider {
   private emailClient: EmailClient;
 
   constructor(
-    @Inject(ConfigService) private readonly configService: ConfigService,
+    @Inject(ConfigService) private readonly _configService: ConfigService,
   ) {}
 
   configure(): void {
-    const connectionString = this.configService.get<string>(
+    const connectionString = this._configService.get<string>(
       'providers.azure.connectionString',
     );
 

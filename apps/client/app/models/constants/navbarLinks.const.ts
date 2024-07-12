@@ -1,36 +1,35 @@
-import { NavbarLink } from "~/models/navbarLink.model";
+import { NavbarLink } from '~/models/navbarLink.model';
 
 export const DEFAULT_LINKS: NavbarLink[] = [
   {
-    path: "/emails",
-    label: "Emails"
+    path: '/emails',
+    label: 'Emails',
   },
   {
-    path: "/templates",
-    label: "Templates"
+    path: '/templates',
+    label: 'Templates',
   },
   {
-    path: "/groups",
-    label: "Groups"
+    path: '/groups',
+    label: 'Groups',
   },
   {
-    path: "/api-keys",
-    label: "API Keys"
+    path: '/api-keys',
+    label: 'API Keys',
   },
   {
-    path: "/docs",
-    label: "Docs"
+    path: '/docs',
+    label: 'Docs',
   },
   {
-    path: "/help",
-    label: "Help"
+    path: '/help',
+    label: 'Help',
   },
   {
-    path: "/settings",
-    label: "Settings"
+    path: '/settings',
+    label: 'Settings',
   },
 ]
-
 
 export const LANDING_PAGE_LINKS: NavbarLink[] = [
   {

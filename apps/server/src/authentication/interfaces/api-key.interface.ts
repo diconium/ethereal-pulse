@@ -1,4 +1,4 @@
-import { API_KEY_PERMISSION_KEYS } from "../constants/api-key-permissions.constant";
+import { API_KEY_PERMISSION_KEYS } from '../constants/api-key-permissions.constant';
 
 export type ApiKeyPermission =
   | typeof API_KEY_PERMISSION_KEYS.FULL_ACCESS

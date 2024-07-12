@@ -1,5 +1,5 @@
 export interface IEtherealPulse {
-  sendEmail(request: ISendEmailRequest): Promise<any>;
+  sendEmail(_request: ISendEmailRequest): Promise<any>;
 }
 
 export interface ISendEmailRequest {

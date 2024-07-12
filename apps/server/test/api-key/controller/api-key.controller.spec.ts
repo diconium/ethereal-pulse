@@ -9,7 +9,6 @@ import {
 import { ApiKeyService } from 'src/api-key/services/api-key.service';
 import { ApiKeyRepository } from 'src/authentication/repositories/api-key.repository';
 import { ApiKeyPermission } from 'src/common/enums/api-key-permission.enum';
-import { ApiKey } from 'src/database/schemas/api-key.schema';
 
 describe('ApiKeyController', () => {
   let controller: ApiKeyController;

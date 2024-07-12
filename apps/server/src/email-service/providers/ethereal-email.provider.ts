@@ -7,7 +7,7 @@ import { IEmailProvider } from '../interfaces/email-service.interface';
 @Injectable()
 export class EtherealEmailProvider implements IEmailProvider {
   constructor(
-    @Inject(ConfigService) private readonly configService: ConfigService,
+    @Inject(ConfigService) private readonly _configService: ConfigService,
   ) {}
 
   async sendEmail(SendEmailRequestDto: SendEmailRequestDto): Promise<any> {
@@ -16,8 +16,8 @@ export class EtherealEmailProvider implements IEmailProvider {
       port: 587,
       secure: false,
       auth: {
-        user: this.configService.get<string>('ethereal.username'),
-        pass: this.configService.get<string>('ethereal.password'),
+        user: this._configService.get<string>('ethereal.username'),
+        pass: this._configService.get<string>('ethereal.password'),
       },
     });
 

@@ -5,8 +5,8 @@ import { UserRepository } from 'src/user/repositories/user.repository';
 @Injectable()
 export class AuthenticationService {
   constructor(
-    private readonly userRepository: UserRepository,
-    private readonly apiKeyRepository: ApiKeyRepository,
+    private readonly _userRepository: UserRepository,
+    private readonly _apiKeyRepository: ApiKeyRepository,
   ) {}
 
   /**
@@ -17,7 +17,7 @@ export class AuthenticationService {
    */
   async validateUser(apiKey: string): Promise<any> {
     const userID = await this.getUserIdFromApiKey(apiKey);
-    const user = await this.userRepository.findById(userID);
+    const user = await this._userRepository.findById(userID);
     if (!user) {
       throw new UnauthorizedException();
     }
@@ -31,7 +31,7 @@ export class AuthenticationService {
    * @throws {UnauthorizedException} - If the API key is invalid.
    */
   private async getUserIdFromApiKey(apiKey: string): Promise<string> {
-    const userID = await this.apiKeyRepository.findUserIdByApiKey(apiKey);
+    const userID = await this._apiKeyRepository.findUserIdByApiKey(apiKey);
     if (!userID) {
       throw new UnauthorizedException();
     }

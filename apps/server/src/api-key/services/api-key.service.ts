@@ -16,15 +16,15 @@ import { Request } from 'express';
 @Injectable({ scope: Scope.REQUEST })
 export class ApiKeyService {
   constructor(
-    @Inject(REQUEST) private readonly request: Request,
-    private readonly apiKeyRepository: ApiKeyRepository,
+    @Inject(REQUEST) private readonly _request: Request,
+    private readonly _apiKeyRepository: ApiKeyRepository,
   ) {}
 
   async findAll(): Promise<GetApiKeysWrapperResponseDto> {
     const userId = await this.getUserId();
 
     return {
-      data: (await this.apiKeyRepository.findAllByUserId(userId)).map(
+      data: (await this._apiKeyRepository.findAllByUserId(userId)).map(
         (apiKey) => {
           return {
             id: apiKey._id?.toString(),
@@ -47,7 +47,7 @@ export class ApiKeyService {
       userId: await this.getUserId(),
     };
 
-    const apiKeyDocument = await this.apiKeyRepository.create(dto);
+    const apiKeyDocument = await this._apiKeyRepository.create(dto);
 
     return { id: apiKeyDocument._id?.toString(), token: token };
   }
@@ -56,17 +56,19 @@ export class ApiKeyService {
     if (!Types.ObjectId.isValid(id)) {
       throw new BadRequestException('Invalid API key ID');
     }
-    return this.apiKeyRepository.findByIdAndUserAndDelete(
+    return this._apiKeyRepository.findByIdAndUserAndDelete(
       id,
       await this.getUserId(),
     );
   }
 
   private async getUserId(): Promise<string> {
-    const userId = await this.apiKeyRepository.findUserIdByApiKey(
-      getApiKeyFromRequest(this.request) ?? '',
+    const userId = await this._apiKeyRepository.findUserIdByApiKey(
+      getApiKeyFromRequest(this._request) ?? '',
     );
-    if (!userId) throw new BadRequestException('Invalid User ID');
+    if (!userId) {
+      throw new BadRequestException('Invalid User ID');
+    }
     return userId;
   }
 }
