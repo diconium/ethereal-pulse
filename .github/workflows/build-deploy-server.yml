@@ -41,11 +41,13 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: build
+    env:
+      IMAGE_TO_DEPLOY: ${{ needs.build.outputs.image_to_deploy }}
     steps:
       - name: Build and deploy Container App
         uses: azure/container-apps-deploy-action@v2
         with:
-          imageToDeploy: ${{ needs.build.outputs.image_to_deploy }}
+          imageToDeploy: ${{ env.IMAGE_TO_DEPLOY }}
           registryUsername: ${{ secrets.REGISTRY_USERNAME }}
           registryPassword: ${{ secrets.REGISTRY_PASSWORD }}
           containerAppName: ethereal-pulse-server
@@ -55,3 +57,4 @@ jobs:
           targetPort: ${{ secrets.MS_PORT }}
           ingress: external
           environmentVariables: PORT=secretref:port DATABASE_URI=secretref:database-uri CLOUD_PROVIDER_NAME=azure AZURE_CONNECTION_STRING=secretref:azure-connection-string
+          disableTelemetry: true
