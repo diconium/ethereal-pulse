@@ -1,0 +1,31 @@
+name: Create docker image
+description: Image name to deploy
+
+inputs:
+  app:
+    description: App to be deployed (client or server)
+    required: true
+
+outputs:
+  image_to_deploy:
+    value: ${{ steps.get_image.outputs.image_to_deploy }}
+    description: Image name to deploy
+
+runs:
+  using: "composite"
+  steps:
+    - name: Define image to deploy
+      id: get_image
+      shell: bash
+      run: |
+        VERSION=$(jq -r '.version' apps/${{ inputs.app }}/package.json)
+
+        if [ -z "$GITHUB_SHA" ]; then
+          TAG=${VERSION}_$(date +%Y%m%d%H%M%S)
+        else
+          TAG=${VERSION}_$(git rev-parse --short "$GITHUB_SHA")
+        fi
+
+        echo "TAG=$TAG"
+        IMAGE_TO_DEPLOY=etherealpulse.azurecr.io/${{ inputs.app }}:$TAG
+        echo "image_to_deploy=$IMAGE_TO_DEPLOY" >> $GITHUB_OUTPUT
