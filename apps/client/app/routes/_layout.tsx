@@ -1,7 +1,7 @@
 import { LoaderFunctionArgs } from "@remix-run/node";
 import { Outlet } from "@remix-run/react";
 import SideNavbar from "~/components/navbars/SideNavbar";
-import { authenticator } from "~/services/auth/auth.server";
+import { authenticator } from "~/services";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const currentPath = new URL(request.url).pathname;

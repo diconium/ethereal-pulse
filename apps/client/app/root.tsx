@@ -8,9 +8,7 @@ import {
 } from "@remix-run/react";
 import { json, LoaderFunctionArgs } from "@remix-run/node";
 import { AuthenticityTokenProvider } from "remix-utils/csrf/react";
-import { getUserById } from "./models/user.server";
-import { csrf } from "./services/csrf.server";
-import { authenticator } from "./services/auth/auth.server";
+import { authenticator, csrf, getUserById } from "./services";
 import "./styles/tailwind.css";
 
 export async function loader({ request }: LoaderFunctionArgs) {

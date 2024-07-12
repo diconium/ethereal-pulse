@@ -1,7 +1,11 @@
 import { useMemo } from "react";
 import { useMatches } from "@remix-run/react";
-import type { User } from "~/types/auth";
-import type { RootData } from "~/types/session";
+import { User } from "~/models";
+
+interface RootData {
+  csrf: string;
+  user?: User;
+}
 
 /**
  * Retrieves the data associated with a specific route ID from the matching routes.

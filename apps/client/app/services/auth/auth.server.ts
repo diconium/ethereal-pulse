@@ -1,9 +1,8 @@
 import { json } from "@remix-run/node";
 import { Authenticator } from "remix-auth";
 import { sessionStorage } from "../session.server";
-import { LoginStrategy } from "./strategies/login.server";
-import { SignUpStrategy } from "./strategies/signup.server";
-import { safeRedirect } from "~/utils/helpers";
+import { LoginStrategy, SignUpStrategy } from "./strategies";
+import { safeRedirect } from "~/utils";
 
 export const authenticator = new Authenticator<string>(sessionStorage);
 

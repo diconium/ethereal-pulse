@@ -2,7 +2,7 @@ import { Link } from "@remix-run/react";
 import { LoaderFunctionArgs } from "@remix-run/node";
 import { ChevronRightIcon } from "@heroicons/react/24/solid";
 import LandingNavbar from "~/components/navbars/LandingNavbar";
-import { authenticator } from "~/services/auth/auth.server";
+import { authenticator } from "~/services";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   return await authenticator.isAuthenticated(request, {

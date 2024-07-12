@@ -1,4 +1,4 @@
-import { User } from '~/types/auth';
+import { User } from '~/models';
 
 // Simulate a user database
 // TODO: Replace this with an API call to a real database

@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 import { FormStrategy } from "remix-auth-form";
-import { getUserByAttribute, storeUser } from "~/models/user.server";
-import { User } from "~/types/auth";
+import { User } from "~/models";
+import { getUserByAttribute, storeUser } from "~/services/user.server";
 import { validateInput } from "~/utils/auth";
 
 export const SignUpStrategy = new FormStrategy(async ({ form }) => {

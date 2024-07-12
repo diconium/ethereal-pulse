@@ -1,6 +1,6 @@
 import { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
-import AuthForm from "~/components/AuthForm";
-import { authenticate, authenticator } from "~/services/auth/auth.server";
+import { AuthForm } from "~/components";
+import { authenticate, authenticator } from "~/services";
 
 export default function SignUp() {
   return (
