@@ -28,8 +28,8 @@ jobs:
       - name: Build and push Docker image
         run: |
           cd apps/server
-          docker build . -t $IMAGE_TO_DEPLOY
-          docker push $IMAGE_TO_DEPLOY
+          docker build . -t ${{ env.IMAGE_TO_DEPLOY }}
+          docker push ${{ env.IMAGE_TO_DEPLOY }}
           
 
   deploy:
