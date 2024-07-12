@@ -11,6 +11,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      IMAGE_TO_DEPLOY: ${{ steps.get_image.outputs.IMAGE_TO_DEPLOY }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -24,25 +26,16 @@ jobs:
           login-server: etherealpulse.azurecr.io
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
-      - name: Define image to deploy
-        id: get_tag
-        run: |
-          VERSION=$(jq -r '.version' apps/server/package.json)
-
-          if [ -z "$GITHUB_SHA" ]; then
-            TAG=${VERSION}_$(date +%Y%m%d%H%M%S)
-          else
-            TAG=${VERSION}_$(git rev-parse --short "$GITHUB_SHA")
-          fi
-
-          echo "TAG=$TAG"
-          IMAGE_TO_DEPLOY=etherealpulse.azurecr.io/server:$TAG
-          echo "IMAGE_TO_DEPLOY=$IMAGE_TO_DEPLOY" >> $GITHUB_ENV
+      - name: Create docker image
+        id: get_image
+        uses: './.github/actions/create-image'
+        with:
+          app: server
       - name: Build and push Docker image
         run: |
           cd apps/server
-          docker build . -t ${{ env.IMAGE_TO_DEPLOY }}
-          docker push ${{ env.IMAGE_TO_DEPLOY }}
+          docker build . -t ${{ steps.get_image.outputs.IMAGE_TO_DEPLOY }}
+          docker push ${{ steps.get_image.outputs.IMAGE_TO_DEPLOY }}
           
 
   deploy:
@@ -52,7 +45,7 @@ jobs:
       - name: Build and deploy Container App
         uses: azure/container-apps-deploy-action@v2
         with:
-          imageToDeploy: ${{ env.IMAGE_TO_DEPLOY }}
+          imageToDeploy: ${{ needs.build.outputs.IMAGE_TO_DEPLOY }}
           registryUsername: ${{ secrets.REGISTRY_USERNAME }}
           registryPassword: ${{ secrets.REGISTRY_PASSWORD }}
           containerAppName: ethereal-pulse-server
