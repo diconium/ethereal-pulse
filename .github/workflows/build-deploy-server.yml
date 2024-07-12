@@ -23,7 +23,7 @@ jobs:
         run: |
           VERSION=$(jq -r '.version' package.json)
           TAG=$VERSION_${{ github.sha }}
-          IMAGE_TO_DEPLOY=etherealpulse.azurecr.io/server:$TAG
+          IMAGE_TO_DEPLOY="etherealpulse.azurecr.io/server:$TAG"
           echo "IMAGE_TO_DEPLOY=$IMAGE_TO_DEPLOY" >> $GITHUB_ENV
       - name: Build and push Docker image
         run: |
