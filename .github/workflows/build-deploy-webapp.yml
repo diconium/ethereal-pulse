@@ -32,7 +32,7 @@ jobs:
       - name: Build and push Docker image
         run: |
           echo "IMAGE_TO_DEPLOY ${{ steps.get_image.outputs.image_to_deploy }}"
-          cd apps/server
+          cd apps/client
           docker build . -t ${{ steps.get_image.outputs.image_to_deploy }}
           docker push ${{ steps.get_image.outputs.image_to_deploy }}
       - name: Deploy to Azure Container Apps
