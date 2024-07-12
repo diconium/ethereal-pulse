@@ -22,8 +22,13 @@ jobs:
         id: get_tag
         run: |
           VERSION=$(jq -r '.version' apps/server/package.json)
-          echo "VERSION=$VERSION"
-          TAG=$VERSION_${{ github.sha }}
+
+          if [ -z "$GITHUB_SHA" ]; then
+            TAG=${VERSION}_$(date +%s)
+          else
+            TAG=${VERSION}_${{ github.sha }}
+          fi
+
           echo "TAG=$TAG"
           IMAGE_TO_DEPLOY=etherealpulse.azurecr.io/server:$TAG
           echo "IMAGE_TO_DEPLOY=$IMAGE_TO_DEPLOY" >> $GITHUB_ENV
