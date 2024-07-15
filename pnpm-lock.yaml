@@ -56,6 +56,12 @@ importers:
       react-email:
         specifier: ^2.1.4
         version: 2.1.4(@swc/helpers@0.5.2)(eslint@8.57.0)(ts-node@10.9.2(@types/node@20.14.2)(typescript@5.4.5))
+      remix-auth:
+        specifier: ^3.7.0
+        version: 3.7.0(@remix-run/react@2.10.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.4.5))(@remix-run/server-runtime@2.10.0(typescript@5.4.5))
+      remix-auth-form:
+        specifier: ^1.5.0
+        version: 1.5.0(@remix-run/server-runtime@2.10.0(typescript@5.4.5))(remix-auth@3.7.0(@remix-run/react@2.10.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.4.5))(@remix-run/server-runtime@2.10.0(typescript@5.4.5)))
       remix-utils:
         specifier: ^7.6.0
         version: 7.6.0(@remix-run/node@2.10.0(typescript@5.4.5))(@remix-run/react@2.10.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.4.5))(@remix-run/router@1.17.0)(crypto-js@4.2.0)(react@18.3.1)
@@ -102,12 +108,6 @@ importers:
       postcss:
         specifier: ^8.4.38
         version: 8.4.38
-      remix-auth:
-        specifier: ^3.7.0
-        version: 3.7.0(@remix-run/react@2.10.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.4.5))(@remix-run/server-runtime@2.10.0(typescript@5.4.5))
-      remix-auth-form:
-        specifier: ^1.5.0
-        version: 1.5.0(@remix-run/server-runtime@2.10.0(typescript@5.4.5))(remix-auth@3.7.0(@remix-run/react@2.10.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.4.5))(@remix-run/server-runtime@2.10.0(typescript@5.4.5)))
       tailwindcss:
         specifier: ^3.4.4
         version: 3.4.4(ts-node@10.9.2(@types/node@20.14.2)(typescript@5.4.5))
