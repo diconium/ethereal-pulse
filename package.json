@@ -19,11 +19,7 @@
     "lint": "pnpm -r --parallel run lint",
     "format": "pnpm -r --parallel run format"
   },
-  "packageManager": "pnpm@9.1.4",
-  "workspaces": [
-    "apps/*",
-    "sdks/*"
-  ],
+  "packageManager": "pnpm@9.4.0",
   "dependencies": {
     "eslint-plugin-jest": "^28.6.0"
   }
