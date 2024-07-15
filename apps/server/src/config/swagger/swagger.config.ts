@@ -12,5 +12,5 @@ export function setupSwagger(app: INestApplication): void {
   );
   const document = yaml.load(yamlDocument) as OpenAPIObject;
 
-  SwaggerModule.setup('api-docs', app, document);
+  SwaggerModule.setup('/', app, document);
 }
