@@ -1,6 +1,5 @@
 import { EtherealPulse } from './EtherealPulse';
 
-// Assuming EtherealPulse is defined in './EtherealPulse'
 export {
   IEtherealPulse,
   ISendEmailRequest,
