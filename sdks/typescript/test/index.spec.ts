@@ -1,6 +1,6 @@
 import axios from 'axios';
-import EtherealPulse from '../src/index';
 import { ISendEmailRequest } from '../src/interfaces/email-services.interface';
+import { EtherealPulse } from '../src';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
