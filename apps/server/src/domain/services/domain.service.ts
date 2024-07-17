@@ -1,6 +1,4 @@
 import { BadRequestException, Inject, Injectable, Scope } from '@nestjs/common';
-import * as bcrypt from 'bcrypt';
-import { randomUUID } from 'crypto';
 import { Types } from 'mongoose';
 import { REQUEST } from '@nestjs/core';
 import { Request } from 'express';

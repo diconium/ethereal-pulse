@@ -2,11 +2,7 @@ import { Model, Types } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Domain, DomainDocument } from 'src/database/schemas/domain.schema';
-import {
-  CreateDomainDto,
-  PostDomainRequestDto,
-  PutDomainRequestDto,
-} from '../dto/domain.dto';
+import { CreateDomainDto, PutDomainRequestDto } from '../dto/domain.dto';
 
 @Injectable()
 export class DomainRepository {
