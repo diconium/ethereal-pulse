@@ -1,13 +1,15 @@
-
-import { NavLink } from "@remix-run/react";
+import { Form, NavLink } from "@remix-run/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
 import { DEFAULT_LINKS } from "~/models/constants/navbarLinks.const";
+import { useFetchUser } from "~/utils/hooks";
 
 const SideNavbar = () => {
   const navLinks = DEFAULT_LINKS;
   const [menuOpened, setMenuOpened] = useState(false);
   const MenuIcon = menuOpened ? XMarkIcon : Bars3Icon;
+
+  const user = useFetchUser();
 
   const linkClass = ({ isActive }: { isActive: boolean }) => {
     return (
@@ -18,7 +20,7 @@ const SideNavbar = () => {
 
   function drawLinks() {
     return navLinks.map(navLink => (
-      <li key={ navLink.label } className="w-full md:last-of-type:mt-auto">
+      <li key={ navLink.label } className="w-full">
         <NavLink to={ navLink.path } className={ linkClass }>
           { navLink.label }
         </NavLink>
@@ -40,6 +42,20 @@ const SideNavbar = () => {
       <div className="hidden md:flex flex-col w-full h-full">
         <ul className="flex flex-col mt-6 flex-1 gap-2">
           { drawLinks() }
+          <li className="w-full md:mt-auto">
+            <button className="inline-flex w-full font-sm text-gray-500 hover:text-black hover:bg-gray-200 rounded-md px-3 py-1 transition-colors">
+              { user ? `${user.firstName} ${user.lastName}` : 'Account' }
+            </button>
+          </li>
+          <li className="w-full">
+            <Form
+              action="/logout"
+              method="post"
+              className="inline-flex w-full font-sm text-gray-500 hover:text-black hover:bg-gray-200 rounded-md px-3 py-1 transition-colors"
+            >
+              <button type="submit">Logout</button>
+            </Form>
+          </li>
         </ul>
       </div>
       <MenuIcon

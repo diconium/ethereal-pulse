@@ -3,11 +3,9 @@ import {
   CanActivate,
   ExecutionContext,
   UnauthorizedException,
-  Inject,
   ForbiddenException,
 } from '@nestjs/common';
-import { Reflector, REQUEST } from '@nestjs/core';
-import { Request } from 'express';
+import { Reflector } from '@nestjs/core';
 import { PERMISSION_KEY } from 'src/authentication/decorators/permission.decorator';
 import { ApiKeyRepository } from 'src/authentication/repositories/api-key.repository';
 import { getApiKeyFromContext } from '../utils/utils';
@@ -15,9 +13,8 @@ import { getApiKeyFromContext } from '../utils/utils';
 @Injectable()
 export class ApiKeyGuard implements CanActivate {
   constructor(
-    @Inject(REQUEST) private readonly request: Request,
-    private readonly reflector: Reflector,
-    private readonly apiKeyRepository: ApiKeyRepository,
+    private readonly _reflector: Reflector,
+    private readonly _apiKeyRepository: ApiKeyRepository,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -33,7 +30,7 @@ export class ApiKeyGuard implements CanActivate {
       throw new UnauthorizedException('Invalid API key');
     }
 
-    const requiredPermission = this.reflector.get<string>(
+    const requiredPermission = this._reflector.get<string>(
       PERMISSION_KEY,
       context.getHandler(),
     );
@@ -49,7 +46,7 @@ export class ApiKeyGuard implements CanActivate {
   }
 
   private async validateApiKey(apiKey: string): Promise<boolean> {
-    const validApiKey = await this.apiKeyRepository.findOne(apiKey);
+    const validApiKey = await this._apiKeyRepository.findOne(apiKey);
     return !!validApiKey;
   }
 
@@ -57,7 +54,7 @@ export class ApiKeyGuard implements CanActivate {
     apiKey: string,
     requiredPermission: string,
   ): Promise<boolean> {
-    const apiKeyDocument = await this.apiKeyRepository.findOne(apiKey);
+    const apiKeyDocument = await this._apiKeyRepository.findOne(apiKey);
     return apiKeyDocument?.permission === requiredPermission;
   }
 }

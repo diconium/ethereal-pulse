@@ -3,4 +3,5 @@
     "pnpm-lock.yaml": true,
   },
   "npm.packageManager": "pnpm",
+  "eslint.workingDirectories": [{ "mode": "auto" }]
 }

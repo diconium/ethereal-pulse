@@ -44,3 +44,16 @@ pnpm start
 
 Open client in: `http://localhost:5173`
 Open server in: `http://localhost:3000`
+
+### Linting
+
+To run ESLint in all projects:
+
+```bash
+pnpm lint
+```
+
+To run Prettier in all projects:
+```bash
+pnpm format
+```
