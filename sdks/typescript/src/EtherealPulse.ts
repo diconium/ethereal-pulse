@@ -1,4 +1,4 @@
-import { DEFAULT_BASE_URL } from './constants/common.constants';
+import { DEFAULT_ETH_PULSE_ENDPOINT } from './constants/common.constants';
 import {
   IEtherealPulse,
   ISendEmailRequest,
@@ -6,11 +6,12 @@ import {
 
 export class EtherealPulse implements IEtherealPulse {
   private apiKey: string;
-  private baseUrl: string;
+  private endpointURL: string;
 
   constructor(apiKey: string) {
     this.apiKey = apiKey;
-    this.baseUrl = process.env.BASE_URL ?? DEFAULT_BASE_URL;
+    this.endpointURL =
+      process.env.ETH_PULSE_ENDPOINT ?? DEFAULT_ETH_PULSE_ENDPOINT;
   }
 
   private createRequestBody({
@@ -68,7 +69,7 @@ export class EtherealPulse implements IEtherealPulse {
     });
 
     try {
-      const response = await fetch(`${this.baseUrl}/email/send`, {
+      const response = await fetch(`${this.endpointURL}/email/send`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

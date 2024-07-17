@@ -4,5 +4,5 @@ export {
   IEtherealPulse,
   ISendEmailRequest,
 } from './interfaces/email-services.interface';
-export { DEFAULT_BASE_URL } from './constants/common.constants';
+export { DEFAULT_ETH_PULSE_ENDPOINT } from './constants/common.constants';
 export { EtherealPulse };
