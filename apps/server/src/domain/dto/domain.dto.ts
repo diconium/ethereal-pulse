@@ -1,4 +1,10 @@
-import { IsDate, IsEnum, IsNotEmpty, IsString } from 'class-validator';
+import {
+  IsDate,
+  IsEnum,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 import { Types } from 'mongoose';
 
 export class IdParamDto {
@@ -15,6 +21,18 @@ export class PostDomainRequestDto {
   @IsString()
   @IsNotEmpty()
   region: string;
+}
+
+export class PutDomainRequestDto {
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  name?: string;
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  region?: string;
 }
 
 export class CreateDomainDto {

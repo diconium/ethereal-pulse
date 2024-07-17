@@ -8,7 +8,11 @@ import { DomainRepository } from '../repositories/domain.repository';
 import { Domain, DomainDocument } from 'src/database/schemas/domain.schema';
 import { ApiKeyRepository } from 'src/authentication/repositories/api-key.repository';
 import { getApiKeyIdFromRequest } from 'src/common/utils/utils';
-import { CreateDomainDto, PostDomainRequestDto } from '../dto/domain.dto';
+import {
+  CreateDomainDto,
+  PostDomainRequestDto,
+  PutDomainRequestDto,
+} from '../dto/domain.dto';
 
 @Injectable({ scope: Scope.REQUEST })
 export class DomainService {
@@ -61,5 +65,29 @@ export class DomainService {
     }
 
     await this.domainRepository.findByIdAndApiKeyAndDelete(id, apiKeyId);
+  }
+
+  async update(
+    id: string,
+    updateTemplateDto: PutDomainRequestDto,
+  ): Promise<DomainDocument> {
+    if (!Types.ObjectId.isValid(id)) {
+      throw new BadRequestException('Invalid Domain ID');
+    }
+
+    const apiKeyId = await getApiKeyIdFromRequest(
+      this.request,
+      this.apiKeyRepository,
+    );
+
+    if (!apiKeyId) {
+      throw new BadRequestException('Invalid API Key ID');
+    }
+
+    return this.domainRepository.findByIdAndApiKeyAndUpdate(
+      id,
+      apiKeyId,
+      updateTemplateDto,
+    );
   }
 }

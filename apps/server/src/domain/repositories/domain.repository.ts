@@ -2,7 +2,11 @@ import { Model, Types } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Domain, DomainDocument } from 'src/database/schemas/domain.schema';
-import { CreateDomainDto } from '../dto/domain.dto';
+import {
+  CreateDomainDto,
+  PostDomainRequestDto,
+  PutDomainRequestDto,
+} from '../dto/domain.dto';
 
 @Injectable()
 export class DomainRepository {
@@ -18,8 +22,8 @@ export class DomainRepository {
 
   async findByIdAndApiKeyAndUpdate(
     id: string,
-    apiKeyId: string,
-    domain: Domain,
+    apiKeyId: Types.ObjectId,
+    domain: PutDomainRequestDto,
   ): Promise<DomainDocument> {
     const existingDomain = await this.domainModel
       .findOneAndUpdate({ _id: id, apiKey: apiKeyId }, domain, { new: true })
