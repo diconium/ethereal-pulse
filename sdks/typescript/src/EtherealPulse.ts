@@ -9,6 +9,10 @@ export class EtherealPulse implements IEtherealPulse {
   private endpointURL: string;
 
   constructor(apiKey: string) {
+    if (!apiKey || (apiKey && apiKey.trim() === '')) {
+      throw new Error('Failed to provide the apiKey!!!!!');
+    }
+
     this.apiKey = apiKey;
     this.endpointURL =
       process.env.ETH_PULSE_ENDPOINT ?? DEFAULT_ETH_PULSE_ENDPOINT;
