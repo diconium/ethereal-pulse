@@ -43,7 +43,6 @@
   "module": "./lib/esm/index.js",
   "types": "./lib/esm/index.d.ts",
   "dependencies": {
-    "@types/react": "^18.2.20",
     "axios": "^1.7.2"
   }
 }
