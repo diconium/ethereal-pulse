@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { ValidationPipe } from '@nestjs/common';
 import { setupSwagger } from './config/swagger/swagger.config';
 import { MongooseValidationFilter } from './common/filters/mongoose-validation.filter';
+import { MongoErrorFilter } from './common/filters/mongo-server-error.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -11,7 +12,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   setupSwagger(app);
 
-  app.useGlobalFilters(new MongooseValidationFilter());
+  app.useGlobalFilters(new MongooseValidationFilter(), new MongoErrorFilter());
 
   const port = configService.get<number>('port') ?? 8080;
   console.log(`Application is starting on port: ${port}`); // Log for testing purposes, changing just for deploy trigger
