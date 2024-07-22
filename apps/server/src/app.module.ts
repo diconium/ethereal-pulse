@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { UserModule } from './user/user.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import configuration from './config/configuration';
+import { GroupModule } from './group/group.module';
 import { ApiKeyModule } from './api-key/api-key.module';
 import { AppConfigModule } from './config/config.module';
 import { DatabaseModule } from './database/database.module';
@@ -29,13 +30,14 @@ import { AuthenticationModule } from './authentication/authentication.module';
       },
       inject: [ConfigService],
     }),
-    UserModule,
+    AuthenticationModule,
+    EmailServiceModule,
+    AppConfigModule,
     DatabaseModule,
     TemplateModule,
-    AppConfigModule,
-    EmailServiceModule,
-    AuthenticationModule,
     ApiKeyModule,
+    GroupModule,
+    UserModule,
   ],
 })
 export class AppModule {}
