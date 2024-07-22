@@ -1,4 +1,4 @@
-import { IsString, IsArray } from 'class-validator';
+import { IsString, IsArray, IsMongoId } from 'class-validator';
 
 export class CreateGroupDto {
   @IsString()
@@ -6,6 +6,9 @@ export class CreateGroupDto {
 
   @IsArray()
   recipients: string[];
+
+  @IsMongoId()
+  userId: string;
 }
 
 export class UpdateGroupDto {
@@ -14,4 +17,7 @@ export class UpdateGroupDto {
 
   @IsArray()
   recipients: string[];
+
+  @IsMongoId()
+  userId: string;
 }

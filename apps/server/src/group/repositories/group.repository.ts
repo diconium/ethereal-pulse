@@ -15,8 +15,7 @@ export class GroupRepository {
   }
 
   async create(createGroupDto: CreateGroupDto): Promise<Group> {
-    const newGroup = new this.groupModel(createGroupDto);
-    return newGroup.save();
+    return this.groupModel.create(createGroupDto);
   }
 
   async update(

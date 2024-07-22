@@ -3,15 +3,15 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { PassportModule } from '@nestjs/passport';
 import { UserModule } from 'src/user/user.module';
 import { ApiKeyGuard } from 'src/common/guards/api-key.guard';
-import { ApiKeySchema } from '../database/schemas/api-key.schema';
 import { ApiKeyStrategy } from './account-policy/api-key-strategy';
 import { ApiKeyRepository } from './repositories/api-key.repository';
+import { ApiKey, ApiKeySchema } from '../database/schemas/api-key.schema';
 import { AuthenticationService } from './services/authentication.service';
 
 @Module({
   imports: [
     PassportModule,
-    MongooseModule.forFeature([{ name: 'ApiKey', schema: ApiKeySchema }]),
+    MongooseModule.forFeature([{ name: ApiKey.name, schema: ApiKeySchema }]),
     UserModule,
   ],
   providers: [
