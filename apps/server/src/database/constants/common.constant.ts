@@ -1,6 +1,7 @@
 export const MODEL_NAMES = {
+  USER: 'User',
   EMAIL: 'Email',
   GROUP: 'Group',
-  TEMPLATE: 'Template',
   APIKEY: 'ApiKey',
+  TEMPLATE: 'Template',
 };
