@@ -2,4 +2,4 @@ packages:
   - "apps/*"
   - "sdks/*"
   - "!sdks/java"
-  - "integrations/*"
+  - "demos/*"
