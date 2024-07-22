@@ -10,7 +10,7 @@ export class EtherealPulse implements IEtherealPulse {
 
   constructor(apiKey: string) {
     if (!apiKey || (apiKey && apiKey.trim() === '')) {
-      throw new Error('Failed to provide the apiKey!!!!!');
+      throw new Error('Failed to provide a valid apiKey!!!!!');
     }
 
     this.apiKey = apiKey;

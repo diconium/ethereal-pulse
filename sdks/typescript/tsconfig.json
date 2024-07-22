@@ -23,7 +23,8 @@
     "allowSyntheticDefaultImports": true
   },
   "include": [
-    "src/**/*"
+    "src/**/*",
+    "test/EtherealPulse.spec.ts"
   ],
   "exclude": [
     "node_modules",
