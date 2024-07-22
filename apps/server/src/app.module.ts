@@ -9,6 +9,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TemplateModule } from './templates/template.module';
 import { EmailServiceModule } from './email-service/email-service.module';
 import { AuthenticationModule } from './authentication/authentication.module';
+import { DomainModule } from './domain/domain.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { AuthenticationModule } from './authentication/authentication.module';
     EmailServiceModule,
     AuthenticationModule,
     ApiKeyModule,
+    DomainModule,
   ],
 })
 export class AppModule {}
