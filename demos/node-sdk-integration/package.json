@@ -12,7 +12,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@ethereal-pulse/typescript-sdk": "file:/../../sdks/typescript",
+    "@ethereal-pulse/typescript-sdk": "workspace:*",
     "dotenv": "^16.4.5",
     "express": "^4.19.2"
   },
