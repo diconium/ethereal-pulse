@@ -1,19 +1,18 @@
-import { EtherealPulse, ISendEmailRequest } from '../src';
-import { DEFAULT_ETH_PULSE_ENDPOINT } from '../src/constants/common.constants';
+import { ISendEmailRequest } from '../../../src';
+import { EmailService } from '../../../src/services';
 
 global.fetch = jest.fn();
 
 describe('EtherealPulse', () => {
   const apiKey = 'test-api-key';
-  const dummyApiEndpoint = 'http://dummy-api-endpoint.com';
+  const endpoint = 'http://localhost:3000';
+  const emailService = new EmailService(apiKey, endpoint);
 
   beforeEach(() => {
     jest.resetAllMocks();
-    process.env['ETH_PULSE_ENDPOINT'] = dummyApiEndpoint;
   });
 
   it('should send and email with success', async () => {
-    const etherealPulse = new EtherealPulse(apiKey);
     const emailRequest: ISendEmailRequest = {
       from: 'sender@example.com',
       recipients: ['recipient@example.com'],
@@ -26,44 +25,12 @@ describe('EtherealPulse', () => {
       json: async () => ({ data: 'Email sent successfully' }),
     });
 
-    const response = await etherealPulse.sendEmail(emailRequest);
+    const response = await emailService.sendEmail(emailRequest);
     expect(response).toEqual({ data: 'Email sent successfully' });
     expect(global.fetch).toHaveBeenCalledTimes(1);
 
     expect(global.fetch).toHaveBeenCalledWith(
-      dummyApiEndpoint + '/email/send',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': 'test-api-key',
-        },
-        body: '{"from":"sender@example.com","recipients":["recipient@example.com"],"subject":"Test Subject","html":"<p>Test HTML</p>"}',
-      },
-    );
-  });
-
-  it('when environment variable for the API endpoint is not defined should use the default variable with to send the email', async () => {
-    delete process.env['ETH_PULSE_ENDPOINT'];
-    const etherealPulse = new EtherealPulse(apiKey);
-    const emailRequest: ISendEmailRequest = {
-      from: 'sender@example.com',
-      recipients: ['recipient@example.com'],
-      subject: 'Test Subject',
-      html: '<p>Test HTML</p>',
-    };
-
-    (global.fetch as jest.Mock).mockResolvedValue({
-      ok: true,
-      json: async () => ({ data: 'Email sent successfully' }),
-    });
-
-    const response = await etherealPulse.sendEmail(emailRequest);
-    expect(response).toEqual({ data: 'Email sent successfully' });
-    expect(global.fetch).toHaveBeenCalledTimes(1);
-
-    expect(global.fetch).toHaveBeenCalledWith(
-      DEFAULT_ETH_PULSE_ENDPOINT + '/email/send',
+      'http://localhost:3000/email/send',
       {
         method: 'POST',
         headers: {
@@ -76,7 +43,6 @@ describe('EtherealPulse', () => {
   });
 
   it('should throw an error when the sendEmail return with an error from the api', async () => {
-    const etherealPulse = new EtherealPulse(apiKey);
     const emailRequest: ISendEmailRequest = {
       from: 'sender@example.com',
       recipients: ['recipient@example.com'],
@@ -89,20 +55,13 @@ describe('EtherealPulse', () => {
       text: async () => 'Email not sent successfully',
     });
 
-    await expect(etherealPulse.sendEmail(emailRequest)).rejects.toThrow(
+    await expect(emailService.sendEmail(emailRequest)).rejects.toThrow(
       'Failed to send email: Email not sent successfully',
     );
     expect(global.fetch).toHaveBeenCalledTimes(1);
   });
 
-  it('should throw an error when apikey is invalid', async () => {
-    expect(() => {
-      new EtherealPulse('');
-    }).toThrow('Failed to provide a valid apiKey!!!!!');
-  });
-
   it('should send and email with success when bcc, cc and attachments defined', async () => {
-    const etherealPulse = new EtherealPulse(apiKey);
     const emailRequest: ISendEmailRequest = {
       from: 'sender@example.com',
       recipients: ['recipient@example.com'],
@@ -118,8 +77,14 @@ describe('EtherealPulse', () => {
       json: async () => ({ data: 'Email sent successfully' }),
     });
 
-    const response = await etherealPulse.sendEmail(emailRequest);
+    const response = await emailService.sendEmail(emailRequest);
     expect(response).toEqual({ data: 'Email sent successfully' });
     expect(global.fetch).toHaveBeenCalledTimes(1);
+  });
+
+  it('should throw an error when apikey is invalid', async () => {
+    expect(() => {
+      new EmailService('', '');
+    }).toThrow('Failed to provide a valid apiKey!!!!!');
   });
 });

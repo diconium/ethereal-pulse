@@ -1,5 +1,2 @@
-export {
-  IEtherealPulse,
-  ISendEmailRequest,
-} from './interfaces/email-services.interface';
+export { IEtherealPulse, ISendEmailRequest } from './IEtherealPulse';
 export { EtherealPulse } from './EtherealPulse';
