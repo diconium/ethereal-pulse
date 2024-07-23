@@ -17,7 +17,8 @@
     "start": "pnpm -r --parallel --filter='./apps/*' run start",
     "preview": "pnpm -r --parallel --filter='./apps/*' run preview",
     "lint": "pnpm -r --parallel run lint",
-    "format": "pnpm -r --parallel run format"
+    "format": "pnpm -r --parallel run format",
+    "test": "pnpm -r --parallel run test"
   },
   "packageManager": "pnpm@9.4.0",
   "dependencies": {
