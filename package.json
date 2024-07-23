@@ -13,7 +13,8 @@
   },
   "scripts": {
     "preinstall": "npx only-allow pnpm",
-    "build": "pnpm -r run build",
+    "build": "pnpm -r --filter='!./demos/*' run build",
+    "build:demos": "pnpm -r --filter='./demos/*' run build",
     "start": "pnpm -r --parallel --filter='./apps/*' run start",
     "preview": "pnpm -r --parallel --filter='./apps/*' run preview",
     "lint": "pnpm -r --parallel run lint",
