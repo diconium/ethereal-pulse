@@ -16,6 +16,13 @@ To install Ethereal Pulse, you need to have [Node.js](https://nodejs.org/) and n
 pnpm install ethereal-pulse
 ```
 
+Add a new environment variable to set the endpoint for the Ethereal-Pulse endpoint.
+For local development add a new entry with the name ETH_PULSE_ENDPOINT.
+
+```bash
+ETH_PULSE_ENDPOINT=https://api.yourdomain.com/v1
+```
+
 ## Usage
 
 To use Ethereal Pulse, you need to provide an API key. Below is an example of how to use this SDK to send an email:
