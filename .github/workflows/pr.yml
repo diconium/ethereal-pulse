@@ -8,11 +8,6 @@ on:
       # - 'sdks/**'
       # - '!sdks/java/**'
 
-permissions:
-  contents: read
-  actions: read
-  checks: write
-
 jobs:
   install-and-build:
     runs-on: ubuntu-latest
@@ -53,6 +48,9 @@ jobs:
   unit: 
     runs-on: ubuntu-latest
     needs: install-and-build
+    permissions:
+      checks: write
+      pull-requests: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4.1.7
@@ -65,9 +63,9 @@ jobs:
         run: pnpm test:ci
 
       - name: Test Report
-        uses: dorny/test-reporter@v1.9.1
-        if: success() || failure()
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
         with:
-          name: Unit Tests
-          path: reports/*.xml
-          reporter: jest-junit 
+          files: |
+            apps/*/junit.xml
+            sdks/*/junit.xml

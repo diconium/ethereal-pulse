@@ -18,7 +18,7 @@
     "format": "prettier --write \"app/**/*.ts\"",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
     "test": "vitest run",
-    "test:ci": "vitest run --reporter=default --reporter=junit --outputFile=../../reports/junit-client.xml",
+    "test:ci": "vitest run --reporter=default --reporter=junit --outputFile=junit.xml",
     "typecheck": "tsc"
   },
   "dependencies": {
