@@ -138,5 +138,5 @@ lib
 .idea/*
 
 # Junit
-**/report.xml
-**/junit.xml
+reports/
+junit*

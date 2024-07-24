@@ -69,7 +69,5 @@ jobs:
         if: success() || failure()
         with:
           name: Unit Tests
-          path: |
-            apps/*/junit.xml
-            sdks/*/junit.xml
+          path: reports/*.xml
           reporter: jest-junit 

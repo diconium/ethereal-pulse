@@ -16,6 +16,18 @@ const config: Config = {
   },
   preset: 'ts-jest',
   prettierPath: null,
+  reporters: process.env.GITHUB_ACTIONS
+    ? [
+        'default',
+        [
+          'jest-junit',
+          {
+            outputDirectory: '<rootDir>/../../reports',
+            outputName: 'junit-server.xml',
+          },
+        ],
+      ]
+    : ['default'],
   roots: ['<rootDir>/src', '<rootDir>/test'],
   testEnvironment: 'node',
   testPathIgnorePatterns: ['/node_modules/', '/dist/'],

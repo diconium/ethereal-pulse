@@ -16,6 +16,18 @@ const config: Config = {
   },
   preset: 'ts-jest',
   prettierPath: null,
+  reporters: process.env.GITHUB_ACTIONS
+    ? [
+        'default',
+        [
+          'jest-junit',
+          {
+            outputDirectory: '<rootDir>/../../reports',
+            outputName: 'junit-sdk-ts.xml',
+          },
+        ],
+      ]
+    : ['default'],
   roots: ['<rootDir>/src', '<rootDir>/tests'],
   testPathIgnorePatterns: ['/node_modules/', '/lib/'],
   transform: {
