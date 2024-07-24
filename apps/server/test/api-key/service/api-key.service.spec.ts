@@ -45,8 +45,18 @@ describe('ApiKeyService', () => {
   describe('findAll', () => {
     it('should return an array of API keys', async () => {
       const mockApiKeys = [
-        { _id: 'mock-id-1', name: 'Key 1', createdAt: new Date() },
-        { _id: 'mock-id-2', name: 'Key 2', createdAt: new Date() },
+        {
+          _id: 'mock-id-1',
+          name: 'Key 1',
+          createdAt: new Date(),
+          permission: ApiKeyPermission.FULL_ACCESS,
+        },
+        {
+          _id: 'mock-id-2',
+          name: 'Key 2',
+          createdAt: new Date(),
+          permission: ApiKeyPermission.SENDING_ACCESS,
+        },
       ];
       const mockUserId = 'user id test';
       (repository.findAllByUserId as jest.Mock).mockResolvedValue(mockApiKeys);
@@ -62,11 +72,13 @@ describe('ApiKeyService', () => {
             id: 'mock-id-1',
             name: 'Key 1',
             created_at: mockApiKeys[0].createdAt,
+            permission: ApiKeyPermission.FULL_ACCESS,
           },
           {
             id: 'mock-id-2',
             name: 'Key 2',
             created_at: mockApiKeys[1].createdAt,
+            permission: ApiKeyPermission.SENDING_ACCESS,
           },
         ],
       });
