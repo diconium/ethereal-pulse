@@ -16,9 +16,6 @@ const config: Config = {
   },
   preset: 'ts-jest',
   prettierPath: null,
-  reporters: process.env.GITHUB_ACTIONS
-    ? [['github-actions', { silent: false }], 'summary']
-    : ['default'],
   roots: ['<rootDir>/src', '<rootDir>/tests'],
   testPathIgnorePatterns: ['/node_modules/', '/lib/'],
   transform: {

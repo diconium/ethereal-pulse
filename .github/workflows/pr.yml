@@ -8,6 +8,11 @@ on:
       # - 'sdks/**'
       # - '!sdks/java/**'
 
+permissions:
+  contents: read
+  actions: read
+  checks: write
+
 jobs:
   install-and-build:
     runs-on: ubuntu-latest
@@ -57,4 +62,14 @@ jobs:
       - uses: ./.github/actions/restore-cache
 
       - name: Run unit tests
-        run: pnpm test
+        run: pnpm test:ci
+
+      - name: Test Report
+        uses: dorny/test-reporter@v1.9.1
+        if: success() || failure()
+        with:
+          name: Unit Tests
+          path: |
+            'apps/*/junit.xml'
+            'sdks/*/junit.xml'
+          reporter: jest-junit 
