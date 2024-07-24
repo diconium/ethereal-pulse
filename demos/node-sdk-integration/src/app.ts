@@ -26,6 +26,17 @@ app.post('/send', (req: any, res: any) => {
 
 });
 
+app.get('/templates', async (req: any, res: any) => {
+  try {
+    const ethPulseSDK = new EtherealPulse('aadf9195-fe77-4089-b9af-3fdf867446f6');
+    const result = await ethPulseSDK.getTemplates();
+    res.send(result);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

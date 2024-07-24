@@ -1,6 +1,4 @@
-export interface IEtherealPulse {
-  sendEmail(_request: ISendEmailRequest): Promise<any>;
-}
+import { TemplateDTO } from './services';
 
 export interface ISendEmailRequest {
   from: string;
@@ -11,4 +9,9 @@ export interface ISendEmailRequest {
   cc?: string[];
   headers?: Record<string, any>;
   attachments?: Record<string, any>[];
+}
+
+export interface IEtherealPulse {
+  sendEmail(_request: ISendEmailRequest): Promise<any>;
+  getTemplates(): Promise<Array<TemplateDTO>>;
 }

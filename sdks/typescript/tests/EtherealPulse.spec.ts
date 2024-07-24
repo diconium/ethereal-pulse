@@ -1,5 +1,10 @@
-import { EtherealPulse, ISendEmailRequest } from '../src';
+import {
+  EtherealPulse,
+  ISendEmailRequest,
+  TemplateDTO,
+} from '../src';
 import { DEFAULT_ETH_PULSE_ENDPOINT } from '../src/constants/common.constants';
+import { EmailService, TemplateService } from '../src/services';
 
 global.fetch = jest.fn();
 
@@ -113,13 +118,49 @@ describe('EtherealPulse', () => {
       attachments: [],
     };
 
-    (global.fetch as jest.Mock).mockResolvedValue({
-      ok: true,
-      json: async () => ({ data: 'Email sent successfully' }),
-    });
+    jest
+      .spyOn(EmailService.prototype, 'sendEmail')
+      .mockResolvedValue({ data: 'Email sent successfully' });
 
     const response = await etherealPulse.sendEmail(emailRequest);
     expect(response).toEqual({ data: 'Email sent successfully' });
-    expect(global.fetch).toHaveBeenCalledTimes(1);
+    expect(EmailService.prototype.sendEmail).toHaveBeenCalledTimes(1);
+  });
+
+  it('should fetch email templates with success', async () => {
+    const etherealPulse = new EtherealPulse(apiKey);
+    const responseServiceCall: Array<TemplateDTO> = [
+      {
+        id: '1',
+        name: 'Airbnb review',
+        subject: 'Airbnb review',
+        html: '<h1>TEST review</h1>',
+        userId: '11',
+      },
+      {
+        id: '2',
+        name: 'Airbnb sales',
+        subject: 'Airbnb sales',
+        html: '<h1>TEST sales</h1>',
+        userId: '22',
+      },
+      {
+        id: '3',
+        name: 'Airbnb special',
+        subject: 'Airbnb special',
+        html: '<h1>TEST special</h1>',
+        userId: '33',
+      },
+    ];
+
+    jest
+      .spyOn(TemplateService.prototype, 'getTemplates')
+      .mockResolvedValue(responseServiceCall);
+
+    const templates: Array<TemplateDTO> =
+      await etherealPulse.getTemplates();
+
+    expect(templates).toEqual(responseServiceCall);
+    expect(TemplateService.prototype.getTemplates).toHaveBeenCalledTimes(1);
   });
 });
