@@ -70,6 +70,6 @@ jobs:
         with:
           name: Unit Tests
           path: |
-            'apps/*/junit.xml'
-            'sdks/*/junit.xml'
+            apps/*/junit.xml
+            sdks/*/junit.xml
           reporter: jest-junit 
