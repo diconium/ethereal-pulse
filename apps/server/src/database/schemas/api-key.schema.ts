@@ -1,7 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Types } from 'mongoose';
 import { API_KEY_PERMISSION_KEYS } from 'src/authentication/constants/api-key-permissions.constant';
 import { IApiKey } from 'src/authentication/interfaces/api-key.interface';
 import { ApiKeyPermission } from 'src/common/enums/api-key-permission.enum';
+import { MODEL_NAMES } from '../constants/common.constant';
 
 @Schema()
 export class ApiKey implements IApiKey {
@@ -23,7 +25,11 @@ export class ApiKey implements IApiKey {
   @Prop({ required: true })
   token: string;
 
-  @Prop({ required: true })
+  @Prop({
+    type: Types.ObjectId,
+    ref: MODEL_NAMES.USER,
+    required: true,
+  })
   userId: string;
 }
 

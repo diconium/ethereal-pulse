@@ -518,6 +518,94 @@ paths:
       security:
         - ApiKeyAuth: []
 
+  /domains:
+    get:
+      tags:
+        - Domain
+      summary: Get user domains
+      description: Retrieves all domains for the authenticated user, including public ones
+      responses:
+        "200":
+          description: List of domains
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Domain"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+      security:
+        - ApiKeyAuth: []
+    post:
+      tags:
+        - Domain
+      summary: Create new domain
+      description: Creates a new domain for the authenticated user. Private domains should include `apiKeyId`.
+      requestBody:
+        description: Domain details
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Domain"
+        required: true
+      responses:
+        "201":
+          description: Domain created successfully
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+      security:
+        - ApiKeyAuth: []
+
+  /domains/{domainId}:
+    put:
+      tags:
+        - Domain
+      summary: Update domain
+      description: Updates an existing domain for an authenticated user
+      parameters:
+        - name: domainId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Domain details
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Domain"
+        required: true
+      responses:
+        "200":
+          description: Domain updated successfully
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+      security:
+        - ApiKeyAuth: []
+    delete:
+      tags:
+        - Domain
+      summary: Delete domain
+      description: Deletes a domain by ID
+      parameters:
+        - name: domainId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Domain deleted successfully
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+      security:
+        - ApiKeyAuth: []
+
 components:
   schemas:
     LoginUser:
@@ -680,6 +768,17 @@ components:
         unsubscribed:
           type: boolean
           default: false
+
+    Domain:
+      required:
+        - name
+        - region
+      type: object
+      properties:
+        name:
+          type: string
+        region:
+          type: string
 
     RecipientUpdate:
       required:

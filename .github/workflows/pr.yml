@@ -1,0 +1,15 @@
+name: Pull request
+
+on:
+  pull_request:
+    branches: main
+    paths:
+      - 'apps/**'
+      - 'sdks/**'
+      - '!sdks/java/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Hello, world!"
