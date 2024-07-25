@@ -4,9 +4,11 @@ import {
   ICreateTemplate,
   IDeleteTemplate,
   IGetTemplatesRequest,
+  IUpdateTemplate,
   TemplateCreateResponseDTO,
   TemplateDTO,
   TemplateResponseDTO,
+  TemplateUpdateResponseDTO,
 } from './templateTypes';
 
 export class TemplateService implements ITemplateService {
@@ -111,6 +113,39 @@ export class TemplateService implements ITemplateService {
       return;
     } catch (error: any) {
       throw new Error(`Failed to remove email template: ${error.message}`);
+    }
+  }
+
+  async updateTemplate(
+    id: string,
+    request: IUpdateTemplate,
+    headersOptions?: Record<string, any>,
+  ): Promise<TemplateDTO> {
+    try {
+      const response = await fetch(
+        `${this.endpointURL}/${TemplateService.BASE_TEMPLATES_ENDPOINT}/${id}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': this.apiKey,
+            ...headersOptions,
+          },
+          body: JSON.stringify(request),
+        },
+      );
+      if (!response.ok) {
+        const errorMessage = await response.text();
+        throw new Error(errorMessage);
+      }
+      const result: TemplateUpdateResponseDTO = await response.json();
+      return TemplateServiceMapper.mapTemplateCreateResponseJsonToTemplateDTO(
+        result,
+      );
+    } catch (error: any) {
+      throw new Error(
+        `Failed to update email template with id '${id}': ${error.message}`,
+      );
     }
   }
 }

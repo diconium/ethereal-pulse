@@ -1,4 +1,4 @@
-import { EtherealPulse } from "@ethereal-pulse/typescript-sdk";
+import { EtherealPulse, ICreateTemplateRequest, IUpdateTemplateRequest, TemplateDTO } from "@ethereal-pulse/typescript-sdk";
 
 const express = require('express');
 const app = express();
@@ -36,6 +36,58 @@ app.get('/templates', async (req: any, res: any) => {
     res.status(500).send(error);
   }
 });
+
+app.post('/templates', async (req: any, res: any) => {
+  console.log(req.body);
+  const payload = req.body;
+  try {
+    const ethPulseSDK = new EtherealPulse('aadf9195-fe77-4089-b9af-3fdf867446f6');
+    const request: ICreateTemplateRequest = {
+      html: payload.html,
+      name: payload.name,
+      subject: payload.subject,
+    };
+    const result: TemplateDTO = await ethPulseSDK.createTemplate(request);
+    res.send(result);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+});
+
+app.delete('/templates/:id', async (req: any, res: any) => {
+  console.log(req.body);
+  const { id } = req.params; // Extract the id from the URL parameters
+  try {
+    const ethPulseSDK = new EtherealPulse('aadf9195-fe77-4089-b9af-3fdf867446f6');
+    await ethPulseSDK.deleteTemplate({ id });
+    res.send('Email template deleted!!');
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+});
+
+app.put('/templates/:id', async (req: any, res: any) => {
+  console.log(req.body);
+  const payload = req.body;
+  try {
+    const { id } = req.params; // Extract the id from the URL parameters
+    const request: IUpdateTemplateRequest = {
+      html: payload.html,
+      name: payload.name,
+      subject: payload.subject,
+    };
+    const ethPulseSDK = new EtherealPulse('aadf9195-fe77-4089-b9af-3fdf867446f6');
+
+    const result: TemplateDTO = await ethPulseSDK.updateTemplate(id, request);
+    res.send(result);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+});
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

@@ -1,10 +1,13 @@
 'use client'
 import { TemplateDTO } from '@ethereal-pulse/typescript-sdk';
+import dynamic from 'next/dynamic';
 import React, { useEffect, useState } from 'react';
 
+const TemplateOverlayComponent = dynamic(() => import('./TemplateOverlay'), { ssr: false });
 export default function Templates() {
   const [templates, setTemplates] = useState<Array<TemplateDTO>>([]);
   const [isOverlayOpen, setIsOverlayOpen] = useState(false);
+  const [rowSelectedId, setRowSelectedId] = useState<number | undefined>();
   const [newTemplate, setNewTemplate] = useState({
     name: '',
     subject: '',
@@ -88,64 +91,62 @@ export default function Templates() {
     }
   };
 
+  const updateTemplate = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (rowSelectedId) {
+      const response = await fetch(`/api/update-template/${templates[rowSelectedId].id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newTemplate)
+      });
+
+      if (response.ok) {
+        const updatedTemplate = await response.json();
+        const updatedTemplates = templates.map((template, index) =>
+          index === rowSelectedId ? updatedTemplate : template
+        );
+        setTemplates(updatedTemplates);
+        setIsOverlayOpen(false);
+        setNewTemplate({
+          name: '',
+          subject: '',
+          html: ''
+        });
+      } else {
+        console.error('Failed to update template');
+      }
+    }
+  };
+
+  const openOverlayEditTemplate = async (index: number) => {
+    setRowSelectedId(index);
+    setIsOverlayOpen(true);
+    setNewTemplate({
+      name: templates[index].name,
+      subject: templates[index].subject,
+      html: templates[index].html
+    });
+  };
+  const openOverlayNewTemplate = async () => {
+    setRowSelectedId(undefined);
+    setIsOverlayOpen(true);
+    setNewTemplate({
+      name: '',
+      subject: '',
+      html: ''
+    });
+  };
   return (
     <div className="flex flex-col items-center justify-center space-y-4">
-
       {isOverlayOpen && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white p-6 rounded shadow-lg">
-            <h2 className="text-xl mb-4">Add New Template</h2>
-            <form onSubmit={addTemplate}>
-              <div className="mb-4">
-                <label className="block text-gray-700">Name</label>
-                <input
-                  type="text"
-                  name="name"
-                  value={newTemplate.name}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border rounded"
-                  required
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block text-gray-700">Subject</label>
-                <input
-                  type="text"
-                  name="subject"
-                  value={newTemplate.subject}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border rounded"
-                  required
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block text-gray-700">HTML</label>
-                <textarea
-                  name="html"
-                  value={newTemplate.html}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border rounded"
-                  required
-                />
-              </div>
-              <div className="flex justify-end">
-                <button
-                  type="button"
-                  onClick={() => setIsOverlayOpen(false)}
-                  className="px-4 py-2 bg-gray-500 text-white rounded mr-2"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 bg-blue-500 text-white rounded"
-                >
-                  Save
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
+        <TemplateOverlayComponent data={newTemplate}
+          handleInputChange={handleInputChange}
+          saveCallback={rowSelectedId ? updateTemplate : addTemplate}
+          setIsOverlayOpen={setIsOverlayOpen}
+          title={rowSelectedId ? 'Edit Template' : 'Add New Template'}
+        />
       )}
 
       <table className="min-w-full divide-y divide-gray-200">
@@ -188,7 +189,13 @@ export default function Templates() {
                   onClick={() => deleteTemplate(index)}
                   className="px-4 py-2 bg-red-500 text-white rounded"
                 >
-                  Delete Template
+                  Delete
+                </button>
+                <button
+                  onClick={() => openOverlayEditTemplate(index)}
+                  className="px-4 py-2 bg-yellow-500 text-white rounded"
+                >
+                  Edit
                 </button>
               </td>
             </tr>
@@ -196,7 +203,7 @@ export default function Templates() {
         </tbody>
       </table>
       <button
-        onClick={() => setIsOverlayOpen(true)}
+        onClick={openOverlayNewTemplate}
         className="px-4 py-2 bg-green-500 text-white rounded mb-4"
       >
         Add New Template

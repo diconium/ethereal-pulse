@@ -34,7 +34,15 @@ export type TemplateCreateResponseDTO = {
   __v: number;
 };
 
+export type TemplateUpdateResponseDTO = TemplateCreateResponseDTO;
+
 export type IDeleteTemplate = {
   id: string;
+  headers?: Record<string, any>;
+};
+export type IUpdateTemplate = {
+  name: string;
+  subject: string;
+  html: string;
   headers?: Record<string, any>;
 };

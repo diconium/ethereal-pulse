@@ -1,10 +1,13 @@
-import { EtherealPulse, ISendEmailRequest, TemplateDTO } from '../src';
-import { DEFAULT_ETH_PULSE_ENDPOINT } from '../src/constants/common.constants';
 import {
+  EtherealPulse,
   ICreateTemplateRequest,
   IDeleteTemplateRequest,
   IEtherealPulse,
-} from '../src/IEtherealPulse';
+  ISendEmailRequest,
+  IUpdateTemplateRequest,
+  TemplateDTO,
+} from '../src';
+import { DEFAULT_ETH_PULSE_ENDPOINT } from '../src/constants/common.constants';
 import { EmailService, TemplateService } from '../src/services';
 
 global.fetch = jest.fn();
@@ -190,6 +193,46 @@ describe('EtherealPulse', () => {
         headers: undefined,
         id: request.id,
       });
+    });
+  });
+
+  describe('updateTemplate', () => {
+    it('should update email template with success', async () => {
+      const etherealPulse = new EtherealPulse(apiKey);
+      const responseServiceCall: TemplateDTO = {
+        id: '1',
+        name: 'Airbnb review',
+        subject: 'Airbnb review',
+        html: '<h1>TEST review</h1>',
+        userId: '11',
+      };
+
+      jest
+        .spyOn(TemplateService.prototype, 'updateTemplate')
+        .mockResolvedValue(responseServiceCall);
+
+      const request: IUpdateTemplateRequest = {
+        subject: 'Test Subject',
+        html: '<p>Test HTML</p>',
+        name: 'new template',
+      };
+      const dummyTemplateId = 'templateId';
+      const template: TemplateDTO = await etherealPulse.updateTemplate(
+        dummyTemplateId,
+        request,
+      );
+
+      expect(template).toEqual(responseServiceCall);
+      expect(TemplateService.prototype.updateTemplate).toHaveBeenCalledTimes(1);
+      expect(TemplateService.prototype.updateTemplate).toHaveBeenCalledWith(
+        dummyTemplateId,
+        {
+          subject: 'Test Subject',
+          html: '<p>Test HTML</p>',
+          name: 'new template',
+        },
+        undefined,
+      );
     });
   });
 });

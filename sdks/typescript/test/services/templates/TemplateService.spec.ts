@@ -2,10 +2,12 @@ import {
   ICreateTemplate,
   IDeleteTemplate,
   IGetTemplatesRequest,
+  IUpdateTemplate,
   TemplateCreateResponseDTO,
   TemplateDTO,
   TemplateResponseDTO,
   TemplateService,
+  TemplateUpdateResponseDTO,
 } from '../../../src/services/templates';
 
 global.fetch = jest.fn();
@@ -195,6 +197,64 @@ describe('TemplateService', () => {
 
       await expect(templateService.deleteTemplate(request)).rejects.toThrow(
         `Failed to remove email template: ${errorMessage}`,
+      );
+      expect(global.fetch).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('updateTemplate', () => {
+    it('should update a templates successfully', async () => {
+      const request: IUpdateTemplate = {
+        subject: 'Test Subject',
+        html: '<p>Test HTML</p>',
+        name: 'new template',
+      };
+
+      const serviceResponse: TemplateUpdateResponseDTO = {
+        name: 'new template',
+        subject: 'Test Subject',
+        html: '<>Test HTML</ p > ',
+        _id: '66a1166189bbed9bf9974e68',
+        __v: 0,
+      };
+
+      (global.fetch as jest.Mock).mockResolvedValue({
+        ok: true,
+        json: async () => serviceResponse,
+      });
+
+      const templates = await templateService.updateTemplate(
+        'templateId',
+        request,
+      );
+
+      const expectedOutput: TemplateDTO = {
+        id: '66a1166189bbed9bf9974e68',
+        name: 'new template',
+        subject: 'Test Subject',
+        html: '<>Test HTML</ p > ',
+      };
+      expect(templates).toEqual(expectedOutput);
+      expect(global.fetch).toHaveBeenCalledTimes(1);
+    });
+
+    it('should throw an error when update endpoint response is an error', async () => {
+      const request: IUpdateTemplate = {
+        subject: 'Test Subject',
+        html: '<p>Test HTML</p>',
+        name: 'new template',
+      };
+      const errorMessage = 'Templates not updated successfully';
+
+      (global.fetch as jest.Mock).mockResolvedValue({
+        ok: false,
+        text: async () => errorMessage,
+      });
+      const dummyTemplateId = 'templateId';
+      await expect(
+        templateService.updateTemplate(dummyTemplateId, request),
+      ).rejects.toThrow(
+        `Failed to update email template with id '${dummyTemplateId}': ${errorMessage}`,
       );
       expect(global.fetch).toHaveBeenCalledTimes(1);
     });

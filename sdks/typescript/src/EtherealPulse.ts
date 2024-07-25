@@ -4,11 +4,13 @@ import {
   IDeleteTemplateRequest,
   IEtherealPulse,
   ISendEmailRequest,
+  IUpdateTemplateRequest,
 } from './IEtherealPulse';
 import {
   EmailService,
   ICreateTemplate,
   IDeleteTemplate,
+  IUpdateTemplate,
   TemplateDTO,
   TemplateService,
 } from './services';
@@ -105,5 +107,18 @@ export class EtherealPulse implements IEtherealPulse {
       headers,
     };
     return this.templatesService.deleteTemplate(createRequest);
+  }
+
+  public async updateTemplate(
+    id: string,
+    request: IUpdateTemplateRequest,
+    headers?: Record<string, any>,
+  ): Promise<TemplateDTO> {
+    const updateTemplate: IUpdateTemplate = {
+      name: request.name,
+      subject: request.subject,
+      html: request.html,
+    };
+    return this.templatesService.updateTemplate(id, updateTemplate, headers);
   }
 }
