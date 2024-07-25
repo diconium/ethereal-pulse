@@ -9,11 +9,12 @@ export default function Home() {
 
   return (
     <main>
-      <div>
-        <p>TEST SDK INTEGRATION!!!</p>
+      <div className="flex flex-col items-center justify-center space-y-4">
+        <label className="block text-gray-950">TEST SDK INTEGRATION!!!</label>
         <div>
           <EmailClientComponent></EmailClientComponent>
         </div>
+        <br></br>
         <div>
           <TemplateClientComponent></TemplateClientComponent>
         </div>

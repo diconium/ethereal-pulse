@@ -1,4 +1,8 @@
-import { TemplateDTO, TemplateResponseDTO } from './templateTypes';
+import {
+  TemplateCreateResponseDTO,
+  TemplateDTO,
+  TemplateResponseDTO,
+} from './templateTypes';
 
 export class TemplateServiceMapper {
   static mapTemplateJsonToTemplateDTO(item: TemplateResponseDTO): TemplateDTO {
@@ -19,5 +23,17 @@ export class TemplateServiceMapper {
     return templatesResponse.map(
       TemplateServiceMapper.mapTemplateJsonToTemplateDTO,
     );
+  }
+  static mapTemplateCreateResponseJsonToTemplateDTO(
+    item: TemplateCreateResponseDTO,
+  ): TemplateDTO {
+    //TODO add validations
+    const templateDTO: TemplateDTO = {
+      id: item._id,
+      name: item.name,
+      subject: item.subject,
+      html: item.html,
+    };
+    return templateDTO;
   }
 }

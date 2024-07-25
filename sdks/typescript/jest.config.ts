@@ -14,12 +14,21 @@ const config: Config = {
   moduleNameMapper: {
     '^src/(.*)$': '<rootDir>/src/$1',
   },
+  collectCoverage: true,
   preset: 'ts-jest',
   prettierPath: null,
-  roots: ['<rootDir>/src', '<rootDir>/tests'],
+  roots: ['<rootDir>/src', '<rootDir>/test'],
   testPathIgnorePatterns: ['/node_modules/', '/lib/'],
   transform: {
     '^.+\\.(t|j)s$': 'ts-jest',
+  },
+  coverageThreshold: {
+    global: {
+      branches: 85,
+      functions: 85,
+      lines: 85,
+      statements: 85,
+    },
   },
 };
 

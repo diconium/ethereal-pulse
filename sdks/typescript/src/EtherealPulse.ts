@@ -1,13 +1,32 @@
 import { DEFAULT_ETH_PULSE_ENDPOINT } from './constants/common.constants';
-import { IEtherealPulse, ISendEmailRequest } from './IEtherealPulse';
-import { EmailService, TemplateDTO, TemplateService } from './services';
+import {
+  ICreateTemplateRequest,
+  IDeleteTemplateRequest,
+  IEtherealPulse,
+  ISendEmailRequest,
+} from './IEtherealPulse';
+import {
+  EmailService,
+  ICreateTemplate,
+  IDeleteTemplate,
+  TemplateDTO,
+  TemplateService,
+} from './services';
 
+/**
+ * Represents the EtherealPulse class that provides methods for sending emails and managing templates.
+ */
 export class EtherealPulse implements IEtherealPulse {
   private apiKey: string;
   private endpointURL: string;
   private emailsService: EmailService;
   private templatesService: TemplateService;
 
+  /**
+   * Creates an instance of EtherealPulse.
+   * @param apiKey - The API key used for authentication.
+   * @throws Error if a valid apiKey is not provided.
+   */
   constructor(apiKey: string) {
     if (!apiKey || (apiKey && apiKey.trim() === '')) {
       throw new Error('Failed to provide a valid apiKey!!!!!');
@@ -21,7 +40,11 @@ export class EtherealPulse implements IEtherealPulse {
     this.templatesService = new TemplateService(this.apiKey, this.endpointURL);
   }
 
-  //TODO ADD JSDOCS
+  /**
+   * Sends an email using the provided parameters.
+   * @param request - The request object containing email details.
+   * @returns A promise that resolves to the result of the email sending operation.
+   */
   public async sendEmail({
     from,
     recipients,
@@ -44,7 +67,43 @@ export class EtherealPulse implements IEtherealPulse {
     });
   }
 
+  /**
+   * Get the templates available
+   * @returns A promise with an array with templates items
+   */
   public async getTemplates(): Promise<Array<TemplateDTO>> {
     return this.templatesService.getTemplates();
+  }
+
+  /**
+   * Creates a new email template using the provided parameters.
+   * @param request - The request object containing email details.
+   * @returns A promise that resolves the template created.
+   */
+  public async createTemplate(
+    request: ICreateTemplateRequest,
+  ): Promise<TemplateDTO> {
+    const createRequest: ICreateTemplate = {
+      name: request.name,
+      subject: request.subject,
+      html: request.html,
+      headers: request.headers,
+    };
+    return this.templatesService.createTemplate(createRequest);
+  }
+
+  /**
+   * Deletes an email template using the provided parameters.
+   * @param request - The request object containing template details.
+   **/
+  public async deleteTemplate({
+    id,
+    headers,
+  }: IDeleteTemplateRequest): Promise<void> {
+    const createRequest: IDeleteTemplate = {
+      id,
+      headers,
+    };
+    return this.templatesService.deleteTemplate(createRequest);
   }
 }
