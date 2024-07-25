@@ -2,8 +2,6 @@ import { ITemplateService } from './ITemplatelService';
 import { TemplateServiceMapper } from './TemplateServiceMapper';
 import {
   ICreateTemplate,
-  IDeleteTemplate,
-  IGetTemplatesRequest,
   IUpdateTemplate,
   TemplateCreateResponseDTO,
   TemplateDTO,
@@ -25,9 +23,9 @@ export class TemplateService implements ITemplateService {
     this.endpointURL = endpointURL;
   }
 
-  async getTemplates({ headers }: IGetTemplatesRequest = {}): Promise<
-    Array<TemplateDTO>
-  > {
+  async getTemplates(
+    headersOptions?: Record<string, any>,
+  ): Promise<Array<TemplateDTO>> {
     try {
       const response = await fetch(
         `${this.endpointURL}/${TemplateService.BASE_TEMPLATES_ENDPOINT}`,
@@ -36,7 +34,7 @@ export class TemplateService implements ITemplateService {
           headers: {
             'Content-Type': 'application/json',
             'x-api-key': this.apiKey,
-            ...headers,
+            ...headersOptions,
           },
         },
       );
@@ -55,12 +53,10 @@ export class TemplateService implements ITemplateService {
     }
   }
 
-  async createTemplate({
-    name,
-    subject,
-    html,
-    headers,
-  }: ICreateTemplate): Promise<TemplateDTO> {
+  async createTemplate(
+    { name, subject, html }: ICreateTemplate,
+    headersOptions?: Record<string, any>,
+  ): Promise<TemplateDTO> {
     const requestBody: ICreateTemplate = {
       name,
       subject,
@@ -75,7 +71,7 @@ export class TemplateService implements ITemplateService {
           headers: {
             'Content-Type': 'application/json',
             'x-api-key': this.apiKey,
-            ...headers,
+            ...headersOptions,
           },
           body: JSON.stringify(requestBody),
         },
@@ -93,7 +89,10 @@ export class TemplateService implements ITemplateService {
     }
   }
 
-  async deleteTemplate({ id, headers }: IDeleteTemplate): Promise<void> {
+  async deleteTemplate(
+    id: string,
+    headersOptions?: Record<string, any>,
+  ): Promise<void> {
     try {
       const response = await fetch(
         `${this.endpointURL}/${TemplateService.BASE_TEMPLATES_ENDPOINT}/${id}`,
@@ -102,7 +101,7 @@ export class TemplateService implements ITemplateService {
           headers: {
             'Content-Type': 'application/json',
             'x-api-key': this.apiKey,
-            ...headers,
+            ...headersOptions,
           },
         },
       );

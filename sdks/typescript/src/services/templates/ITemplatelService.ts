@@ -1,17 +1,20 @@
-import {
-  ICreateTemplate,
-  IDeleteTemplate,
-  IGetTemplatesRequest,
-  TemplateDTO,
-} from './templateTypes';
+import { ICreateTemplate, IUpdateTemplate, TemplateDTO } from './templateTypes';
 
 export interface ITemplateService {
-  getTemplates(_request: IGetTemplatesRequest): Promise<Array<TemplateDTO>>;
-  createTemplate({
-    name,
-    subject,
-    html,
-    headers,
-  }: ICreateTemplate): Promise<TemplateDTO>;
-  deleteTemplate({ id, headers }: IDeleteTemplate): Promise<void>;
+  getTemplates(
+    headersOptions?: Record<string, any>,
+  ): Promise<Array<TemplateDTO>>;
+  createTemplate(
+    { name, subject, html }: ICreateTemplate,
+    headersOptions?: Record<string, any>,
+  ): Promise<TemplateDTO>;
+  deleteTemplate(
+    id: string,
+    headersOptions?: Record<string, any>,
+  ): Promise<void>;
+  updateTemplate(
+    id: string,
+    request: IUpdateTemplate,
+    headersOptions?: Record<string, any>,
+  ): Promise<TemplateDTO>;
 }

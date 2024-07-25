@@ -60,7 +60,7 @@ app.delete('/templates/:id', async (req: any, res: any) => {
   const { id } = req.params; // Extract the id from the URL parameters
   try {
     const ethPulseSDK = new EtherealPulse('aadf9195-fe77-4089-b9af-3fdf867446f6');
-    await ethPulseSDK.deleteTemplate({ id });
+    await ethPulseSDK.deleteTemplate(id);
     res.send('Email template deleted!!');
   } catch (error) {
     console.log(error);

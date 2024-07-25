@@ -1,7 +1,6 @@
 import {
   EtherealPulse,
   ICreateTemplateRequest,
-  IDeleteTemplateRequest,
   IEtherealPulse,
   ISendEmailRequest,
   IUpdateTemplateRequest,
@@ -168,12 +167,14 @@ describe('EtherealPulse', () => {
 
       expect(template).toEqual(responseServiceCall);
       expect(TemplateService.prototype.createTemplate).toHaveBeenCalledTimes(1);
-      expect(TemplateService.prototype.createTemplate).toHaveBeenCalledWith({
-        subject: 'Test Subject',
-        html: '<p>Test HTML</p>',
-        name: 'new template',
-        headers: undefined,
-      });
+      expect(TemplateService.prototype.createTemplate).toHaveBeenCalledWith(
+        {
+          subject: 'Test Subject',
+          html: '<p>Test HTML</p>',
+          name: 'new template',
+        },
+        undefined,
+      );
     });
   });
 
@@ -184,15 +185,13 @@ describe('EtherealPulse', () => {
         .spyOn(TemplateService.prototype, 'deleteTemplate')
         .mockResolvedValue();
 
-      const request: IDeleteTemplateRequest = {
-        id: 'templateId',
-      };
-      await etherealPulse.deleteTemplate(request);
+      const templateId = 'templateIdDummy';
+      await etherealPulse.deleteTemplate(templateId);
       expect(TemplateService.prototype.deleteTemplate).toHaveBeenCalledTimes(1);
-      expect(TemplateService.prototype.deleteTemplate).toHaveBeenCalledWith({
-        headers: undefined,
-        id: request.id,
-      });
+      expect(TemplateService.prototype.deleteTemplate).toHaveBeenCalledWith(
+        templateId,
+        undefined,
+      );
     });
   });
 

@@ -7,7 +7,6 @@ export interface ISendEmailRequest {
   html: string;
   bcc?: string[];
   cc?: string[];
-  headers?: Record<string, any>;
   attachments?: Record<string, any>[];
 }
 
@@ -15,13 +14,7 @@ export interface ICreateTemplateRequest {
   name: string;
   subject: string;
   html: string;
-  headers?: Record<string, any>;
 }
-export interface IDeleteTemplateRequest {
-  id: string;
-  headers?: Record<string, any>;
-}
-
 export interface IUpdateTemplateRequest {
   name: string;
   subject: string;
@@ -29,10 +22,21 @@ export interface IUpdateTemplateRequest {
 }
 
 export interface IEtherealPulse {
-  sendEmail(_request: ISendEmailRequest): Promise<any>;
-  getTemplates(): Promise<Array<TemplateDTO>>;
-  createTemplate(request: ICreateTemplateRequest): Promise<TemplateDTO>;
-  deleteTemplate({ id, headers }: IDeleteTemplateRequest): Promise<void>;
+  sendEmail(
+    _request: ISendEmailRequest,
+    headersOptions?: Record<string, any>,
+  ): Promise<any>;
+  getTemplates(
+    headersOptions?: Record<string, any>,
+  ): Promise<Array<TemplateDTO>>;
+  createTemplate(
+    request: ICreateTemplateRequest,
+    headersOptions?: Record<string, any>,
+  ): Promise<TemplateDTO>;
+  deleteTemplate(
+    id: string,
+    headersOptions?: Record<string, any>,
+  ): Promise<void>;
   updateTemplate(
     id: string,
     request: IUpdateTemplateRequest,

@@ -1,7 +1,5 @@
 import {
   ICreateTemplate,
-  IDeleteTemplate,
-  IGetTemplatesRequest,
   IUpdateTemplate,
   TemplateCreateResponseDTO,
   TemplateDTO,
@@ -28,8 +26,6 @@ describe('TemplateService', () => {
 
   describe('getTemplates', () => {
     it('should fetch templates successfully', async () => {
-      const request: IGetTemplatesRequest = {};
-
       const serviceResponse: Array<TemplateResponseDTO> = [
         {
           _id: '1',
@@ -86,21 +82,20 @@ describe('TemplateService', () => {
         json: async () => serviceResponse,
       } as Response);
 
-      const templates = await templateService.getTemplates(request);
+      const templates = await templateService.getTemplates();
 
       expect(templates).toEqual(expectedOutput);
       expect(global.fetch).toHaveBeenCalledTimes(1);
     });
 
     it('should throw an error when the fetch emails return with an error from the api', async () => {
-      const request: IGetTemplatesRequest = {};
       const errorMessage = 'Templates not fetched successfully';
       jest.spyOn(global, 'fetch').mockResolvedValue({
         ok: false,
         text: async () => errorMessage,
       } as Response);
 
-      await expect(templateService.getTemplates(request)).rejects.toThrow(
+      await expect(templateService.getTemplates()).rejects.toThrow(
         `Failed to fetch email templates: ${errorMessage}`,
       );
       expect(global.fetch).toHaveBeenCalledTimes(1);
@@ -161,19 +156,15 @@ describe('TemplateService', () => {
 
   describe('deleteTemplate', () => {
     it('should delete a templates successfully', async () => {
-      const request: IDeleteTemplate = {
-        id: 'templateId',
-      };
-
       (global.fetch as jest.Mock).mockResolvedValue({
         ok: true,
       });
-
-      await templateService.deleteTemplate(request);
+      const dummyTemplateId = 'templateId';
+      await templateService.deleteTemplate(dummyTemplateId);
       expect(global.fetch).toHaveBeenCalledTimes(1);
 
       expect(global.fetch).toHaveBeenCalledWith(
-        `https://api.example.com/templates/${request.id}`,
+        `https://api.example.com/templates/${dummyTemplateId}`,
         {
           method: 'DELETE',
           headers: {
@@ -185,9 +176,6 @@ describe('TemplateService', () => {
     });
 
     it('should throw an error when delete template endpoint response is an error', async () => {
-      const request: IDeleteTemplate = {
-        id: 'templateId',
-      };
       const errorMessage = 'Templates not deleted successfully';
 
       (global.fetch as jest.Mock).mockResolvedValue({
@@ -195,9 +183,9 @@ describe('TemplateService', () => {
         text: async () => errorMessage,
       });
 
-      await expect(templateService.deleteTemplate(request)).rejects.toThrow(
-        `Failed to remove email template: ${errorMessage}`,
-      );
+      await expect(
+        templateService.deleteTemplate('templateId'),
+      ).rejects.toThrow(`Failed to remove email template: ${errorMessage}`);
       expect(global.fetch).toHaveBeenCalledTimes(1);
     });
   });
