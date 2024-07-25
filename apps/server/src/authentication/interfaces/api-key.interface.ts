@@ -1,8 +1,4 @@
-import { API_KEY_PERMISSION_KEYS } from '../constants/api-key-permissions.constant';
-
-export type ApiKeyPermission =
-  | typeof API_KEY_PERMISSION_KEYS.FULL_ACCESS
-  | typeof API_KEY_PERMISSION_KEYS.SENDING_ACCESS;
+import { ApiKeyPermission } from 'src/common/enums/api-key-permission.enum';
 
 export interface IApiKey {
   name: string;

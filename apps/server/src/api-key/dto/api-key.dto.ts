@@ -38,6 +38,10 @@ export class GetApiKeysResponseDto {
 
   @IsDate()
   created_at: Date;
+
+  @IsEnum(ApiKeyPermission)
+  @IsNotEmpty()
+  permission: ApiKeyPermission;
 }
 
 export class GetApiKeysWrapperResponseDto {

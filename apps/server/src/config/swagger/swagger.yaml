@@ -269,6 +269,11 @@ paths:
                         created_at:
                           type: string
                           format: date-time
+                        permission:
+                          type: string
+                          enum:
+                            - full_access
+                            - sending_access
         "401":
           $ref: "#/components/responses/Unauthorized"
       security:
