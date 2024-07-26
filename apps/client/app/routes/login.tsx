@@ -21,11 +21,9 @@ export default function Login() {
 }
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  const user = await authenticator.isAuthenticated(request);
-  if (user) {
-    return redirect('/emails');
-  }
-  return null;
+  return await authenticator.isAuthenticated(request, {
+    successRedirect: '/emails',
+  });
 }
 
 export async function action({ request }: ActionFunctionArgs) {
