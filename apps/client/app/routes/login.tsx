@@ -1,18 +1,20 @@
-import { Link } from '@remix-run/react';
+import { Link, useLocation } from '@remix-run/react';
 import { AuthForm } from '~/components';
 import { authenticate, authenticator } from '~/services';
-import {
-  ActionFunctionArgs,
-  LoaderFunctionArgs,
-  redirect,
-} from '@remix-run/node';
+import { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node';
 
 export default function Login() {
+  const location = useLocation();
+  const searchParams = location.search;
+
   return (
     <div className="flex flex-col mx-56 p-16">
       <AuthForm type="login" />
       <div className="mt-4 text-center">
-        <Link to="/auth/github" className="text-blue-500 underline">
+        <Link
+          to={`/auth/github${searchParams}`}
+          className="text-blue-500 underline"
+        >
           Login with GitHub
         </Link>
       </div>

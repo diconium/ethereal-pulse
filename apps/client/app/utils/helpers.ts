@@ -1,8 +1,8 @@
 const DEFAULT_REDIRECT = "/emails";
 
 export function safeRedirect(
-  to: FormDataEntryValue | string | null | undefined,
-  defaultRedirect: string = DEFAULT_REDIRECT
+  to: string | null | undefined,
+  defaultRedirect: string = DEFAULT_REDIRECT,
 ) {
   if (!to || typeof to !== 'string') {
     return defaultRedirect;

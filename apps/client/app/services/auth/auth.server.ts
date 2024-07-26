@@ -1,5 +1,5 @@
-import { json } from "@remix-run/node";
-import { safeRedirect } from '~/utils';
+import { json } from '@remix-run/node';
+import { safeRedirect } from '~/utils/helpers';
 import { Authenticator } from 'remix-auth';
 import { sessionStorage } from '../session.server';
 import { LoginStrategy, SignUpStrategy, gitHubStrategy } from './strategies';
@@ -15,14 +15,10 @@ export async function authenticate(
   request: Request,
   strategy: 'login' | 'signup' | 'github',
 ) {
-  let redirectTo = '/emails';
-
-  if (strategy !== 'github') {
-    const formData = await request.clone().formData();
-    redirectTo = safeRedirect(formData.get('redirectTo'));
-  }
-
   try {
+    const url = new URL(request.url);
+    const redirectTo = safeRedirect(url.searchParams.get('redirectTo'));
+
     const result = await authenticator.authenticate(strategy, request, {
       successRedirect: redirectTo,
     });
