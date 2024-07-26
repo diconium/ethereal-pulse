@@ -1,11 +1,5 @@
-/**
- * For a detailed explanation regarding each configuration property, visit:
- * https://jestjs.io/docs/configuration
- */
-
-import type { Config } from 'jest';
-
-const config: Config = {
+/** @type {import('ts-jest').JestConfigWithTsJest} */
+module.exports = {
   clearMocks: true,
   collectCoverageFrom: ['**/*.(t|j)s'],
   coverageDirectory: './coverage',
@@ -23,5 +17,3 @@ const config: Config = {
     '^.+\\.(t|j)s$': 'ts-jest',
   },
 };
-
-export default config;
