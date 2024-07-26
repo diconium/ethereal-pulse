@@ -28,15 +28,15 @@ export async function authenticate(
     });
     return result;
   } catch (exception) {
-    // Handle 302 redirect status before logging the error
-    if (exception instanceof Response && exception.status === 302) {
-      return exception;
-    }
-
-    console.error('Authentication failed:', exception);
-
-    // Remix-auth wraps the error message in a response object
     if (exception instanceof Response) {
+      // Handle 302 redirect status before logging the error
+      if (exception.status === 302) {
+        return exception;
+      }
+
+      console.error('Authentication failed:', exception);
+
+      // Remix-auth wraps the error message in a response object
       try {
         const response = await exception.json();
         return json({ error: response.message }, { status: exception.status });
