@@ -136,3 +136,7 @@ lib
 # Webstorm
 .idea
 .idea/*
+
+# Junit
+reports/
+junit*
