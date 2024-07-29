@@ -30,6 +30,7 @@ export class ApiKeyService {
             id: apiKey._id?.toString(),
             name: apiKey.name,
             created_at: apiKey.createdAt,
+            permission: apiKey.permission,
           };
         },
       ),

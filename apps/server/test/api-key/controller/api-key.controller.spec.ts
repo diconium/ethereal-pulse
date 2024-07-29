@@ -57,8 +57,18 @@ describe('ApiKeyController', () => {
     it('should return an array of API keys', async () => {
       const mockApiKeys: GetApiKeysWrapperResponseDto = {
         data: [
-          { id: '1', name: 'Key 1', created_at: new Date() },
-          { id: '2', name: 'Key 2', created_at: new Date() },
+          {
+            id: '1',
+            name: 'Key 1',
+            created_at: new Date(),
+            permission: ApiKeyPermission.FULL_ACCESS,
+          },
+          {
+            id: '2',
+            name: 'Key 2',
+            created_at: new Date(),
+            permission: ApiKeyPermission.FULL_ACCESS,
+          },
         ],
       };
       (service.findAll as jest.Mock).mockResolvedValue(mockApiKeys);
