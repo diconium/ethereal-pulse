@@ -8,6 +8,8 @@ import {
 import {
   EmailService,
   ICreateTemplate,
+  IEmailService,
+  ITemplateService,
   IUpdateTemplate,
   TemplateDTO,
   TemplateService,
@@ -16,8 +18,8 @@ import {
 export class EtherealPulse implements IEtherealPulse {
   private apiKey: string;
   private endpointURL: string;
-  private emailsService: EmailService;
-  private templatesService: TemplateService;
+  private emailsService: IEmailService;
+  private templatesService: ITemplateService;
 
   /**
    * Creates an instance of EtherealPulse.

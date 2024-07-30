@@ -1,4 +1,4 @@
-import { EtherealPulse, TemplateDTO, ICreateTemplateRequest, IUpdateTemplateRequest } from "@ethereal-pulse/typescript-sdk";
+import { EtherealPulse, TemplateDTO, IUpdateTemplateRequest } from "@ethereal-pulse/typescript-sdk";
 
 export default async function handler(req: any, res: any) {
   console.log(req.body);
