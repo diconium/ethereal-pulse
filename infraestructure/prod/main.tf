@@ -25,16 +25,15 @@ resource "azurerm_container_app" "example" {
   name                        = var.container_app_name
   container_app_environment_id = azurerm_container_app_environment.example.id
   resource_group_name         = azurerm_resource_group.example.name
-  location                    = azurerm_resource_group.example.location
+  revision_mode               = "Single"
+
 
   template {
     container {
       name   = "example-container"
       image  = "${azurerm_container_registry.example.login_server}/ethereal-pulse:latest"
-      resources {
-        cpu    = "0.5"
-        memory = "1.5Gi"
-      }
+      cpu    = "0.5"
+      memory = "1.5Gi"
 
       env {
         name  = "DATABASE_URI"
@@ -47,11 +46,6 @@ resource "azurerm_container_app" "example" {
       }
 
       # Add other environment variables here
-    }
-
-    scale {
-      min_replicas = 1
-      max_replicas = 3
     }
   }
 
