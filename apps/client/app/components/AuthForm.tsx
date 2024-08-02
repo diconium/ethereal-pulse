@@ -4,29 +4,35 @@ import { AuthenticityTokenInput } from "remix-utils/csrf/react";
 export default function AuthForm({ type }: { type: "login" | "signup" }) {
   const actionData = useActionData<{ error?: string }>();
   const [searchParams] = useSearchParams();
-  const redirectTo = searchParams.get("redirectTo") || "";
-  const redirectSearchParams = redirectTo ? `?redirectTo=${redirectTo}` : "";
+  const redirectTo = searchParams.get('redirectTo') || '';
+  const redirectSearchParams = redirectTo ? `?redirectTo=${redirectTo}` : '';
+
+  const isLogin = type === 'login';
+  const title = isLogin ? 'Log in to Ethereal Pulse' : 'Create a new account';
+  const linkText = isLogin
+    ? "Don't have an account? Sign up here!"
+    : 'Already have an account? Log in here!';
+  const linkTo = isLogin
+    ? `/signup${redirectSearchParams}`
+    : `/login${redirectSearchParams}`;
+  const buttonText = isLogin ? 'Login' : 'Sign up';
 
   return (
     <>
-      <h2 className="text-xl text-center">
-        {type === "login" ? "Log in to Ethereal Pulse" : "Create a new account"}
-      </h2>
-      {type === "login" ? (
-        <Link to={`/signup${redirectSearchParams}`} className="text-center mt-4 font-bold underline">
-          Don&apos;t have an account? Sign up here!
-        </Link>
-      ) : (
-        <Link to={`/login${redirectSearchParams}`} className="text-center mt-4 font-bold underline">
-          Already have an account? Log in here!
-        </Link>
-      )}
+      <h2 className="text-xl text-center">{title}</h2>
+      <Link to={linkTo} className="text-center mt-4 font-bold underline">
+        {linkText}
+      </Link>
 
       <div className="rounded-xl shadow-2xl border-solid border border-gray-600 bg-gray-300 mt-8">
-        <Form method="post" className="flex flex-col p-6 gap-4">
+        <Form
+          method="post"
+          action={redirectSearchParams}
+          className="flex flex-col p-6 gap-4"
+        >
           <AuthenticityTokenInput />
-  
-          {type === "signup" && (
+
+          {!isLogin && (
             <div className="flex flex-col">
               <label htmlFor="firstName">First Name:</label>
               <input
@@ -68,7 +74,7 @@ export default function AuthForm({ type }: { type: "login" | "signup" }) {
               required
             />
           </div>
-          {type === "signup" && (
+          {!isLogin && (
             <div className="flex flex-col">
               <label htmlFor="confirmPassword">Confirm Password:</label>
               <input
@@ -84,13 +90,11 @@ export default function AuthForm({ type }: { type: "login" | "signup" }) {
             {actionData?.error && (
               <p className="text-red-600 font-bold">{actionData.error}</p>
             )}
-
-            <input type="hidden" name="redirectTo" value={redirectTo} />
             <button
               type="submit"
               className="rounded-xl border-solid border border-gray-600 bg-gray-600 text-white py-2 px-4 mt-2"
             >
-              {type === "login" ? "Login" : "Sign up"}
+              {buttonText}
             </button>
           </div>
         </Form>
