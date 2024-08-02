@@ -47,3 +47,4 @@ jobs:
           location: westeurope
           targetPort: 5173
           ingress: external
+          environmentVariables: GITHUB_CLIENT_ID=secretref:github-client-id GITHUB_CLIENT_SECRET=secretref:github-client-secret GITHUB_CALLBACK_URL=secretref:github-callback-url
