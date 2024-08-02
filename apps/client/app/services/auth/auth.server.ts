@@ -1,43 +1,51 @@
-import { json } from "@remix-run/node";
-import { Authenticator } from "remix-auth";
-import { sessionStorage } from "../session.server";
-import { LoginStrategy, SignUpStrategy } from "./strategies";
-import { safeRedirect } from "~/utils";
+import { json } from '@remix-run/node';
+import { safeRedirect } from '~/utils/helpers';
+import { Authenticator } from 'remix-auth';
+import { sessionStorage } from '../session.server';
+import { LoginStrategy, SignUpStrategy, gitHubStrategy } from './strategies';
 
 export const authenticator = new Authenticator<string>(sessionStorage);
 
 authenticator
-  .use(LoginStrategy, "login")
-  .use(SignUpStrategy, "signup");
+  .use(LoginStrategy, 'login')
+  .use(SignUpStrategy, 'signup')
+  .use(gitHubStrategy, 'github');
 
-export async function authenticate(request: Request, strategy: "login" | "signup") {
-  const formData = await request.clone().formData();
-  const redirectTo = safeRedirect(formData.get("redirectTo"));
-
+export async function authenticate(
+  request: Request,
+  strategy: 'login' | 'signup' | 'github',
+) {
   try {
-    return await authenticator.authenticate(strategy, request, {
-      successRedirect: redirectTo || "/emails",
+    const url = new URL(request.url);
+    const redirectTo = safeRedirect(url.searchParams.get('redirectTo'));
+
+    const result = await authenticator.authenticate(strategy, request, {
+      successRedirect: redirectTo,
     });
+    return result;
   } catch (exception) {
-    // Remix-auth wraps the error message in a response object
     if (exception instanceof Response) {
-      return exception
-        .json()
-        // Error case - we are able to parse error json
-        .then((response) => {
-          return json({ error: response.message }, { status: exception.status })
-        })
-        // Success case - response is not json so we return the response as is
-        .catch(() => {
-          return exception;
-        });
+      // Handle 302 redirect status before logging the error
+      if (exception.status === 302) {
+        return exception;
+      }
+
+      console.error('Authentication failed:', exception);
+
+      // Remix-auth wraps the error message in a response object
+      try {
+        const response = await exception.json();
+        return json({ error: response.message }, { status: exception.status });
+      } catch {
+        return exception;
+      }
     }
-    return json({ error: "An error occurred" }, { status: 500 });
+    return json({ error: 'An error occurred' }, { status: 500 });
   }
 }
 
 export async function logout(request: Request, redirectTo?: string) {
   return await authenticator.logout(request, {
-    redirectTo: redirectTo || "/login",
+    redirectTo: redirectTo || '/login',
   });
 }
