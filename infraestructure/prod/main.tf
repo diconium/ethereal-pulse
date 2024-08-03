@@ -2,6 +2,16 @@ provider "azurerm" {
   features {}
 }
 
+module "database" {
+  source = "./database"
+  cosmosdb_account_name = var.cosmosdb_account_name
+  location              = var.location
+  resource_group_name   = var.resource_group_name
+  cosmosdb_offer_type   = var.cosmosdb_offer_type
+  cosmosdb_kind         = var.cosmosdb_kind
+  cosmosdb_throughput   = var.cosmosdb_throughput
+}
+
 resource "azurerm_resource_group" "ethereal_pulse_resource_group" {
   name     = var.resource_group_name
   location = var.location

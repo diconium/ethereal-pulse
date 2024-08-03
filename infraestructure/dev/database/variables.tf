@@ -1,13 +1,13 @@
 variable "cosmosdb_account_name" {
   description = "The name of the Cosmos DB account"
   type        = string
-  default     = "example-cosmosdb-account-dev"
+  default     = "ethereal-pulse-cosmosdb-account-dev"
 }
 
 variable "mongo_database_name" {
   description = "The name of the MongoDB database"
   type        = string
-  default     = "example-mongo-database-dev"
+  default     = "ethereal-pulse-mongo-database-dev"
 }
 
 variable "resource_group_name" {

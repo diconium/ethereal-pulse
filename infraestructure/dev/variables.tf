@@ -38,6 +38,7 @@ variable "client_app_name" {
   default     = "ethereal-pulse-client-app-dev"
 }
 
+# Github SSO-related variables
 variable "github_client_id" {
   description = "The GitHub client ID"
   type        = string
@@ -51,4 +52,35 @@ variable "github_client_secret" {
 variable "github_callback_url" {
   description = "The GitHub callback URL"
   type        = string
+}
+
+# database-related variables
+variable "cosmosdb_account_name" {
+  description = "The name of the Cosmos DB account"
+  type        = string
+  default     = "example-cosmosdb-account-dev"
+}
+
+variable "mongo_database_name" {
+  description = "The name of the MongoDB database"
+  type        = string
+  default     = "example-mongo-database-dev"
+}
+
+variable "cosmosdb_offer_type" {
+  description = "The offer type for Cosmos DB"
+  type        = string
+  default     = "Standard"
+}
+
+variable "cosmosdb_kind" {
+  description = "The kind of Cosmos DB"
+  type        = string
+  default     = "MongoDB"
+}
+
+variable "cosmosdb_throughput" {
+  description = "The throughput for Cosmos DB collections"
+  type        = number
+  default     = 400
 }
