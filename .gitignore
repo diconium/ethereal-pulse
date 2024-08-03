@@ -140,3 +140,11 @@ lib
 # Junit
 reports/
 junit*
+
+
+# Terraform
+# Ignore Terraform state and cache files
+.terraform/
+
+# Do not ignore the Terraform lock file
+!.terraform.lock.hcl
