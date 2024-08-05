@@ -1,7 +1,3 @@
-export interface IEtherealPulse {
-  sendEmail(_request: ISendEmailRequest): Promise<any>;
-}
-
 export interface ISendEmailRequest {
   from: string;
   recipients: string[];
@@ -11,4 +7,8 @@ export interface ISendEmailRequest {
   cc?: string[];
   headers?: Record<string, any>;
   attachments?: Record<string, any>[];
+}
+
+export interface IEmailService {
+  sendEmail(_request: ISendEmailRequest): Promise<any>;
 }

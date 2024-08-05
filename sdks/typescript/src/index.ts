@@ -1,5 +1,8 @@
 export {
   IEtherealPulse,
   ISendEmailRequest,
-} from './interfaces/email-services.interface';
+  ICreateTemplateRequest,
+  IUpdateTemplateRequest,
+} from './IEtherealPulse';
 export { EtherealPulse } from './EtherealPulse';
+export { TemplateDTO } from './services';

@@ -1,11 +1,12 @@
-import { ISendEmailRequest } from '../src/interfaces/email-services.interface';
-import { EtherealPulse } from '../src';
+import { ISendEmailRequest } from '../../../src';
+import { EmailService } from '../../../src/services';
 
 global.fetch = jest.fn();
 
 describe('EtherealPulse', () => {
   const apiKey = 'test-api-key';
-  const etherealPulse = new EtherealPulse(apiKey);
+  const endpoint = 'http://localhost:3000';
+  const emailService = new EmailService(apiKey, endpoint);
 
   beforeEach(() => {
     jest.resetAllMocks();
@@ -24,7 +25,7 @@ describe('EtherealPulse', () => {
       json: async () => ({ data: 'Email sent successfully' }),
     });
 
-    const response = await etherealPulse.sendEmail(emailRequest);
+    const response = await emailService.sendEmail(emailRequest);
     expect(response).toEqual({ data: 'Email sent successfully' });
     expect(global.fetch).toHaveBeenCalledTimes(1);
 
@@ -54,18 +55,10 @@ describe('EtherealPulse', () => {
       text: async () => 'Email not sent successfully',
     });
 
-    await expect(etherealPulse.sendEmail(emailRequest)).rejects.toThrow(
+    await expect(emailService.sendEmail(emailRequest)).rejects.toThrow(
       'Failed to send email: Email not sent successfully',
     );
     expect(global.fetch).toHaveBeenCalledTimes(1);
-  });
-
-  it('should throw an error when apikey is invalid', async () => {
-    try {
-      new EtherealPulse('');
-    } catch (error) {
-      expect(error.message).toBe('Failed to provide a valid apiKey!!!!!');
-    }
   });
 
   it('should send and email with success when bcc, cc and attachments defined', async () => {
@@ -84,8 +77,14 @@ describe('EtherealPulse', () => {
       json: async () => ({ data: 'Email sent successfully' }),
     });
 
-    const response = await etherealPulse.sendEmail(emailRequest);
+    const response = await emailService.sendEmail(emailRequest);
     expect(response).toEqual({ data: 'Email sent successfully' });
     expect(global.fetch).toHaveBeenCalledTimes(1);
+  });
+
+  it('should throw an error when apikey is invalid', async () => {
+    expect(() => {
+      new EmailService('', '');
+    }).toThrow('Failed to provide a valid apiKey!!!!!');
   });
 });

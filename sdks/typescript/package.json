@@ -13,9 +13,9 @@
   "scripts": {
     "test": "jest",
     "test:ci": "jest --ci --reporters=default --reporters=jest-junit",
-    "build": "tsc && tsc --module commonjs --outDir lib/cjs",
+    "build": "tsc -p tsconfig.build.json && tsc -p tsconfig.build.json --module commonjs --outDir lib/cjs",
     "prepublishOnly": "pnpm run build",
-    "format": "prettier --write \"src/**/*.ts\" \"tests/**/*.ts\"",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix"
   },
   "keywords": [
