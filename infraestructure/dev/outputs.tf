@@ -1,5 +1,5 @@
 output "resource_group_name" {
-  value = azurerm_resource_group.ethereal_pulse_resource_group.name
+  value = var.resource_group_name
 }
 
 output "container_registry_name" {

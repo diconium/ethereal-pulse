@@ -11,30 +11,24 @@ module "database" {
   cosmosdb_kind         = var.cosmosdb_kind
   cosmosdb_throughput   = var.cosmosdb_throughput
 }
-
-resource "azurerm_resource_group" "ethereal_pulse_resource_group" {
-  name     = var.resource_group_name
-  location = var.location
-}
-
 resource "azurerm_container_registry" "ethereal_pulse_container_registry" {
   name                = var.container_registry_name
-  resource_group_name = azurerm_resource_group.ethereal_pulse_resource_group.name
-  location            = azurerm_resource_group.ethereal_pulse_resource_group.location
+  resource_group_name = var.resource_group_name
+  location            = var.location
   sku                 = "Basic"
   admin_enabled       = true
 }
 
 resource "azurerm_container_app_environment" "ethereal_pulse_environment" {
   name                = "ethereal-pulse-environment"
-  location            = azurerm_resource_group.ethereal_pulse_resource_group.location
-  resource_group_name = azurerm_resource_group.ethereal_pulse_resource_group.name
+  location            = var.location
+  resource_group_name = var.resource_group_name
 }
 
 resource "azurerm_container_app" "ethereal_pulse_server_app" {
   name                        = var.container_app_name
   container_app_environment_id = azurerm_container_app_environment.ethereal_pulse_environment.id
-  resource_group_name         = azurerm_resource_group.ethereal_pulse_resource_group.name
+  resource_group_name         = var.resource_group_name
   revision_mode               = "Single"
 
   template {
@@ -54,7 +48,6 @@ resource "azurerm_container_app" "ethereal_pulse_server_app" {
         value = var.azure_connection_string
       }
 
-      # Add other environment variables here
     }
   }
 
@@ -66,7 +59,7 @@ resource "azurerm_container_app" "ethereal_pulse_server_app" {
 resource "azurerm_container_app" "ethereal_pulse_client_app" {
   name                        = var.client_app_name
   container_app_environment_id = azurerm_container_app_environment.ethereal_pulse_environment.id
-  resource_group_name         = azurerm_resource_group.ethereal_pulse_resource_group.name
+  resource_group_name         = var.resource_group_name
   revision_mode               = "Single"
 
   template {
@@ -91,7 +84,6 @@ resource "azurerm_container_app" "ethereal_pulse_client_app" {
         value = var.github_callback_url
       }
 
-      # Add other environment variables here
     }
   }
 
