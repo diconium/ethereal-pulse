@@ -14,7 +14,6 @@ export class TemplateService implements ITemplateService {
   private endpointURL: string;
   private static readonly BASE_TEMPLATES_ENDPOINT = 'templates';
   constructor(apiKey: string, endpointURL: string) {
-    //TODO check if thios validation is real needed here, if yes move to a function in a 'utils' package or file
     if (!apiKey || (apiKey && apiKey.trim() === '')) {
       throw new Error('Failed to provide a valid apiKey!!!!!');
     }
