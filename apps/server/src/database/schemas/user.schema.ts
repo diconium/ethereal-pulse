@@ -4,13 +4,16 @@ import { HydratedDocument, Types, Schema as MongooseSchema } from 'mongoose';
 
 @Schema()
 export class User {
-  @Prop({ required: true })
-  username: string;
+  @Prop({ required: true, type: String })
+  firstName: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true, type: String })
+  lastName: string;
+
+  @Prop({ required: true, type: String })
   email: string;
 
-  @Prop({ required: true })
+  @Prop({ type: String })
   password: string;
 
   @Prop({

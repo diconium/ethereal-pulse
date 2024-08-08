@@ -1,5 +1,5 @@
-import { Link, useLocation } from '@remix-run/react';
 import { AuthForm } from '~/components';
+import { Link, useLocation } from '@remix-run/react';
 import { authenticate, authenticator } from '~/services';
 import { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node';
 

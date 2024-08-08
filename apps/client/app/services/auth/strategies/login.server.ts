@@ -1,23 +1,29 @@
 import bcrypt from "bcryptjs";
-import { FormStrategy } from "remix-auth-form";
-import { getUserByAttribute } from "~/services/user.server";
-import { validateInput } from "~/utils";
+import { validateInput } from '~/utils';
+import { FormStrategy } from 'remix-auth-form';
+import { getUserByAttribute } from '~/services/user.server';
 
 export const LoginStrategy = new FormStrategy(async ({ form }) => {
-  const email = form.get("email") as string;
-  const password = form.get("password") as string;
+  try {
+    const email = form.get('email') as string;
+    const password = form.get('password') as string;
 
-  validateInput(email, password);
+    validateInput(email, password);
 
-  const user = getUserByAttribute("email", email);
-
-  if (user) {
-    if (bcrypt.compareSync(password, user.password)) {
-      return user.id;
-    } else {
-      throw new Error("Invalid password or email.");
+    const user = await getUserByAttribute('email', email);
+    if (!user) {
+      throw new Error('User not found.');
     }
-  } else {
-    throw new Error("User not found. Please sign up first!");
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordValid) {
+      throw new Error('Invalid password or email.');
+    }
+
+    return user._id;
+  } catch (error) {
+    console.error('Error in LoginStrategy:', error);
+    throw error;
   }
 });

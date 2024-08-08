@@ -1,6 +1,7 @@
+import { User } from '~/models';
 import { json } from '@remix-run/node';
-import { safeRedirect } from '~/utils/helpers';
 import { Authenticator } from 'remix-auth';
+import { safeRedirect } from '~/utils/helpers';
 import { sessionStorage } from '../session.server';
 import { LoginStrategy, SignUpStrategy, gitHubStrategy } from './strategies';
 
@@ -18,10 +19,10 @@ export async function authenticate(
   try {
     const url = new URL(request.url);
     const redirectTo = safeRedirect(url.searchParams.get('redirectTo'));
-
     const result = await authenticator.authenticate(strategy, request, {
       successRedirect: redirectTo,
     });
+
     return result;
   } catch (exception) {
     if (exception instanceof Response) {
@@ -31,16 +32,20 @@ export async function authenticate(
       }
 
       console.error('Authentication failed:', exception);
-
-      // Remix-auth wraps the error message in a response object
+      if (exception instanceof Error) {
+        return json({ error: exception.message }, { status: 500 });
+      }
       try {
         const response = await exception.json();
-        return json({ error: response.message }, { status: exception.status });
-      } catch {
-        return exception;
+        return json(
+          { error: response.message || 'An error occurred' },
+          { status: exception.status || 500 },
+        );
+      } catch (innerException) {
+        console.error('Failed to parse error response:', innerException);
+        return json({ error: 'An unexpected error occurred' }, { status: 500 });
       }
     }
-    return json({ error: 'An error occurred' }, { status: 500 });
   }
 }
 
