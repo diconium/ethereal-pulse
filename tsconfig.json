@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "apps/*": ["apps/*"],
+      "sdks/*": ["sdks/*"],
+      "infrastructure/*": ["infrastructure/*"]
+    }
+  }
+}

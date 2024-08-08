@@ -14,7 +14,7 @@ import "./styles/tailwind.css";
 export async function loader({ request }: LoaderFunctionArgs) {
   const [token, cookieHeader] = await csrf.commitToken();
   const userId = await authenticator.isAuthenticated(request);
-  const user = getUserById(userId);
+  const user = await getUserById(userId);
 
   if (!cookieHeader) {
     throw new Error("Something went wrong with the CSRF token.");
@@ -27,7 +27,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   });
 }
 
-export function Layout({ children }: { children: React.ReactNode }) {
+export function Layout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
       <head>

@@ -1,7 +1,9 @@
 export interface User {
-  id: string;
+  _id: string;
   firstName: string;
   lastName: string;
   email: string;
-  password: string;
+  password?: string;
 }
+
+export type NewUser = Omit<User, '_id'>;

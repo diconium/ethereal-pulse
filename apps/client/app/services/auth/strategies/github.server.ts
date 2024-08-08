@@ -1,5 +1,7 @@
+import { NewUser } from '~/models';
 import { GitHubStrategy } from 'remix-auth-github';
-import { sessionStorage } from '~/services/session.server';
+import { storeUser } from '~/services/user.server';
+import { getSession } from '~/services/session.server';
 
 function initializeGitHubStrategy() {
   const { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, GITHUB_CALLBACK_URL } =
@@ -15,10 +17,17 @@ function initializeGitHubStrategy() {
       callbackURL: GITHUB_CALLBACK_URL,
     },
     async ({ profile }) => {
-      const userId = profile.id;
-      // Store the user ID in the session
-      const session = await sessionStorage.getSession();
+      const user: NewUser = {
+        firstName: profile.displayName,
+        lastName: profile.name.familyName,
+        email: profile.emails[0].value,
+      };
+
+      const userId = await storeUser(user);
+
+      const session = await getSession();
       session.set('userId', userId);
+
       return userId;
     },
   );
