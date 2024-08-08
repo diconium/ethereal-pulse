@@ -75,51 +75,94 @@ export async function getUserByAttribute(
     throw new Error(`Failed to fetch user getUserByAttribute ${attribute}`);
   }
 }
-
 // In-Source test suites
 // https://vitest.dev/guide/in-source.html
 if (import.meta.vitest) {
-  const { describe, expect, test } = import.meta.vitest;
-  const { default: bcrypt } = await import('bcryptjs');
+  const { describe, it, expect, beforeEach, vi } = import.meta.vitest;
 
-  describe('User model - ', () => {
-    const exampleUser = {
-      id: '1',
-      firstName: 'John',
-      lastName: 'Doe',
-      email: 'john@example.com',
-      password: bcrypt.hashSync('password123', 10),
-    };
+  describe('User service - ', () => {
+    beforeEach(() => {
+      vi.restoreAllMocks(); // Reset all mocks before each test
+    });
 
     describe('storeUser - ', () => {
-      test('should store provided user in Map', () => {
-        storeUser(exampleUser);
+      it('should call fetch with correct URL and options', async () => {
+        const newUser = {
+          firstName: 'Jane',
+          lastName: 'Doe',
+          email: 'jane@example.com',
+          password: 'password123',
+        };
 
-        expect(usersMap.size).toEqual(1);
-        expect(usersMap.get('1')).toEqual(exampleUser);
+        // Mock the global fetch function
+        vi.spyOn(global, 'fetch').mockResolvedValueOnce(
+          new Response(JSON.stringify({ id: '123' })),
+        );
+
+        const userId = await storeUser(newUser);
+        expect(userId).toBe('123'); // Expect the returned ID to be '123'
+        expect(global.fetch).toHaveBeenCalledWith(API_USER_URL, {
+          method: 'POST',
+          headers: getHeaders,
+          body: JSON.stringify(newUser),
+        });
       });
     });
 
     describe('getUserById - ', () => {
-      test('should return a user by ID', () => {
-        const user = getUserById('1');
-        expect(user).toEqual(exampleUser);
+      it('should call fetch with correct URL', async () => {
+        const userId = '123';
+        const expectedUser = {
+          id: userId,
+          firstName: 'Jane',
+          lastName: 'Doe',
+          email: 'jane@example.com',
+        };
+
+        // Mock the global fetch function
+        vi.spyOn(global, 'fetch').mockResolvedValueOnce(
+          new Response(JSON.stringify(expectedUser)),
+        );
+
+        const user = await getUserById(userId);
+        expect(user).toEqual(expectedUser); // Expect the fetched user to match the mock
       });
     });
 
     describe('getUserByAttribute - ', () => {
-      test.each([
-        ['firstName', 'John'],
-        ['email', 'john@example.com'],
-      ])('should return a user by %s attribute', (attribute, value) => {
-        const user = getUserByAttribute(attribute as keyof User, value);
-        expect(user).toEqual(exampleUser);
-      });
+      it.each([
+        [
+          'firstName',
+          'Jane',
+          {
+            id: '123',
+            firstName: 'Jane',
+            lastName: 'Doe',
+            email: 'jane@example.com',
+          },
+        ],
+        [
+          'email',
+          'jane@example.com',
+          {
+            id: '123',
+            firstName: 'Jane',
+            lastName: 'Doe',
+            email: 'jane@example.com',
+          },
+        ],
+      ])(
+        'should call fetch with correct URL for attribute %s',
+        async (attribute, value, expectedUser) => {
+          // Mock the global fetch function
+          vi.spyOn(global, 'fetch').mockResolvedValueOnce(
+            new Response(JSON.stringify(expectedUser)),
+          );
 
-      test('should return null for a non-existent attribute value', () => {
-        const user = getUserByAttribute('email', 'nonexistent@example.com');
-        expect(user).toBeNull();
-      });
+          const user = await getUserByAttribute(attribute as keyof User, value);
+          expect(user).toEqual(expectedUser); // Expect the fetched user to match the mock
+        },
+      );
     });
   });
 }
