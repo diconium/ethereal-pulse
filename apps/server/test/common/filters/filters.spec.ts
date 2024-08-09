@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ArgumentsHost, HttpStatus } from '@nestjs/common';
 import { mongo } from 'mongoose';
-import { MongoDuplicateKeyErrorFilter } from 'src/common/filters/mongo-duplicate-key-error.filter';
+import { MongoDuplicateKeyErrorFilter } from '../../../src/common/filters/mongo-duplicate-key-error.filter';
 
 describe('MongoErrorFilter', () => {
   let filter: MongoDuplicateKeyErrorFilter;
