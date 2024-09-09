@@ -9,6 +9,6 @@ if (!uri) {
 
 mongoose.connect(uri);
 
-const UserModel = model('User', UserSchema);
+const UserModel = mongoose.models.User || mongoose.model('User', UserSchema);
 
 export { mongoose, UserModel };
