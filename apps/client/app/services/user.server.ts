@@ -1,5 +1,6 @@
 import { NewUser, User } from '~/models';
 import { API_BASE_URL, API_ROUTES } from '~/constants/api.constants';
+import { ERROR_MESSAGES } from '~/constant/error-messages-constants';
 
 const API_USER_URL = `${API_BASE_URL}${API_ROUTES.USERS}`;
 
@@ -16,14 +17,16 @@ export async function storeUser(user: NewUser) {
     });
 
     if (!response.ok) {
-      throw new Error(`Failed to store user: ${response.statusText}`);
+      throw new Error(
+        ERROR_MESSAGES.FAILED_TO_STORE_USER_STATUS(response.statusText),
+      );
     }
 
     const data = await response.json();
     return data.id;
   } catch (error) {
     console.error('Error storing user:', error);
-    throw new Error('Failed to store user');
+    throw new Error(ERROR_MESSAGES.FAILED_TO_STORE_USER);
   }
 }
 
@@ -37,13 +40,17 @@ export async function getUserById(userId: string | null) {
     });
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch user by ID: ${response.statusText}`);
+      throw new Error(
+        ERROR_MESSAGES.FAILED_TO_FETCH_USER_BY_ID_STATUS(response.statusText),
+      );
     }
 
     const user = await response.json();
     return user;
   } catch (error) {
-    console.error('Error fetching user by ID:', error);
+    console.error(
+      ERROR_MESSAGES.FAILED_TO_FETCH_USER_BY_ID_STATUS(String(error)),
+    );
     throw error;
   }
 }
@@ -64,7 +71,9 @@ export async function getUserByAttribute(
     if (!response.ok) {
       const errorDetail = await response.json();
       throw new Error(
-        `Failed to fetch user by ${attribute}: ${response.statusText}, Details: ${JSON.stringify(errorDetail)}`,
+        `Failed to fetch user by ${attribute}: ${
+          response.statusText
+        }, Details: ${JSON.stringify(errorDetail)}`,
       );
     }
 
@@ -72,7 +81,9 @@ export async function getUserByAttribute(
     return user;
   } catch (error) {
     console.error(`Error fetching user by ${attribute}:`, error);
-    throw new Error(`Failed to fetch user getUserByAttribute ${attribute}`);
+    throw new Error(
+      ERROR_MESSAGES.FAILED_TO_FETCH_USER_BY_ATTRIBUTE(attribute),
+    );
   }
 }
 // In-Source test suites

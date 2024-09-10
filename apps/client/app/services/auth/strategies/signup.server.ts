@@ -3,6 +3,7 @@ import { NewUser, User } from '~/models';
 import { validateInput } from '~/utils/auth';
 import { FormStrategy } from 'remix-auth-form';
 import { getUserByAttribute, storeUser } from '~/services/user.server';
+import { ERROR_MESSAGES } from '~/constant/error-messages-constants';
 
 export const SignUpStrategy = new FormStrategy(async ({ form }) => {
   const firstName = form.get('firstName') as string;
@@ -14,7 +15,7 @@ export const SignUpStrategy = new FormStrategy(async ({ form }) => {
   validateInput(email, password, confirmPassword);
 
   if (await getUserByAttribute('email', email)) {
-    throw new Error('User already exists');
+    throw new Error(ERROR_MESSAGES.USER_ALREADY_EXISTS);
   }
 
   const hashedPassword = bcrypt.hashSync(password, 10);
