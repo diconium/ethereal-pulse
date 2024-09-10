@@ -1,8 +1,7 @@
-import { UserModel } from '~/db/mongodb';
+import { UserModel } from '~/db/models/user.model';
 import { json, LoaderFunction, ActionFunction } from '@remix-run/node';
 
 export const loader: LoaderFunction = async ({ request }) => {
-
   const url = new URL(request.url);
   const userId = url.searchParams.get('id');
   const userEmail = url.searchParams.get('email');

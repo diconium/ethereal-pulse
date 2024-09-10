@@ -13,13 +13,8 @@ export const SignUpStrategy = new FormStrategy(async ({ form }) => {
 
   validateInput(email, password, confirmPassword);
 
-  try {
-    if (await getUserByAttribute('email', email)) {
-      throw new Error('User already exists');
-    }
-  } catch (error) {
-    console.error('Error in getUserByAttribute:', error);
-    throw new Error('Error when sign up: getUserByAttribute');
+  if (await getUserByAttribute('email', email)) {
+    throw new Error('User already exists');
   }
 
   const hashedPassword = bcrypt.hashSync(password, 10);
