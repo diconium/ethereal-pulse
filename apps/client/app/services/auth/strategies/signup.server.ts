@@ -1,32 +1,32 @@
 import bcrypt from "bcryptjs";
-import { FormStrategy } from "remix-auth-form";
-import { User } from "~/models";
-import { getUserByAttribute, storeUser } from "~/services/user.server";
-import { validateInput } from "~/utils/auth";
+import { NewUser, User } from '~/models';
+import { validateInput } from '~/utils/auth';
+import { FormStrategy } from 'remix-auth-form';
+import { getUserByAttribute, storeUser } from '~/services/user.server';
+import { ERROR_MESSAGES } from '~/constant/error-messages-constants';
 
 export const SignUpStrategy = new FormStrategy(async ({ form }) => {
-  const firstName = form.get("firstName") as string;
-  const lastName = form.get("lastName") as string;
-  const email = form.get("email") as string;
-  const password = form.get("password") as string;
-  const confirmPassword = form.get("confirmPassword") as string;
+  const firstName = form.get('firstName') as string;
+  const lastName = form.get('lastName') as string;
+  const email = form.get('email') as string;
+  const password = form.get('password') as string;
+  const confirmPassword = form.get('confirmPassword') as string;
 
   validateInput(email, password, confirmPassword);
 
-  if (getUserByAttribute("email", email)) {
-    throw new Error("User already exists");
+  if (await getUserByAttribute('email', email)) {
+    throw new Error(ERROR_MESSAGES.USER_ALREADY_EXISTS);
   }
 
   const hashedPassword = bcrypt.hashSync(password, 10);
-  const user: User = {
-    id: crypto.randomUUID(),
+  const user: NewUser = {
     firstName,
     lastName,
     email,
     password: hashedPassword,
   };
 
-  storeUser(user);
+  const userId = await storeUser(user);
 
-  return user.id;
+  return userId;
 });

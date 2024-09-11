@@ -1,7 +1,12 @@
-import { Link, useLocation } from '@remix-run/react';
 import { AuthForm } from '~/components';
+import { Link, MetaFunction, useLocation } from '@remix-run/react';
 import { authenticate, authenticator } from '~/services';
 import { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node';
+
+export const meta: MetaFunction = () => {
+  return [{ title: 'Login · Ethereal Pulse' }];
+};
+
 
 export default function Login() {
   const location = useLocation();
