@@ -5,6 +5,7 @@ import { ApiKeyService } from 'src/api-key/services/api-key.service';
 import { PostApiKeyRequestDto } from 'src/api-key/dto/api-key.dto';
 import { ApiKeyPermission } from 'src/common/enums/api-key-permission.enum';
 import { REQUEST } from '@nestjs/core';
+import * as apikeyLib from 'src/common/utils/utils';
 
 describe('ApiKeyService', () => {
   let service: ApiKeyService;
@@ -83,6 +84,17 @@ describe('ApiKeyService', () => {
         ],
       });
     });
+    it('should throw exception when the service to fetch user did not find the user', async () => {
+      (repository.findUserIdByApiKey as jest.Mock).mockReturnValue(undefined);
+
+      await expect(service.findAll()).rejects.toThrow();
+    });
+
+    it('should throw exception when the api key is invalid', async () => {
+      (repository.findUserIdByApiKey as jest.Mock).mockReturnValue(undefined);
+      jest.spyOn(apikeyLib, 'getApiKeyFromRequest').mockReturnValue(undefined);
+      await expect(service.findAll()).rejects.toThrow();
+    });
   });
 
   describe('createApiKey', () => {
@@ -110,6 +122,29 @@ describe('ApiKeyService', () => {
         }),
       );
       expect(result).toEqual({ id: 'mock-id', ...result });
+    });
+    it('should throw exception when the service to fetch user did not find the user', async () => {
+      const payload: PostApiKeyRequestDto = {
+        name: 'New Key',
+        permission: ApiKeyPermission.FULL_ACCESS,
+        domainId: 'Test',
+      };
+      (repository.findUserIdByApiKey as jest.Mock).mockReturnValue(undefined);
+
+      await expect(service.createApiKey(payload)).rejects.toThrow();
+    });
+
+    it('should throw exception when the api key is invalid', async () => {
+      jest.spyOn(apikeyLib, 'getApiKeyFromRequest').mockReturnValue(undefined);
+
+      const payload: PostApiKeyRequestDto = {
+        name: 'New Key',
+        permission: ApiKeyPermission.FULL_ACCESS,
+        domainId: 'Test',
+      };
+      (repository.findUserIdByApiKey as jest.Mock).mockReturnValue(undefined);
+
+      await expect(service.createApiKey(payload)).rejects.toThrow();
     });
   });
 
@@ -142,6 +177,18 @@ describe('ApiKeyService', () => {
       await expect(service.remove(invalidId)).rejects.toThrow(
         BadRequestException,
       );
+    });
+
+    it('should throw exception when the service to fetch user did not find the user', async () => {
+      (repository.findUserIdByApiKey as jest.Mock).mockReturnValue(undefined);
+
+      await expect(service.remove('dddd')).rejects.toThrow();
+    });
+
+    it('should throw exception when the api key is invalid', async () => {
+      (repository.findUserIdByApiKey as jest.Mock).mockReturnValue(undefined);
+      jest.spyOn(apikeyLib, 'getApiKeyFromRequest').mockReturnValue(undefined);
+      await expect(service.remove('dddd')).rejects.toThrow();
     });
   });
 });
