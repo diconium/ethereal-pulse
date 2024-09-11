@@ -6,10 +6,10 @@ import {
   ScrollRestoration,
   useLoaderData,
 } from "@remix-run/react";
-import { json, LoaderFunctionArgs } from "@remix-run/node";
-import { AuthenticityTokenProvider } from "remix-utils/csrf/react";
-import { authenticator, csrf, getUserById } from "./services";
-import "./styles/tailwind.css";
+import { json, LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
+import { AuthenticityTokenProvider } from 'remix-utils/csrf/react';
+import { authenticator, csrf, getUserById } from './services';
+import './styles/tailwind.css';
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const [token, cookieHeader] = await csrf.commitToken();
@@ -17,15 +17,29 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const user = await getUserById(userId);
 
   if (!cookieHeader) {
-    throw new Error("Something went wrong with the CSRF token.");
+    throw new Error('Something went wrong with the CSRF token.');
   }
 
-  return json({ csrf: token, user }, {
-    headers: {
-      "Set-Cookie": cookieHeader,
+  return json(
+    { csrf: token, user },
+    {
+      headers: {
+        'Set-Cookie': cookieHeader,
+      },
     },
-  });
+  );
 }
+
+export const meta: MetaFunction = () => {
+  return [
+    { title: 'Ethereal Pulse' },
+
+    {
+      name: 'description',
+      content: 'Welcome! See your emails, templates, and groups of recipients.',
+    },
+  ];
+};
 
 export function Layout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
