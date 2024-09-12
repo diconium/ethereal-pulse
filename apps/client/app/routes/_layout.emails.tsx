@@ -1,4 +1,4 @@
-import { TitleHeader } from '~/components/title-header/TitleHeader';
+import TitleHeader from '~/components/title-header/TitleHeader';
 
 const Emails = () => {
   return (

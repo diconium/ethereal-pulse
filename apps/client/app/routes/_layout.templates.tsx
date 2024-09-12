@@ -3,7 +3,7 @@ import { json, LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { Template } from '~/models/template.model';
 import { getTemplates } from '~/services/templates/templates.service';
-import { TitleHeader } from '~/components/title-header/TitleHeader';
+import TitleHeader from '~/components/title-header/TitleHeader';
 import { SearchForm } from '~/components/search-form/SearchForm';
 import DataTable from '~/components/data-table/DataTable';
 
