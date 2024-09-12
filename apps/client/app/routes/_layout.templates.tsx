@@ -1,9 +1,11 @@
 import { Form, useLoaderData, useNavigate, useNavigation, useSubmit } from "@remix-run/react";
 import { json, LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { Template } from '~/models/template.model';
-import { PlusIcon } from '@heroicons/react/16/solid';
 import { getTemplates } from '~/services/templates/templates.service';
+import { TitleHeader } from '~/components/title-header/TitleHeader';
+import { SearchForm } from '~/components/search-form/SearchForm';
+import DataTable from '~/components/data-table/DataTable';
 
 export const meta: MetaFunction = () => {
   return [{ title: 'Templates · Ethereal Pulse' }];
@@ -22,15 +24,18 @@ const Templates = () => {
   const navigate = useNavigate();
   const navigation = useNavigation();
   const submit = useSubmit();
+  const [searchTerm, setSearchTerm] = useState(searchedStr || '');
+  const [filteredTemplates, setFilteredTemplates] =
+    useState<Template[]>(templates);
 
-  const drawTemplateRows = (templates: Template[]) => {
+  const drawTemplateRows = (templates: Template[]): JSX.Element[] => {
     const options: Intl.DateTimeFormatOptions = {
       year: 'numeric',
       month: '2-digit',
       day: '2-digit',
     };
 
-    return templates.map((template) => (
+    return templates?.map((template) => (
       <tr
         key={template.id}
         className="pb-2 border-b-2 border-gray-200 hover:bg-gray-100 cursor-pointer"
@@ -55,64 +60,68 @@ const Templates = () => {
     }
   }, [searchedStr]);
 
+  useEffect(() => {
+    const trimmedSearchTerm = searchTerm.trim();
+    if (trimmedSearchTerm) {
+      const filtered = templates.filter(
+        (template) =>
+          template.name
+            .toLowerCase()
+            .includes(trimmedSearchTerm.toLowerCase()) ||
+          template.subject
+            .toLowerCase()
+            .includes(trimmedSearchTerm.toLowerCase()),
+      );
+      setFilteredTemplates(filtered);
+    } else {
+      setFilteredTemplates(templates);
+    }
+  }, [searchTerm, templates]);
+
+  const debounce = (func: (...args: unknown[]) => void, wait: number) => {
+    let timeout: NodeJS.Timeout;
+    return (...args: unknown[]) => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func(...args), wait);
+    };
+  };
+
+  const debouncedSubmit = useCallback(
+    debounce((value: unknown) => {
+      const formData = new FormData();
+      formData.set('template', value as string);
+      submit(formData, { replace: true });
+    }, 300),
+    [],
+  );
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setSearchTerm(value);
+    debouncedSubmit(value);
+  };
+
   return (
     <>
-      <div className="flex items-center mb-6">
-        <h1 className="text-4xl font-bold">Templates</h1>
-        <button
-          className="outline-button ml-auto -mb-1"
-          type="button"
-          onClick={() => navigate('/templates/create')}
-        >
-          <PlusIcon className="size-5 mr-1"></PlusIcon>
-          Create
-        </button>
-      </div>
-      <Form
-        className="mb-4"
-        id="templates-search-form"
-        onChange={(event) => {
-          const isFirstSearch = searchedStr === null;
-          submit(event.currentTarget, {
-            replace: !isFirstSearch,
-          });
-        }}
-        role="search"
-      >
-        <input
-          ref={searchTemplateInput}
-          className="pulse-input"
-          aria-label="Search template"
-          defaultValue={searchedStr || ''}
-          placeholder="Search template"
-          type="search"
-          name="template"
-        />
-      </Form>
-      <section className="max-h-[calc(100vh-250px)] overflow-y-auto">
-        <table className="table-fixed w-full">
-          <thead className="bg-gray-100 border-b-2 sticky top-0">
-            <tr>
-              <th className="text-left p-3">Name</th>
-              <th className="text-left p-3 lg:w-[300px]">Subject</th>
-              <th className="text-left p-3 lg:w-[150px]">Created</th>
-            </tr>
-          </thead>
-          <tbody>
-            {searching ? (
-              <tr>
-                <td className="px-3">Loading...</td>
-              </tr>
-            ) : templates.length && !searching ? (
-              drawTemplateRows(templates)
-            ) : (
-              <tr>
-                <td className="px-3">No Templates found</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </section>
+      <TitleHeader
+        title="Templates"
+        buttonLabel="Create"
+        onButtonClick={() => navigate('/templates/create')}
+      />
+
+      <SearchForm
+        onSearchChange={handleSearchChange}
+        searchPlaceholder="Search template"
+        searchedStr={searchedStr}
+      />
+
+      <DataTable
+        columns={['Name', 'Subject', 'Created']}
+        data={filteredTemplates}
+        isLoading={!!searching}
+        noDataText="No Templates found"
+        renderRow={(template) => drawTemplateRows([template as Template])[0]}
+      />
     </>
   );
 };
