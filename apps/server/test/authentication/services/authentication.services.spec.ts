@@ -39,9 +39,10 @@ describe('AuthenticationService', () => {
       const apiKey = 'validApiKey';
       const userId = 'validUserId';
       const userDummy: User = {
-        username: 'username-dummy',
         email: 'email-dummy',
         password: 'password-dummy',
+        firstName: 'firstName-dummy',
+        lastName: 'lastName-dummy',
         emailsIds: [],
         groupsIds: [],
         templatesIds: [],
