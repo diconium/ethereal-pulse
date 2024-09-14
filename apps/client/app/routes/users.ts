@@ -1,7 +1,10 @@
+import { connectToDatabase } from '~/db/index';
 import { UserModel } from '~/db/models/user.model';
 import { json, LoaderFunction, ActionFunction } from '@remix-run/node';
 
 export const loader: LoaderFunction = async ({ request }) => {
+  await connectToDatabase();
+
   const url = new URL(request.url);
   const userId = url.searchParams.get('id');
   const userEmail = url.searchParams.get('email');
@@ -23,6 +26,8 @@ export const loader: LoaderFunction = async ({ request }) => {
 };
 
 export const action: ActionFunction = async ({ request }) => {
+  await connectToDatabase();
+
   try {
     const method = request.method.toUpperCase();
     const user = await request.json();
