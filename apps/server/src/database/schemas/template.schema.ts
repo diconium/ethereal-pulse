@@ -1,5 +1,6 @@
-import { HydratedDocument } from 'mongoose';
+import { HydratedDocument, Types } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { MODEL_NAMES } from '../constants/common.constant';
 
 @Schema()
 export class Template {
@@ -12,7 +13,10 @@ export class Template {
   @Prop({ required: true })
   html: string;
 
-  @Prop()
+  @Prop({
+    type: Types.ObjectId,
+    ref: MODEL_NAMES.USER,
+  })
   userId?: string;
 }
 

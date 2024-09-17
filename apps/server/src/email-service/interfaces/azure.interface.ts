@@ -1,7 +1,14 @@
+export type AzureEmailStatus =
+  | 'NotStarted'
+  | 'Running'
+  | 'Succeeded'
+  | 'Failed'
+  | 'Canceled';
+
 export interface AzureEmailResponse {
   error?: {
     additionalInfo?: Array<{
-      info: Record<string, any>;
+      info: Record<string, unknown>;
       type: string;
     }>;
     code?: string;
@@ -10,5 +17,5 @@ export interface AzureEmailResponse {
     target?: string;
   };
   id: string;
-  status: 'NotStarted' | 'Running' | 'Succeeded' | 'Failed' | 'Canceled';
+  status: AzureEmailStatus;
 }
