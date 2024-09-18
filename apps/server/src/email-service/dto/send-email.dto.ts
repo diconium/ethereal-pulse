@@ -1,46 +1,55 @@
 import {
+  IsEmail,
+  IsNotEmpty,
   IsString,
   IsArray,
-  IsEmail,
-  IsEnum,
   IsOptional,
 } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IEmail } from '../interfaces/email.interface';
+import { AzureEmailStatus } from '../interfaces/azure.interface';
 
-export class SendEmailRequestDto {
+export class SendEmailRequestDto implements IEmail {
   @IsEmail()
   from: string;
 
+  @IsNotEmpty()
   @IsArray()
-  @IsEmail({}, { each: true })
+  @IsString({ each: true })
   recipients: string[];
 
+  @IsNotEmpty()
   @IsString()
   subject: string;
 
+  @IsArray()
+  @IsOptional()
+  @Type(() => String)
+  bcc?: string[];
+
+  @IsArray()
+  @IsOptional()
+  @Type(() => String)
+  cc?: string[];
+
+  @IsArray()
+  @IsOptional()
+  @Type(() => Object)
+  attachments?: object[];
+
+  @IsNotEmpty()
   @IsString()
   html: string;
 
-  @IsOptional()
-  @IsArray()
-  @IsEmail({}, { each: true })
-  bcc?: string[];
-
-  @IsOptional()
-  @IsArray()
-  @IsEmail({}, { each: true })
-  cc?: string[];
-
-  @IsOptional()
-  headers?: Record<string, any>;
-
-  @IsOptional()
-  attachments?: Record<string, any>[];
-}
-
-export class SendEmailResponseDto {
+  @IsNotEmpty()
   @IsString()
-  id: string;
+  userId: string;
 
-  @IsEnum(['NotStarted', 'Running', 'Succeeded', 'Failed', 'Canceled'])
-  status: string;
+  @IsNotEmpty()
+  @IsString()
+  status: AzureEmailStatus;
+
+  @IsNotEmpty()
+  @IsString()
+  deliveryID: string;
 }

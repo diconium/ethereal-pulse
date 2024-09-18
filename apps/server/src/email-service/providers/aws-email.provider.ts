@@ -4,6 +4,8 @@ import { validateOrReject } from 'class-validator';
 import { Inject, Injectable } from '@nestjs/common';
 import { SendEmailRequestDto } from '../dto/send-email.dto';
 import { IEmailProvider } from '../interfaces/email-service.interface';
+import { EmailPersistenceService } from '../services/email-persistence.service';
+import { SendEmailResponse } from 'aws-sdk/clients/ses';
 
 @Injectable()
 export class AwsEmailProvider implements IEmailProvider {
@@ -11,6 +13,7 @@ export class AwsEmailProvider implements IEmailProvider {
 
   constructor(
     @Inject(ConfigService) private readonly _configService: ConfigService,
+    private readonly _emailPersistenceService: EmailPersistenceService,
   ) {}
 
   configure(): void {
@@ -41,9 +44,18 @@ export class AwsEmailProvider implements IEmailProvider {
     });
   }
 
-  async sendEmail(payload: SendEmailRequestDto): Promise<void> {
+  async sendEmail(
+    payload: SendEmailRequestDto,
+  ): Promise<SendEmailResponse | AWS.AWSError> {
     const params = await this.createEmailMessage(payload);
-    await this.SES.sendEmail(params).promise();
+    const response = await this.SES.sendEmail(params).promise();
+
+    await this._emailPersistenceService.persistEmailWithResponse(payload, {
+      id: response.MessageId,
+      status: 'Succeeded',
+    });
+
+    return response;
   }
 
   private async createEmailMessage(

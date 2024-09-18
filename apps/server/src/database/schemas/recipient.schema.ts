@@ -5,19 +5,19 @@ export type RecipientDocument = HydratedDocument<Recipient>;
 
 @Schema()
 export class Recipient {
-  @Prop({ required: true })
+  @Prop({ type: String, required: true })
   email: string;
 
-  @Prop()
+  @Prop({ type: String })
   firstName: string;
 
-  @Prop()
+  @Prop({ type: String })
   lastName: string;
 
-  @Prop({ default: Date.now() })
+  @Prop({ type: Date, default: Date.now() })
   createdAt: Date;
 
-  @Prop({ default: false })
+  @Prop({ type: Boolean, default: false })
   unsubscribed: boolean;
 }
 

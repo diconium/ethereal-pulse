@@ -6,6 +6,7 @@ import { AzureEmailResponse } from '../interfaces/azure.interface';
 import { IEmailErrorResponse } from '../interfaces/email.interface';
 import { IEmailProvider } from '../interfaces/email-service.interface';
 import { EmailClient, EmailMessage } from '@azure/communication-email';
+import { EmailPersistenceService } from '../services/email-persistence.service';
 
 @Injectable()
 export class AzureEmailProvider implements IEmailProvider {
@@ -13,6 +14,7 @@ export class AzureEmailProvider implements IEmailProvider {
 
   constructor(
     @Inject(ConfigService) private readonly _configService: ConfigService,
+    private readonly _emailPersistenceService: EmailPersistenceService,
   ) {}
 
   configure(): void {
@@ -32,9 +34,18 @@ export class AzureEmailProvider implements IEmailProvider {
   ): Promise<AzureEmailResponse | IEmailErrorResponse> {
     const message = await this.createEmailMessage(payload);
     const poller = await this.emailClient.beginSend(message);
-    return (await poller.pollUntilDone()) as
+    const response = (await poller.pollUntilDone()) as
       | AzureEmailResponse
       | IEmailErrorResponse;
+
+    if ('id' in response && 'status' in response) {
+      await this._emailPersistenceService.persistEmailWithResponse(
+        payload,
+        response,
+      );
+    }
+
+    return response;
   }
 
   private async createEmailMessage(

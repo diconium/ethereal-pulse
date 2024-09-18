@@ -1,3 +1,5 @@
+import { AzureEmailStatus } from './azure.interface';
+
 export interface IEmail {
   from: string;
   html: string;
@@ -7,6 +9,8 @@ export interface IEmail {
   headers?: object;
   recipients: string[];
   attachments?: object[];
+  status: AzureEmailStatus;
+  deliveryID?: string;
 }
 
 export interface IEmailErrorResponse {

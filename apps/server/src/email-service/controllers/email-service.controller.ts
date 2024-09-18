@@ -15,5 +15,9 @@ export class EmailController {
     @Headers(AUTH_HEADERS.API_KEY) apiKey: string,
   ): Promise<void> {
     return this._emailService.processEmail(payload, apiKey);
+    /*TODO: 
+      - REMOVE THE NECESSITY OF PASS USERID, INSTEAD GET THE USERID FROM APIKEY.
+      - IN EMAIL.SERVICE EACH EMAIL PROVIDER HAS A DIFERENT RESPONSE TYPE, REFACTOR TO ADAPT TO IT 
+    */
   }
 }

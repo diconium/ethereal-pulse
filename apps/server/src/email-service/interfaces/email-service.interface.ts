@@ -5,10 +5,14 @@ import {
 import { SendEmailRequestDto } from '../dto/send-email.dto';
 
 export interface IEmailService {
-  processEmail(_payload: SendEmailRequestDto, _apiKey: string): Promise<any>;
+  processEmail(
+    userId: string,
+    _apiKey: string,
+    _payload: SendEmailRequestDto,
+  ): Promise<unknown>;
 }
 
 export interface IEmailProvider {
   configure?(_provider: ICloudProvider | ICloudProviderCredentials): void;
-  sendEmail(_payload: SendEmailRequestDto, _apiKey: string): Promise<any>;
+  sendEmail(_payload: SendEmailRequestDto, _apiKey: string): Promise<unknown>;
 }

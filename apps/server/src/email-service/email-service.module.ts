@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { EmailService } from './services/email.service';
+import { UserService } from 'src/user/services/user.service';
 import { UserSchema } from 'src/database/schemas/user.schema';
 import { DatabaseModule } from 'src/database/database.module';
 import { UserRepository } from 'src/user/repositories/user.repository';
@@ -20,6 +21,7 @@ import { ApiKeyRepository } from 'src/authentication/repositories/api-key.reposi
     EmailProviderFactory,
     UserRepository,
     ApiKeyRepository,
+    UserService,
   ],
   controllers: [EmailController],
   exports: [EmailService],
