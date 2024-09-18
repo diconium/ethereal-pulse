@@ -1,7 +1,8 @@
-import { HydratedDocument } from 'mongoose';
+import { HydratedDocument, Types } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { IEmail } from 'src/email-service/interfaces/email.interface';
 import { AzureEmailStatus } from 'src/email-service/interfaces/azure.interface';
+import { MODEL_NAMES } from '../constants/common.constant';
 
 @Schema()
 export class Email implements IEmail {
@@ -16,6 +17,13 @@ export class Email implements IEmail {
 
   @Prop({ type: String, required: true })
   html: string;
+
+  @Prop({
+    type: Types.ObjectId,
+    required: true,
+    ref: MODEL_NAMES.USER,
+  })
+  userId: string;
 
   @Prop({ type: [String] })
   bcc?: string[];
