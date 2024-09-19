@@ -3,6 +3,9 @@ export default () => ({
   database: {
     uri: process.env.DATABASE_URI ?? '',
   },
+  webapp: {
+    apiKey: process.env.WEBAPP_API_KEY ?? '',
+  },
   ethereal: {
     username: process.env.ETHEREAL_USERNAME,
     password: process.env.ETHEREAL_PASSWORD,

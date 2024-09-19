@@ -1,6 +1,6 @@
 import { Request } from 'express';
-import { Strategy } from 'passport-custom';
 import { PassportStrategy } from '@nestjs/passport';
+import { Strategy, VerifiedCallback } from 'passport-custom';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { AUTH_HEADERS } from '../constants/api-key-permissions.constant';
 import { AuthenticationService } from '../services/authentication.service';
@@ -11,14 +11,11 @@ export class ApiKeyStrategy extends PassportStrategy(Strategy, 'api-key') {
     super();
   }
 
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  async validate(request: Request, done: Function) {
+  async validate(request: Request, done: VerifiedCallback) {
     try {
       const apiKey = this.extractApiKey(request);
-      const user = await this._authService.validateUser(apiKey);
-      const selectedProvider = null; // TODO: GET PROVIDER ENV
+      const user = await this._authService.validateUser(apiKey, request);
 
-      this.attachProviderToRequest(request, selectedProvider);
       return done(null, user);
     } catch (error) {
       return done(error, false);
@@ -31,12 +28,5 @@ export class ApiKeyStrategy extends PassportStrategy(Strategy, 'api-key') {
       throw new UnauthorizedException('API key is missing');
     }
     return apiKey;
-  }
-
-  private attachProviderToRequest(request: Request, provider: any): void {
-    if (!provider) {
-      throw new UnauthorizedException('Provider validation failed');
-    }
-    (request as any).provider = provider;
   }
 }
