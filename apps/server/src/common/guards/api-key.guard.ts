@@ -6,9 +6,9 @@ import {
   ForbiddenException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+import { getApiKeyFromContext } from '../utils';
 import { PERMISSION_KEY } from 'src/authentication/decorators/permission.decorator';
 import { ApiKeyRepository } from 'src/authentication/repositories/api-key.repository';
-import { getApiKeyFromContext } from '../utils/utils';
 
 @Injectable()
 export class ApiKeyGuard implements CanActivate {
@@ -19,17 +19,27 @@ export class ApiKeyGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const apiKey = getApiKeyFromContext(context);
-
     if (!apiKey) {
       throw new UnauthorizedException('API key is required');
     }
 
-    const isValidApiKey = await this.validateApiKey(apiKey);
+    await this.validateApiKeyOrThrow(apiKey);
+    await this.checkPermissionsOrThrow(context, apiKey);
 
+    return true;
+  }
+
+  private async validateApiKeyOrThrow(apiKey: string): Promise<void> {
+    const isValidApiKey = await this.validateApiKey(apiKey);
     if (!isValidApiKey) {
       throw new UnauthorizedException('Invalid API key');
     }
+  }
 
+  private async checkPermissionsOrThrow(
+    context: ExecutionContext,
+    apiKey: string,
+  ): Promise<void> {
     const requiredPermission = this._reflector.get<string>(
       PERMISSION_KEY,
       context.getHandler(),
@@ -41,8 +51,6 @@ export class ApiKeyGuard implements CanActivate {
     ) {
       throw new ForbiddenException('Insufficient permissions');
     }
-
-    return true;
   }
 
   private async validateApiKey(apiKey: string): Promise<boolean> {

@@ -1,11 +1,11 @@
 import { Model } from 'mongoose';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
 import { InjectModel } from '@nestjs/mongoose';
 import { ApiKey } from 'src/database/schemas/api-key.schema';
 import { ApiKeyDocument } from 'src/entities/api-key.entity';
-import { ICloudProvider } from 'src/email-service/interfaces/cloud-provider.interface';
 import { CreateApiKeyDto } from 'src/api-key/dto/api-key.dto';
-import * as bcrypt from 'bcrypt';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { ICloudProvider } from 'src/email-service/interfaces/cloud-provider.interface';
 
 export interface IApiKeyDocumentWithProvider extends ApiKeyDocument {
   provider?: ICloudProvider;

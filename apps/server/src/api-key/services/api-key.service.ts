@@ -5,13 +5,13 @@ import {
   PostApiKeyRequestDto,
   PostApiKeyResponseDto,
 } from '../dto/api-key.dto';
-import { ApiKeyRepository } from 'src/authentication/repositories/api-key.repository';
 import * as bcrypt from 'bcrypt';
-import { randomUUID } from 'crypto';
 import { Types } from 'mongoose';
-import { getApiKeyFromRequest } from 'src/common/utils/utils';
-import { REQUEST } from '@nestjs/core';
 import { Request } from 'express';
+import { randomUUID } from 'crypto';
+import { REQUEST } from '@nestjs/core';
+import { getApiKeyFromRequest } from 'src/common/utils';
+import { ApiKeyRepository } from 'src/authentication/repositories/api-key.repository';
 
 @Injectable({ scope: Scope.REQUEST })
 export class ApiKeyService {

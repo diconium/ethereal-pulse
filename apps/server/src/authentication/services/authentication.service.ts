@@ -3,32 +3,28 @@ import {
   UnauthorizedException,
   BadRequestException,
 } from '@nestjs/common';
-import * as bcrypt from 'bcrypt';
 import { Request } from 'express';
 import { ConfigService } from '@nestjs/config';
-import { User } from 'src/database/schemas/user.schema';
 import { ApiKeyRepository } from '../repositories/api-key.repository';
-import { UserRepository } from 'src/user/repositories/user.repository';
-import { ERROR_MESSAGES } from 'src/common/constants/error-messages-constants';
 
 @Injectable()
 export class AuthenticationService {
   constructor(
-    private readonly _userRepository: UserRepository,
     private readonly _apiKeyRepository: ApiKeyRepository,
-    private readonly _configService: ConfigService, // Inject ConfigService
+    private readonly _configService: ConfigService,
   ) {}
 
   /**
    * Validates a user based on the provided API key.
    * @param {string} apiKey - The API key to validate.
    * @param {Request} request - The request object to extract userId if needed.
-   * @returns {Promise<User | null>} - The validated user or null if not found.
-   * @throws {UnauthorizedException} - If the user is not found.
+   * @returns {Promise<boolean>} - True if the user is validated, otherwise false.
+   * @throws {UnauthorizedException} - If the user or WEBAPP_API_KEY is not found/setted.
+   * @throws {BadRequestException} - If the user ID is missing in the request headers.
    */
-  async validateUser(apiKey: string, request: Request): Promise<User | null> {
+  async validateUser(apiKey: string, request: Request): Promise<boolean> {
     const userId = await this.getUserId(apiKey, request);
-    return this.getUserById(userId);
+    return Boolean(userId);
   }
 
   private async getUserId(apiKey: string, request: Request): Promise<string> {
@@ -42,15 +38,17 @@ export class AuthenticationService {
   private async isWebAppApiKey(apiKey: string): Promise<boolean> {
     const webAppApiKey = this._configService.get<string>('webapp.apiKey');
     if (!webAppApiKey) {
-      throw new UnauthorizedException(ERROR_MESSAGES.WEBAPP_API_KEY_NOT_SET);
+      throw new UnauthorizedException('WEBAPP_API_KEY is not set');
     }
-    return bcrypt.compare(apiKey, webAppApiKey);
+    return apiKey === webAppApiKey;
   }
 
   private getUserIdFromRequest(request: Request): string {
     const userId = request.headers['user-id'] as string;
     if (!userId) {
-      throw new BadRequestException(ERROR_MESSAGES.USER_ID_MISSING_IN_HEADERS);
+      throw new BadRequestException(
+        'User ID is missing in the request headers',
+      );
     }
     return userId;
   }
@@ -58,16 +56,10 @@ export class AuthenticationService {
   private async getUserIdFromApiKey(apiKey: string): Promise<string> {
     const userId = await this._apiKeyRepository.findUserIdByApiKey(apiKey);
     if (!userId) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException(
+        'Invalid API Key: User ID not found for the provided API key',
+      );
     }
     return userId;
-  }
-
-  private async getUserById(userId: string): Promise<User | null> {
-    const user = await this._userRepository.findById(userId);
-    if (!user) {
-      throw new UnauthorizedException();
-    }
-    return user;
   }
 }
