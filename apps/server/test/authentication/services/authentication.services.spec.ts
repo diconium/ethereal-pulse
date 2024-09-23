@@ -1,4 +1,4 @@
-import { ApiKeyRepository } from '../../../src/authentication/repositories/api-key.repository';
+import { ApiKeyRepository } from '../../../src/api-key/repositories/api-key.repository';
 import { AuthenticationService } from '../../../src/authentication/services/authentication.service';
 import { UserRepository } from '../../../src/user/repositories/user.repository';
 import { UnauthorizedException } from '@nestjs/common';

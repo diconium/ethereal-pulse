@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsNotEmpty } from 'class-validator';
+import { IsString, IsNotEmpty } from 'class-validator';
 
 export class IdParamDto {
   @IsString()
@@ -18,8 +18,4 @@ export class TemplateDto {
   @IsString()
   @IsNotEmpty()
   html: string;
-
-  @IsString()
-  @IsOptional()
-  userId?: string;
 }

@@ -1,17 +1,13 @@
-import {
-  Injectable,
-  UnauthorizedException,
-  BadRequestException,
-} from '@nestjs/common';
 import { Request } from 'express';
-import { ConfigService } from '@nestjs/config';
-import { ApiKeyRepository } from '../repositories/api-key.repository';
+import { REQUEST } from '@nestjs/core';
+import { Inject, Injectable, Scope } from '@nestjs/common';
+import { ApiKeyService } from 'src/api-key/services/api-key.service';
 
-@Injectable()
+@Injectable({ scope: Scope.REQUEST })
 export class AuthenticationService {
   constructor(
-    private readonly _apiKeyRepository: ApiKeyRepository,
-    private readonly _configService: ConfigService,
+    @Inject(REQUEST) private readonly _request: Request,
+    private readonly _apiKeyService: ApiKeyService,
   ) {}
 
   /**
@@ -23,43 +19,7 @@ export class AuthenticationService {
    * @throws {BadRequestException} - If the user ID is missing in the request headers.
    */
   async validateUser(apiKey: string, request: Request): Promise<boolean> {
-    const userId = await this.getUserId(apiKey, request);
+    const userId = await this._apiKeyService.getUserId(apiKey, request);
     return Boolean(userId);
-  }
-
-  private async getUserId(apiKey: string, request: Request): Promise<string> {
-    if (await this.isWebAppApiKey(apiKey)) {
-      return this.getUserIdFromRequest(request);
-    } else {
-      return this.getUserIdFromApiKey(apiKey);
-    }
-  }
-
-  private async isWebAppApiKey(apiKey: string): Promise<boolean> {
-    const webAppApiKey = this._configService.get<string>('webapp.apiKey');
-    if (!webAppApiKey) {
-      throw new UnauthorizedException('WEBAPP_API_KEY is not set');
-    }
-    return apiKey === webAppApiKey;
-  }
-
-  private getUserIdFromRequest(request: Request): string {
-    const userId = request.headers['user-id'] as string;
-    if (!userId) {
-      throw new BadRequestException(
-        'User ID is missing in the request headers',
-      );
-    }
-    return userId;
-  }
-
-  private async getUserIdFromApiKey(apiKey: string): Promise<string> {
-    const userId = await this._apiKeyRepository.findUserIdByApiKey(apiKey);
-    if (!userId) {
-      throw new UnauthorizedException(
-        'Invalid API Key: User ID not found for the provided API key',
-      );
-    }
-    return userId;
   }
 }

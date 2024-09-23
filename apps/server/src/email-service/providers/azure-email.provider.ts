@@ -6,6 +6,7 @@ import { AzureEmailResponse } from '../interfaces/azure.interface';
 import { IEmailErrorResponse } from '../interfaces/email.interface';
 import { IEmailProvider } from '../interfaces/email-service.interface';
 import { EmailClient, EmailMessage } from '@azure/communication-email';
+import { ERROR_MESSAGES } from 'src/common/constants/error-messages-constants';
 
 @Injectable()
 export class AzureEmailProvider implements IEmailProvider {
@@ -21,7 +22,7 @@ export class AzureEmailProvider implements IEmailProvider {
     );
 
     if (!connectionString) {
-      throw new Error('Azure connection string is undefined');
+      throw new Error(ERROR_MESSAGES.AZURE_CONNECTION_STRING_NOT_SET);
     }
 
     this.emailClient = new EmailClient(connectionString);

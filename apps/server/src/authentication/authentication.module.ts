@@ -1,23 +1,20 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
 import { PassportModule } from '@nestjs/passport';
+import { ApiKeyModule } from 'src/api-key/api-key.module';
 import { ApiKeyGuard } from 'src/common/guards/api-key.guard';
+import { DatabaseModule } from 'src/database/database.module';
 import { ApiKeyStrategy } from './account-policy/api-key-strategy';
-import { ApiKeyRepository } from './repositories/api-key.repository';
-import { ApiKey, ApiKeySchema } from '../database/schemas/api-key.schema';
+import { ApiKeyService } from 'src/api-key/services/api-key.service';
 import { AuthenticationService } from './services/authentication.service';
 
 @Module({
-  imports: [
-    PassportModule,
-    MongooseModule.forFeature([{ name: ApiKey.name, schema: ApiKeySchema }]),
-  ],
+  imports: [PassportModule, ApiKeyModule, DatabaseModule],
   providers: [
     AuthenticationService,
+    ApiKeyService,
     ApiKeyStrategy,
-    ApiKeyRepository,
     ApiKeyGuard,
   ],
-  exports: [AuthenticationService, ApiKeyRepository, ApiKeyGuard],
+  exports: [AuthenticationService, ApiKeyGuard],
 })
 export class AuthenticationModule {}

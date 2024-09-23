@@ -1,12 +1,13 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Types } from 'mongoose';
-import { API_KEY_PERMISSION_KEYS } from 'src/authentication/constants/api-key-permissions.constant';
+import { MODEL_NAMES } from '../constants/common.constant';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { IApiKey } from 'src/authentication/interfaces/api-key.interface';
 import { ApiKeyPermission } from 'src/common/enums/api-key-permission.enum';
-import { MODEL_NAMES } from '../constants/common.constant';
+import { API_KEY_PERMISSION_KEYS } from 'src/authentication/constants/api-key-permissions.constant';
 
-@Schema()
+@Schema({ timestamps: true })
 export class ApiKey implements IApiKey {
+  createdAt: Date;
   @Prop({ required: true })
   name: string;
 
@@ -16,13 +17,10 @@ export class ApiKey implements IApiKey {
   })
   permission: ApiKeyPermission;
 
-  @Prop({ type: Date, default: Date.now })
-  createdAt: Date;
-
   @Prop()
   domainId?: string;
 
-  @Prop({ required: true })
+  @Prop({ type: String, required: true })
   token: string;
 
   @Prop({
@@ -35,3 +33,8 @@ export class ApiKey implements IApiKey {
 
 export const ApiKeySchema = SchemaFactory.createForClass(ApiKey);
 ApiKeySchema.index({ name: 1, userId: 1 }, { unique: true });
+ApiKeySchema.on('index', (error) => {
+  if (error) {
+    console.error('Index creation failed:', error);
+  }
+});

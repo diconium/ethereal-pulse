@@ -17,7 +17,7 @@ export class PostApiKeyRequestDto {
   permission: ApiKeyPermission;
 
   @IsString()
-  domainId: string;
+  domainId?: string;
 }
 
 export class PostApiKeyResponseDto {

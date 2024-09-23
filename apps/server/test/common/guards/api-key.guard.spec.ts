@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { ApiKeyGuard } from '../../../src/common/guards/api-key.guard';
-import { ApiKeyRepository } from '../../../src/authentication/repositories/api-key.repository';
+import { ApiKeyRepository } from '../../../src/api-key/repositories/api-key.repository';
 import { IApiKey } from '../../../src/authentication/interfaces/api-key.interface';
 import { ApiKeyPermission } from '../../../src/common/enums/api-key-permission.enum';
 

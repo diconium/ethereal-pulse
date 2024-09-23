@@ -1,15 +1,15 @@
-import { ExecutionContext } from '@nestjs/common';
-import { Request } from 'express';
 import { Types } from 'mongoose';
+import { Request } from 'express';
+import { ExecutionContext } from '@nestjs/common';
+import { ApiKeyRepository } from 'src/api-key/repositories/api-key.repository';
 import { AUTH_HEADERS } from 'src/authentication/constants/api-key-permissions.constant';
-import { ApiKeyRepository } from 'src/authentication/repositories/api-key.repository';
 
 function getRequest(context: ExecutionContext): Request {
   return context.switchToHttp().getRequest();
 }
 
-export function getApiKeyFromRequest(request: Request): string | undefined {
-  const apiKey = request.headers[AUTH_HEADERS.API_KEY];
+export function getApiKeyFromRequest(request: Request): string {
+  const apiKey = request.headers[AUTH_HEADERS.API_KEY] as string | string[];
   if (Array.isArray(apiKey)) {
     return apiKey[0];
   }

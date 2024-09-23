@@ -9,7 +9,10 @@ import {
   UseGuards,
   Controller,
   ValidationPipe,
+  Req,
 } from '@nestjs/common';
+import { Request } from 'express';
+import { getApiKeyFromRequest } from 'src/common/utils';
 import { ApiKeyGuard } from 'src/common/guards/api-key.guard';
 import { IdParamDto, TemplateDto } from '../dto/template.dto';
 import { TemplateService } from '../services/template.service';
@@ -21,8 +24,11 @@ export class TemplateController {
   constructor(private readonly _templateService: TemplateService) {}
 
   @Get()
-  async findAll(): Promise<Template[]> {
-    return this._templateService.findAll();
+  async findAll(@Req() request: Request): Promise<Template[]> {
+    // Update the type of request
+    // Added @Req() to get the request object
+    const apiKey = getApiKeyFromRequest(request);
+    return this._templateService.findAll(apiKey);
   }
 
   @Post()

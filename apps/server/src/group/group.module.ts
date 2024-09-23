@@ -1,17 +1,15 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
 import { GroupService } from './services/group.service';
+import { ApiKeyGuard } from 'src/common/guards/api-key.guard';
+import { DatabaseModule } from 'src/database/database.module';
 import { GroupController } from './controllers/group.controllers';
 import { GroupRepository } from './repositories/group.repository';
-import { Group, GroupSchema } from 'src/database/schemas/group.schema';
 import { AuthenticationModule } from 'src/authentication/authentication.module';
+import { ApiKeyModule } from 'src/api-key/api-key.module';
 
 @Module({
-  imports: [
-    MongooseModule.forFeature([{ name: Group.name, schema: GroupSchema }]),
-    AuthenticationModule,
-  ],
-  providers: [GroupService, GroupRepository],
+  imports: [DatabaseModule, ApiKeyModule, AuthenticationModule],
+  providers: [GroupService, GroupRepository, ApiKeyGuard],
   controllers: [GroupController],
   exports: [GroupService],
 })

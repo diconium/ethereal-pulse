@@ -3,7 +3,7 @@ import { getModelToken } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import * as bcryptLib from 'bcrypt';
 import { CreateApiKeyDto } from '../../../src/api-key/dto/api-key.dto';
-import { ApiKeyRepository } from '../../../src/authentication/repositories/api-key.repository';
+import { ApiKeyRepository } from '../../../src/api-key/repositories/api-key.repository';
 import { ApiKeyDocument } from '../../../src/entities/api-key.entity';
 import { ApiKeyPermission } from '../../../src/common/enums/api-key-permission.enum';
 import { NotFoundException } from '@nestjs/common';

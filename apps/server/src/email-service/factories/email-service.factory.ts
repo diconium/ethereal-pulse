@@ -6,6 +6,7 @@ import { IEmailProvider } from '../interfaces/email-service.interface';
 import { EMAIL_PROVIDERS } from '../constants/email-providers.constants';
 import { EtherealEmailProvider } from '../providers/ethereal-email.provider';
 import { CloudProviderType } from 'src/email-service/interfaces/cloud-provider.interface';
+import { ERROR_MESSAGES } from 'src/common/constants/error-messages-constants';
 @Injectable()
 export class EmailProviderFactory {
   constructor(
@@ -18,7 +19,7 @@ export class EmailProviderFactory {
       ?.toLocaleLowerCase();
 
     if (!providerName) {
-      throw new Error('Email provider not set');
+      throw new Error(ERROR_MESSAGES.EMAIL_PROVIDER_NOT_SET);
     }
 
     const emailProvider = this.getEmailProviderInstance(
@@ -38,7 +39,7 @@ export class EmailProviderFactory {
       case EMAIL_PROVIDERS.ETHEREAL:
         return new EtherealEmailProvider(this._configService);
       default:
-        throw new Error('Unsupported email provider');
+        throw new Error(ERROR_MESSAGES.UNSUPPORTED_EMAIL_PROVIDER);
     }
   }
 

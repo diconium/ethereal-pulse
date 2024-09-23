@@ -1,14 +1,23 @@
-import { Model } from 'mongoose';
+import { Model, Error as MongooseError } from 'mongoose';
+
 import * as bcrypt from 'bcrypt';
 import { InjectModel } from '@nestjs/mongoose';
 import { ApiKey } from 'src/database/schemas/api-key.schema';
 import { ApiKeyDocument } from 'src/entities/api-key.entity';
 import { CreateApiKeyDto } from 'src/api-key/dto/api-key.dto';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { ICloudProvider } from 'src/email-service/interfaces/cloud-provider.interface';
 
 export interface IApiKeyDocumentWithProvider extends ApiKeyDocument {
   provider?: ICloudProvider;
+}
+
+interface MongoError extends Error {
+  code: number;
 }
 
 @Injectable()
@@ -24,7 +33,21 @@ export class ApiKeyRepository {
    * @returns {Promise<ApiKey>} The created ApiKey.
    */
   async create(createApiKeyDto: CreateApiKeyDto): Promise<ApiKeyDocument> {
-    return this._apiKeyModel.create(createApiKeyDto);
+    try {
+      return await this._apiKeyModel.create(createApiKeyDto);
+    } catch (error) {
+      console.log(JSON.stringify(error));
+      if (
+        error instanceof MongooseError &&
+        (error as MongoError).name === 'MongoError' &&
+        (error as MongoError).code === 11000
+      ) {
+        throw new BadRequestException(
+          'API Key with the same name and userId already exists',
+        );
+      }
+      throw error;
+    }
   }
 
   /**

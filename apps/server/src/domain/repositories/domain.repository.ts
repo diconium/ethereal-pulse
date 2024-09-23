@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Domain, DomainDocument } from 'src/database/schemas/domain.schema';
 import { CreateDomainDto, PutDomainRequestDto } from '../dto/domain.dto';
+import { ERROR_MESSAGES } from 'src/common/constants/error-messages-constants';
 
 @Injectable()
 export class DomainRepository {
@@ -25,7 +26,7 @@ export class DomainRepository {
       .findOneAndUpdate({ _id: id, apiKey: apiKeyId }, domain, { new: true })
       .exec();
     if (!existingDomain) {
-      throw new NotFoundException(`Domain #${id} not found`);
+      throw new NotFoundException(ERROR_MESSAGES.DOMAIN_ID_NOT_FOUND(id));
     }
     return existingDomain;
   }
@@ -38,7 +39,7 @@ export class DomainRepository {
       .findOneAndDelete({ _id: id, apiKey: apiKeyId })
       .exec();
     if (!result) {
-      throw new NotFoundException(`Domain #${id} not found`);
+      throw new NotFoundException(ERROR_MESSAGES.DOMAIN_ID_NOT_FOUND(id));
     }
   }
 }

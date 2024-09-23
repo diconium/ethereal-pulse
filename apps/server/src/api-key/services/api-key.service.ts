@@ -1,4 +1,10 @@
-import { BadRequestException, Inject, Injectable, Scope } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  Scope,
+  UnauthorizedException,
+} from '@nestjs/common';
 import {
   CreateApiKeyDto,
   GetApiKeysWrapperResponseDto,
@@ -10,18 +16,22 @@ import { Types } from 'mongoose';
 import { Request } from 'express';
 import { randomUUID } from 'crypto';
 import { REQUEST } from '@nestjs/core';
+import { ConfigService } from '@nestjs/config';
 import { getApiKeyFromRequest } from 'src/common/utils';
-import { ApiKeyRepository } from 'src/authentication/repositories/api-key.repository';
+import { ApiKeyRepository } from '../repositories/api-key.repository';
+import { AUTH_HEADERS } from 'src/authentication/constants/api-key-permissions.constant';
 
 @Injectable({ scope: Scope.REQUEST })
 export class ApiKeyService {
   constructor(
     @Inject(REQUEST) private readonly _request: Request,
     private readonly _apiKeyRepository: ApiKeyRepository,
+    private readonly _configService: ConfigService,
   ) {}
 
   async findAll(): Promise<GetApiKeysWrapperResponseDto> {
-    const userId = await this.getUserId();
+    const apiKey = getApiKeyFromRequest(this._request);
+    const userId = await this.getUserId(apiKey, this._request);
 
     return {
       data: (await this._apiKeyRepository.findAllByUserId(userId)).map(
@@ -41,11 +51,13 @@ export class ApiKeyService {
     payload: PostApiKeyRequestDto,
   ): Promise<PostApiKeyResponseDto> {
     const token = randomUUID();
+    const apiKey = getApiKeyFromRequest(this._request);
+    const userId = await this.getUserId(apiKey, this._request);
 
     const dto: CreateApiKeyDto = {
       ...payload,
       token: await bcrypt.hash(token, 10),
-      userId: await this.getUserId(),
+      userId: userId,
     };
 
     const apiKeyDocument = await this._apiKeyRepository.create(dto);
@@ -57,18 +69,47 @@ export class ApiKeyService {
     if (!Types.ObjectId.isValid(id)) {
       throw new BadRequestException('Invalid API key ID');
     }
-    return this._apiKeyRepository.findByIdAndUserAndDelete(
-      id,
-      await this.getUserId(),
-    );
+    const apiKey = getApiKeyFromRequest(this._request);
+    const userId = await this.getUserId(apiKey, this._request);
+
+    return this._apiKeyRepository.findByIdAndUserAndDelete(id, userId);
   }
 
-  private async getUserId(): Promise<string> {
-    const userId = await this._apiKeyRepository.findUserIdByApiKey(
-      getApiKeyFromRequest(this._request) ?? '',
-    );
+  async getUserId(apiKey: string, request: Request): Promise<string> {
+    if (await this.isWebAppApiKey(apiKey)) {
+      console.info('is apikey web app....');
+      return this.getUserIdFromRequest(request);
+    } else {
+      console.info('isnt apikey web app....');
+      return this.getUserIdFromApiKey(apiKey);
+    }
+  }
+  private async isWebAppApiKey(apiKey: string): Promise<boolean> {
+    const webAppApiKey = this._configService.get<string>('webapp.apiKey');
+    if (!webAppApiKey) {
+      throw new UnauthorizedException('WEBAPP_API_KEY is not set');
+    }
+    return apiKey === webAppApiKey;
+  }
+
+  private getUserIdFromRequest(request: Request): string {
+    const userId = request.headers[AUTH_HEADERS.USER_ID] as string;
     if (!userId) {
-      throw new BadRequestException('Invalid User ID');
+      console.log('userid not found in header ....');
+      throw new BadRequestException(
+        'User ID is missing in the request headers',
+      );
+    }
+    console.log('userid is: ', userId);
+    return userId;
+  }
+
+  private async getUserIdFromApiKey(apiKey: string): Promise<string> {
+    const userId = await this._apiKeyRepository.findUserIdByApiKey(apiKey);
+    if (!userId) {
+      throw new UnauthorizedException(
+        'Invalid API Key: User ID not found for the provided API key',
+      );
     }
     return userId;
   }

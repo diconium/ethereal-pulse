@@ -7,4 +7,5 @@ export namespace API_KEY_PERMISSION_KEYS {
 
 export const AUTH_HEADERS = {
   API_KEY: 'x-api-key',
+  USER_ID: 'x-user-id',
 };
