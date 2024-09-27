@@ -1,5 +1,6 @@
 import { MOCKED_TEMPLATES } from "~/mocks/templates";
 import { Template } from "~/models/template.model";
+import { getWithApiKey } from "~/utils/requests";
 
 /*
 * Simulates server requests to fetch for a particular templates,
@@ -8,13 +9,15 @@ import { Template } from "~/models/template.model";
 const DELAY = 500;
 
 export async function getTemplates(searchString: string | null): Promise<Template[]> {
-  const result = searchString?.length ?
-    MOCKED_TEMPLATES.filter((item) => item.name.toLowerCase().includes(searchString.toLowerCase())) :
-    MOCKED_TEMPLATES
+  // const result = searchString?.length ?
+  //   MOCKED_TEMPLATES.filter((item) => item.name.toLowerCase().includes(searchString.toLowerCase())) :
+  //   MOCKED_TEMPLATES
 
-  return new Promise<Template[]>((resolve) => {
-    setTimeout(() => {resolve(result);}, DELAY)
-  })
+  // TODO IMPLEMENT SEARCH STRING USAGE IN API CALL
+  console.log(searchString);
+
+  const templates: Template[] = await getWithApiKey<Template[]>('https://ethereal-pulse-server.proudglacier-d2cd577c.westeurope.azurecontainerapps.io/templates');
+  return templates;
 }
 
 export async function getTemplateById(id: string) {
