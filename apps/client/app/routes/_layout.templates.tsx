@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react';
 import { Template } from '~/models/template.model';
 import { PlusIcon } from '@heroicons/react/16/solid';
 import { getTemplates } from '~/services/templates/templates.service';
+import { authenticator } from "~/services";
 
 export const meta: MetaFunction = () => {
   return [{ title: 'Templates · Ethereal Pulse' }];
@@ -12,7 +13,8 @@ export const meta: MetaFunction = () => {
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
   const searchedStr = url.searchParams.get('templates');
-  const templates = await getTemplates(searchedStr);
+  const userId: string | null = await authenticator.isAuthenticated(request);
+  const templates = await getTemplates(userId, searchedStr);
   return json({ templates, searchedStr });
 };
 

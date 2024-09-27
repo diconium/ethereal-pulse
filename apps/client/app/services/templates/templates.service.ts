@@ -8,15 +8,14 @@ import { getWithApiKey } from "~/utils/requests";
 * */
 const DELAY = 500;
 
-export async function getTemplates(searchString: string | null): Promise<Template[]> {
+export async function getTemplates(userId: string | null, searchString: string | null): Promise<Template[]> {
   // const result = searchString?.length ?
   //   MOCKED_TEMPLATES.filter((item) => item.name.toLowerCase().includes(searchString.toLowerCase())) :
   //   MOCKED_TEMPLATES
 
   // TODO IMPLEMENT SEARCH STRING USAGE IN API CALL
   console.log(searchString);
-
-  const templates: Template[] = await getWithApiKey<Template[]>('https://ethereal-pulse-server.proudglacier-d2cd577c.westeurope.azurecontainerapps.io/templates');
+  const templates: Template[] = await getWithApiKey<Template[]>('https://ethereal-pulse-server.proudglacier-d2cd577c.westeurope.azurecontainerapps.io/templates', userId ? { 'x-user-id': userId } : undefined);
   return templates;
 }
 
