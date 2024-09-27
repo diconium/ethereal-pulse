@@ -22,7 +22,6 @@ export class TemplateController {
 
   @Get()
   async findAll(): Promise<Template[]> {
-    console.log('TESTE!!!!!');
     return this._templateService.findAll();
   }
 
